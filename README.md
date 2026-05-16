@@ -5,22 +5,22 @@
 Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **TypeScript**, **Node.js**, **React**, and **Python** — from product UI to federated APIs, GenAI/RAG demos, tests, and production operations. I care about **clean architecture**, **performance (Core Web Vitals)**, **accessibility-first delivery (WCAG 2.1–oriented)**, and **reliable delivery**.
 
 **Open to senior / staff remote roles** (international teams).  
-Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)**
+Portfolios: **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)** · **[fworks-tech.vercel.app](https://fworks-tech.vercel.app/)** (old portfolio)
 
 ---
 
 ## Featured work
 
-- **[fworks.tech](https://fworks.tech/)** — [repo](https://github.com/fworks-tech/fworks.tech) — official portfolio and full-stack showcase (Next.js)
+- **[fworks-tech.vercel.app](https://fworks-tech.vercel.app/)** — [repo](https://github.com/fworks-tech/fworks.tech) — old portfolio page and full-stack showcase (Next.js)
 - **[fritzelborges](https://fritzelborges.vercel.app)** — [repo](https://github.com/fworks-tech/fritzelborges) — bilingual personal site (EN/PT) on Next.js 16
 - **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI RAG demo: cross-check candidate documents before human review
 - **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto dashboard and intelligence workspace (KPIs, trends, risk, alerts, news)
 
-### fworks.tech (official portfolio)
+### fworks.tech (old portfolio)
 
-**[Live site](https://fworks.tech/)** · **[Repository](https://github.com/fworks-tech/fworks.tech)**
+**[Live site](https://fworks-tech.vercel.app/)** · **[Repository](https://github.com/fworks-tech/fworks.tech)**
 
-Official **FWORKS.tech** portfolio and full-stack showcase on **Next.js**: project highlights, skills, experience narrative, and contact — the primary entry point for recruiters and collaborators.
+Earlier **FWORKS.tech** portfolio and full-stack showcase on **Next.js** (now hosted on Vercel; the `fworks.tech` domain is no longer active): project highlights, skills, experience narrative, and contact. Superseded by [fritzelborges.vercel.app](https://fritzelborges.vercel.app) as the primary portfolio.
 
 ### fritzelborges (personal site)
 
@@ -72,7 +72,7 @@ Recent milestones: **MIT license**, **Python 3.12** deploy on Streamlit Communit
 | 06/2017 – 06/2018 | QA Technician | TOTVS | Protractor training, Jenkins CI, SonarQube |
 | 06/2016 – 06/2017 | Intern | TOTVS | Internal web frameworks, e2e automation |
 
-*May 2024 – Dec 2024: PUCPR postgraduate studies and portfolio / open-source work (fworks.tech, VeriHire, and related projects). Oct – Nov 2025: gap between two separate BairesDev contracts.*
+*May 2024 – Dec 2024: PUCPR postgraduate studies and portfolio / open-source work (old portfolio at [fworks-tech.vercel.app](https://fworks-tech.vercel.app/), VeriHire, and related projects). Oct – Nov 2025: gap between two separate BairesDev contracts.*
 
 ---
 
@@ -108,11 +108,11 @@ AI · machine learning · software architecture · full-stack development · aut
 
 ## Contact
 
-- **[fworks.tech](https://fworks.tech/)**
 - **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)**
+- **[fworks-tech.vercel.app](https://fworks-tech.vercel.app/)** (old portfolio)
 - **[LinkedIn](https://www.linkedin.com/in/fabiorborges)**
 
-For email or phone, use LinkedIn messages or the contact form on fworks.tech.
+For email or phone, use LinkedIn messages or the contact form on fritzelborges.vercel.app.
 
 ---
 
