@@ -1,16 +1,18 @@
 # Hi, I am Fábio Ritzel Borges
 
-Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **TypeScript**, **Node.js**, and **React** — from product UI to federated APIs, tests, and production operations. I care about **clean architecture**, **performance (Core Web Vitals)**, **accessibility (WCAG 2.1 AA)**, and **reliable delivery**.
+Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **TypeScript**, **Node.js**, **React**, and **Python** — from product UI to federated APIs, GenAI/RAG demos, tests, and production operations. I care about **clean architecture**, **performance (Core Web Vitals)**, **accessibility (WCAG 2.1 AA)**, and **reliable delivery**.
 
-**Open to senior / staff remote roles** (international teams). Portfolio: **[fworks.tech](https://fworks.tech/)**
+**Open to senior / staff remote roles** (international teams).  
+Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](https://fritzelborges.com.br)**
 
 ---
 
 ## Featured work
 
-- **[fworks.tech](https://fworks.tech/)** — portfolio and product engineering showcase  
-- **[Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard)** — Streamlit dashboard and intelligence workspace  
-- **[fritzelborges](https://github.com/fworks-tech/fritzelborges)** — personal site repository  
+- **[fworks.tech](https://fworks.tech/)** — [repo](https://github.com/fworks-tech/fworks.tech) — official portfolio and full-stack showcase (Next.js)  
+- **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI demo: cross-check candidate documents (RAG + Streamlit)  
+- **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto dashboard and intelligence workspace (KPIs, trends, risk, alerts, news)  
+- **[fritzelborges](https://fritzelborges.com.br)** — [repo](https://github.com/fworks-tech/fritzelborges) — personal site  
 
 ---
 
@@ -18,6 +20,7 @@ Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **Type
 
 - **GraphQL & integration:** federated subgraphs, OpenAPI/WSDL analysis, resolvers, schema validation, CI and production readiness for telecom-scale integrations  
 - **React platforms:** reusable components, Storybook, Redux Toolkit, performance tuning (lazy loading, memoization, code splitting), Jest + Playwright  
+- **GenAI & data apps:** RAG pipelines, document cross-check workflows, Streamlit dashboards, LLM-assisted tooling  
 - **E‑commerce & data-heavy UIs:** performance, SEO, accessibility, and multi-region UX (Farfetch ecosystem experience)  
 - **Quality & observability:** New Relic instrumentation, Lighthouse-driven improvements, Cypress/Jest/Puppeteer, Sonar/Jenkins/GitLab pipelines  
 
@@ -48,7 +51,7 @@ Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **Type
 
 ## Stack (high level)
 
-TypeScript · Node.js · React · GraphQL · REST · AWS · Terraform · Docker · SQL · MongoDB · Git · New Relic · CloudWatch · LLM / AI engineering · Python · MERN  
+TypeScript · Node.js · React · Next.js · GraphQL · REST · MERN · AWS · Terraform · Docker · SQL · MongoDB · Python · Streamlit · RAG / LLM · Git · New Relic · CloudWatch  
 
 ---
 
@@ -62,17 +65,18 @@ TypeScript · Node.js · React · GraphQL · REST · AWS · Terraform · Docker 
 
 ## Interests
 
-AI · machine learning · software architecture · full-stack development · automation · agents  
+AI · machine learning · software architecture · full-stack development · automation · agents · DevOps  
 
 ---
 
 ## Contact
 
 - **[fworks.tech](https://fworks.tech/)**
+- **[fritzelborges.com.br](https://fritzelborges.com.br)**
 - **[LinkedIn](https://www.linkedin.com/in/fabiorborges)**
 
 For email or phone, use LinkedIn messages or the contact form on fworks.tech.
 
 ---
 
-*Last updated from resume PDF — 2026.*
+*Last updated from GitHub profile & repos — May 2026.*
