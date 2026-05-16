@@ -10,9 +10,19 @@ Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](
 ## Featured work
 
 - **[fworks.tech](https://fworks.tech/)** — [repo](https://github.com/fworks-tech/fworks.tech) — official portfolio and full-stack showcase (Next.js)  
-- **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI demo: cross-check candidate documents (RAG + Streamlit)  
+- **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI RAG demo: cross-check candidate documents before human review (see below)  
 - **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto dashboard and intelligence workspace (KPIs, trends, risk, alerts, news)  
 - **[fritzelborges](https://fritzelborges.com.br)** — [repo](https://github.com/fworks-tech/fritzelborges) — personal site  
+
+### VeriHire (recent open source)
+
+**[Live demo](https://verihire.streamlit.app/)** · **[Repository](https://github.com/fworks-tech/verihire)** · **[Project board](https://github.com/users/fworks-tech/projects/5)**
+
+VeriHire is an **assistive** GenAI / RAG portfolio project for recruiters and hiring managers: compare a **job pack** (posting + notes), **resume**, and **cover letter**, surface **inconsistencies with citations**, and optionally use **OpenAI** for a structured JSON report. Built with **Python**, **Streamlit**, and **Chroma**; demo heuristics work without an API key.
+
+Recent milestones: **MIT license**, **Python 3.12** deploy on Streamlit Community Cloud, **CI** (pytest + Ruff), **pre-commit**, unit tests, [CONTRIBUTING](https://github.com/fworks-tech/verihire/blob/main/CONTRIBUTING.md) guide, and a public roadmap on the project board.
+
+**Ethics:** assistive only — not for automated hire/reject decisions. Public demos use **synthetic fixtures** only; do not commit real candidate PII.
 
 ---
 
@@ -20,7 +30,7 @@ Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](
 
 - **GraphQL & integration:** federated subgraphs, OpenAPI/WSDL analysis, resolvers, schema validation, CI and production readiness for telecom-scale integrations  
 - **React platforms:** reusable components, Storybook, Redux Toolkit, performance tuning (lazy loading, memoization, code splitting), Jest + Playwright  
-- **GenAI & data apps:** RAG pipelines, document cross-check workflows, Streamlit dashboards, LLM-assisted tooling  
+- **GenAI & data apps:** RAG pipelines, assistive document cross-check workflows (e.g. recruiting), Streamlit dashboards, LLM-assisted tooling  
 - **E‑commerce & data-heavy UIs:** performance, SEO, accessibility, and multi-region UX (Farfetch ecosystem experience)  
 - **Quality & observability:** New Relic instrumentation, Lighthouse-driven improvements, Cypress/Jest/Puppeteer, Sonar/Jenkins/GitLab pipelines  
 
@@ -51,7 +61,7 @@ Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](
 
 ## Stack (high level)
 
-TypeScript · Node.js · React · Next.js · GraphQL · REST · MERN · AWS · Terraform · Docker · SQL · MongoDB · Python · Streamlit · RAG / LLM · Git · New Relic · CloudWatch  
+TypeScript · Node.js · React · Next.js · GraphQL · REST · MERN · AWS · Terraform · Docker · SQL · MongoDB · Python · Streamlit · Chroma · RAG / LLM · Git · New Relic · CloudWatch  
 
 ---
 
@@ -79,4 +89,4 @@ For email or phone, use LinkedIn messages or the contact form on fworks.tech.
 
 ---
 
-*Last updated from GitHub profile & repos — May 2026.*
+*Last updated from GitHub profile & repos — May 16, 2026.*
