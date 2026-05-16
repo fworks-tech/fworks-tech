@@ -3,7 +3,7 @@
 Senior **full-stack engineer** based in **Joinville, Brazil**, focused on **TypeScript**, **Node.js**, **React**, and **Python** — from product UI to federated APIs, GenAI/RAG demos, tests, and production operations. I care about **clean architecture**, **performance (Core Web Vitals)**, **accessibility (WCAG 2.1 AA)**, and **reliable delivery**.
 
 **Open to senior / staff remote roles** (international teams).  
-Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](https://fritzelborges.com.br)**
+Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)**
 
 ---
 
@@ -12,7 +12,25 @@ Portfolios: **[fworks.tech](https://fworks.tech/)** · **[fritzelborges.com.br](
 - **[fworks.tech](https://fworks.tech/)** — [repo](https://github.com/fworks-tech/fworks.tech) — official portfolio and full-stack showcase (Next.js)  
 - **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI RAG demo: cross-check candidate documents before human review (see below)  
 - **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto dashboard and intelligence workspace (KPIs, trends, risk, alerts, news)  
-- **[fritzelborges](https://fritzelborges.com.br)** — [repo](https://github.com/fworks-tech/fritzelborges) — personal site  
+- **[fritzelborges](https://fritzelborges.vercel.app)** — [repo](https://github.com/fworks-tech/fritzelborges) — bilingual personal site (EN/PT) on Next.js 16 (see below)  
+
+### VeriHire (recent open source)
+
+**[Live demo](https://verihire.streamlit.app/)** · **[Repository](https://github.com/fworks-tech/verihire)** · **[Project board](https://github.com/users/fworks-tech/projects/5)**
+
+VeriHire is an **assistive** GenAI / RAG portfolio project for recruiters and hiring managers: compare a **job pack** (posting + notes), **resume**, and **cover letter**, surface **inconsistencies with citations**, and optionally use **OpenAI** for a structured JSON report. Built with **Python**, **Streamlit**, and **Chroma**; demo heuristics work without an API key.
+
+Recent milestones: **MIT license**, **Python 3.12** deploy on Streamlit Community Cloud, **CI** (pytest + Ruff), **pre-commit**, unit tests, [CONTRIBUTING](https://github.com/fworks-tech/verihire/blob/main/CONTRIBUTING.md) guide, and a public roadmap on the project board.
+
+**Ethics:** assistive only — not for automated hire/reject decisions. Public demos use **synthetic fixtures** only; do not commit real candidate PII.
+
+### fritzelborges (personal site)
+
+**[Live site](https://fritzelborges.vercel.app)** · **[Repository](https://github.com/fworks-tech/fritzelborges)**
+
+Bilingual portfolio (**English** and **Portuguese**) built with **Next.js 16** (App Router), **React 19**, **TypeScript 6**, and **Tailwind CSS v4**. Resume-backed sections cover about, skills, experience (including pre-2020 roles), education, projects, and contact. **English** is the default locale (`/en`); `/pt` serves Portuguese. Locale routing uses `Accept-Language`, a `NEXT_LOCALE` cookie, and typed dictionaries under `src/i18n/`.
+
+Recent milestones: production deploy on **Vercel** (`fritzelborges.vercel.app`), **Vitest** unit tests and **Playwright** E2E, **GitHub Actions CI** (lint, unit, E2E, build), **Dependabot** for grouped npm updates, sitemap/robots, and WCAG-oriented navigation (desktop anchors, mobile menu, language switcher).
 
 ### VeriHire (recent open source)
 
@@ -82,7 +100,7 @@ AI · machine learning · software architecture · full-stack development · aut
 ## Contact
 
 - **[fworks.tech](https://fworks.tech/)**
-- **[fritzelborges.com.br](https://fritzelborges.com.br)**
+- **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)**
 - **[LinkedIn](https://www.linkedin.com/in/fabiorborges)**
 
 For email or phone, use LinkedIn messages or the contact form on fworks.tech.
