@@ -14,7 +14,7 @@ Portfolios: **[fritzelborges.vercel.app](https://fritzelborges.vercel.app)** · 
 - **[fworks-tech.vercel.app](https://fworks-tech.vercel.app/)** — [repo](https://github.com/fworks-tech/fworks.tech) — old portfolio page and full-stack showcase (Next.js)
 - **[fritzelborges](https://fritzelborges.vercel.app)** — [repo](https://github.com/fworks-tech/fritzelborges) — bilingual personal site (EN/PT) on Next.js 16
 - **[VeriHire](https://verihire.streamlit.app/)** — [repo](https://github.com/fworks-tech/verihire) — assistive GenAI RAG demo: cross-check candidate documents before human review
-- **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto dashboard and intelligence workspace (KPIs, trends, risk, alerts, news)
+- **[Jupyter-Crypto-Wizard](https://jupyter-crypto-wizard.streamlit.app/)** — [repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) — Streamlit crypto intelligence workspace (routed dashboard, alerts, news, risk, newsletter, AI assistant)
 
 ### fworks.tech (old portfolio)
 
@@ -44,7 +44,11 @@ Recent milestones: **MIT license**, **Python 3.12** deploy on Streamlit Communit
 
 **[Live demo](https://jupyter-crypto-wizard.streamlit.app/)** · **[Repository](https://github.com/fworks-tech/Jupyter-Crypto-Wizard)**
 
-**Streamlit** crypto intelligence workspace on **Python 3.11**: KPIs, price trends, risk panels, alerts, news feeds, and newsletter-style summaries — a data-app complement to the TypeScript portfolio sites.
+**Jupyter-Crypto-Wizard** (Crypto Market Analyzer) is a **Streamlit** crypto intelligence workspace on **Python 3.11**: routed pages for **Dashboard**, **Alerts**, **News**, **Risk**, and **Newsletter**; a shared sidebar watchlist (up to **100 assets**), market-source and trend filters; KPI rows, price trends, risk panels, alerts feed, RSS news, and local newsletter subscribe. An in-app **AI assistant** answers short, context-grounded questions from the current watchlist snapshot (OpenAI-compatible provider with safe fallbacks). Market and news data use **Binance**, **CoinGecko**, and **Coinbase** adapters with mock/cached fallbacks when APIs are unset.
+
+Recent milestones: **M4** routed navigation and snapshot-driven data pipelines (**v0.2.0**), expanded watchlist and sidebar UX (#41), **GitHub Actions CI** (unittest + Streamlit smoke, compile gates, Ruff lint/format, advisory maintainability), **AI assistant** MVP with grounding tests, launcher scripts, English README, and **MIT license**. Deployed on **Streamlit Community Cloud**.
+
+**Ethics:** informational and assistive only — not financial advice; no autonomous trading or exchange execution. Public demos use provider fallbacks when keys are not configured.
 
 ---
 
