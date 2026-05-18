@@ -120,4 +120,4 @@ For email or phone, use LinkedIn messages or the contact form on fritzelborges.v
 
 ---
 
-*Last updated from GitHub profile & repos — May 16, 2026.*
+*Last updated from GitHub profile & repos — May 18, 2026.*
