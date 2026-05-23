@@ -1,10 +1,21 @@
 # Fábio Ritzel Borges
 
+![stars](https://img.shields.io/github/stars/fworks-tech/fworks-tech?style=flat-square) ![forks](https://img.shields.io/github/forks/fworks-tech/fworks-tech?style=flat-square) ![issues](https://img.shields.io/github/issues/fworks-tech/fworks-tech?style=flat-square) ![last-commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square) ![license](https://img.shields.io/github/license/fworks-tech/fworks-tech?style=flat-square)
+
 Senior full-stack engineer — GraphQL · React · Next.js · GenAI / RAG
 
 Based in Joinville, Brazil. I build production-ready web platforms, federated APIs, and assistive GenAI/RAG demos with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility (WCAG‑oriented).
 
 Portfolios: fritzelborges.vercel.app · fworks-tech.vercel.app
+
+## Contents
+
+- Recent & Featured Projects
+- What I build
+- Tech Stack
+- Quick Links
+- Contributing
+- Contact
 
 ---
 
@@ -51,3 +62,9 @@ Prefer messages via LinkedIn: https://www.linkedin.com/in/fabiorborges
 ---
 
 Last updated: May 18, 2026
+
+---
+
+## Contributing
+
+Contributions, bug reports, and improvement suggestions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, the project's code of conduct, and a short PR checklist.
