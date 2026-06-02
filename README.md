@@ -30,7 +30,7 @@ Portfolios: [fritzelborges.vercel.app](https://fritzelborges.vercel.app) · [fwo
 
 ## AI & Agents
 
-- **Agenthood** — A society of AI agent skills with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members (The Scribe, The Architect, The Reviewer, The Tester, The Debugger, The Auditor, The Herald, The Librarian, The Doorman, The Oracle, The Envoy, The Sentinel, The Warden, The Steward) — each a Markdown skill file any agent runtime can load and execute. Covers commits, PRs, specs, code review, TDD, security audits, releases, docs, and cross-provider translation. [Repo](https://github.com/fworks-tech/agenthood)
+- **Agenthood** — A society of AI agent skills with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members — each a Markdown skill file any agent runtime can load and execute. Ships as an npm package with a CLI (`npx agenthood init`), Vitest test suite, semantic-release, and foundational ADRs. Covers commits, PRs, specs, code review, TDD, security audits, releases, docs, and cross-provider translation. [Repo](https://github.com/fworks-tech/agenthood)
 - **ApolloDroid** — 100% Python voice assistant for Android. Wake-word activated, processes commands with Claude AI, and responds out loud — always running in the background. [Repo](https://github.com/fworks-tech/ApolloDroid)
 
 ---
@@ -75,4 +75,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: May 27, 2026
+Last updated: June 2, 2026
