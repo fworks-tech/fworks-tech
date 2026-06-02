@@ -39,6 +39,7 @@ Portfolios: [fritzelborges.vercel.app](https://fritzelborges.vercel.app) · [fwo
 
 - **fritzelborges** — Personal site: experience, projects, and contact. [Live](https://fritzelborges.vercel.app) · [Repo](https://github.com/fworks-tech/fritzelborges)
 - **fworks.tech** — FWORKS.tech portfolio — modern full-stack showcase (Next.js). [Live](https://fworks-tech.vercel.app) · [Repo](https://github.com/fworks-tech/fworks.tech)
+- **fabionismos-blog** — Personal blog built with Next.js and Markdown, deployed on Vercel. [Repo](https://github.com/fworks-tech/fabionismos-blog)
 
 ---
 
@@ -75,4 +76,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: May 27, 2026
+Last updated: June 2, 2026
