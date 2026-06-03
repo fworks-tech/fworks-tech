@@ -6,8 +6,6 @@ Senior full-stack engineer — GraphQL · React · Next.js · GenAI / RAG
 
 Based in Joinville, Brazil. I build production-ready web platforms, federated APIs, and assistive GenAI/RAG demos with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility (WCAG-oriented).
 
-Portfolios: [fritzelborges.vercel.app](https://fritzelborges.vercel.app) · [fworks-tech.vercel.app](https://fworks-tech.vercel.app)
-
 ## Contents
 
 - [Production Projects](#production-projects)
@@ -35,7 +33,7 @@ Portfolios: [fritzelborges.vercel.app](https://fritzelborges.vercel.app) · [fwo
 
 ---
 
-## Portfolios & Sites
+## Portfolios & Sites (In Progress)
 
 - **fritzelborges** — Personal site: experience, projects, and contact. [Live](https://fritzelborges.vercel.app) · [Repo](https://github.com/fworks-tech/fritzelborges)
 - **fworks.tech** — FWORKS.tech portfolio — modern full-stack showcase (Next.js). [Live](https://fworks-tech.vercel.app) · [Repo](https://github.com/fworks-tech/fworks.tech)
