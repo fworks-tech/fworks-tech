@@ -1,10 +1,22 @@
 # Fábio Ritzel Borges
 
-![stars](https://img.shields.io/github/stars/fworks-tech/fworks-tech?style=flat-square) ![forks](https://img.shields.io/github/forks/fworks-tech/fworks-tech?style=flat-square) ![issues](https://img.shields.io/github/issues/fworks-tech/fworks-tech?style=flat-square) ![last-commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square) ![license](https://img.shields.io/github/license/fworks-tech/fworks-tech?style=flat-square)
+![stars](https://img.shields.io/github/stars/fworks-tech/fworks-tech?style=flat-square) ![forks](https://img.shields.io/github/forks/fworks-tech/fworks-tech?style=flat-square) ![issues](https://img.shields.io/github/issues/fworks-tech/fworks-tech?style=flat-square)
 
 Senior full-stack engineer — GraphQL · React · Next.js · GenAI / RAG
 
-Based in Joinville, Brazil. I build production-ready web platforms, federated APIs, and assistive GenAI/RAG demos with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility (WCAG-oriented).
+Based in Joinville, Brazil. I build production-ready web platforms, federated APIs, and assistive GenAI/RAG demos with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility.
+
+---
+
+## 💝 Support My Work
+
+If you find my projects valuable, consider supporting them:
+
+[![GitHub Sponsor](https://img.shields.io/badge/Sponsor%20Me-%F0%9F%A4%97-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/fworks-tech)
+
+Your sponsorship helps me maintain open-source projects, create educational content, and build innovative solutions.
+
+---
 
 ## Contents
 
@@ -20,15 +32,15 @@ Based in Joinville, Brazil. I build production-ready web platforms, federated AP
 
 ## Production Projects
 
-- **Driveline ELD & Route Planner** — Full-stack FMCSA-compliant ELD platform for trucking HOS compliance: trip planning, logbooks, interactive maps, and route analytics. [Live demo](https://driveline-eld-app.vercel.app) · [API repo](https://github.com/fworks-tech/driveline-api) · [App repo](https://github.com/fworks-tech/driveline-app)
-- **Jupyter-Crypto-Wizard** — Streamlit crypto intelligence workspace with KPIs, trends, risk panels, alerts, news, and newsletter flows. [Live demo](https://jupyter-crypto-wizard.streamlit.app) · [Repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard)
-- **VeriHire** — Assistive GenAI / RAG for recruiter workflows: cross-check candidate documents against job descriptions using Chroma vector search and Claude AI. [Live demo](https://verihire.streamlit.app) · [Repo](https://github.com/fworks-tech/verihire)
+- **Driveline ELD & Route Planner** — Full-stack FMCSA-compliant ELD platform for trucking HOS compliance: trip planning, logbooks, interactive maps, and route analytics. [Live demo](https://driveline-demo.example.com)
+- **Jupyter-Crypto-Wizard** — Streamlit crypto intelligence workspace with KPIs, trends, risk panels, alerts, news, and newsletter flows. [Live demo](https://jupyter-crypto-wizard.streamlit.app)
+- **VeriHire** — Assistive GenAI / RAG for recruiter workflows: cross-check candidate documents against job descriptions using Chroma vector search and Claude AI. [Live demo](https://verihire.streamlit.app)
 
 ---
 
 ## AI & Agents
 
-- **Agenthood** — A society of AI agent skills with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members — each a Markdown skill file any agent runtime can load and execute. Ships as an npm package with a CLI (`npx agenthood init`), Vitest test suite, semantic-release, and foundational ADRs. Covers commits, PRs, specs, code review, TDD, security audits, releases, docs, and cross-provider translation. [Repo](https://github.com/fworks-tech/agenthood)
+- **Agenthood** — A society of AI agent skills with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members — each a Markdown skill file any agent runtime can load and execute.
 - **ApolloDroid** — 100% Python voice assistant for Android. Wake-word activated, processes commands with Claude AI, and responds out loud — always running in the background. [Repo](https://github.com/fworks-tech/ApolloDroid)
 
 ---
@@ -73,4 +85,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: June 2, 2026
+Last updated: June 3, 2026
