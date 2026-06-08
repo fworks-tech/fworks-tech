@@ -69,8 +69,15 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
+![New Relic](https://img.shields.io/badge/New_Relic-008C99?style=flat-square&logo=newrelic&logoColor=white)
 
 GraphQL and Apollo are at the core of how I design and ship backend APIs. I work schema-first, treat the SDL as a contract, and enforce type safety end-to-end via TypeScript code generation.
+
+**In production — current role at BairesDev (Dec 2025 – present)**
+- Engineered automated AI checkout systems using **GraphQL federation** for major US telecom partners, processing **1,000+ daily transactions**
+- Architected **federated subgraph solutions** end-to-end: API analysis → subgraph design → CI/infrastructure setup → production rollout
+- Implemented **New Relic flow-tracking instrumentation** for real-time observability across the federated graph
+- Stack: GraphQL · Apollo Federation · TypeScript · Node.js · AWS · Clean Architecture · OpenAPI · New Relic
 
 **Apollo Server & Federation**
 - Apollo Server with TypeScript — typed resolvers, context setup, plugin authoring
@@ -98,7 +105,7 @@ GraphQL and Apollo are at the core of how I design and ship backend APIs. I work
 **Performance & Observability**
 - Response caching: `@cacheControl` directives, CDN-compatible GET caching for persisted queries
 - Persisted queries (APQ) to reduce payload size and enable CDN caching
-- Distributed tracing: resolver-level spans via Apollo Studio / custom OpenTelemetry instrumentation
+- New Relic flow-tracking + resolver-level tracing for production federated graphs
 - Schema change alerting and performance regression detection integrated into CI
 
 **AI-Assisted Development**
@@ -148,7 +155,7 @@ Working at the intersection of production AI systems and software engineering. K
 
 ## What I build
 
-- **GraphQL APIs:** Apollo Server + Apollo Federation, schema-first design, federated subgraphs, DataLoader N+1 elimination, cursor pagination, subscriptions, persisted queries, schema versioning, and CI-enforced breaking-change detection
+- **GraphQL APIs:** Apollo Federation in production for major US telecoms (1,000+ daily transactions) — subgraph architecture, schema-first design, DataLoader N+1 elimination, cursor pagination, subscriptions, persisted queries, New Relic observability, and CI-enforced breaking-change detection
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration, ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, Society self-awareness
 - **Backend services:** scalable Node.js + TypeScript APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js, TypeScript, Storybook, performance tuning, Jest + Playwright testing
