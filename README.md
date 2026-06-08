@@ -5,9 +5,9 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square)](https://github.com/fworks-tech/fworks-tech)
 
-Senior full-stack engineer — GraphQL · React · Next.js · GenAI / RAG
+Senior full-stack engineer & AI systems architect — TypeScript · React · Next.js · Agentic AI · RAG
 
-Based in Joinville, Brazil. I build production-ready web platforms, federated APIs, and assistive GenAI/RAG demos with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility.
+Based in Joinville, Brazil. I build production-ready web platforms, autonomous AI agent frameworks, and federated APIs with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility.
 
 ---
 
@@ -24,7 +24,7 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 ## 📊 GitHub Activity
 
 <div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=fworks-tech&theme=react-dark&hide_border=true&area=true" width="100%" alt="fworks-tech's GitHub Activity Graph" />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=fworks-tech&theme=react-dark&hide_border=true&area=true" width="100%" alt="fworks-tech GitHub Activity Graph" />
 </div>
 
 ---
@@ -34,6 +34,7 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 - [Production Projects](#production-projects)
 - [AI & Agents](#ai--agents)
 - [Recent Focus](#recent-focus)
+- [Agentic AI Knowledge](#agentic-ai-knowledge)
 - [Experiments & Archives](#experiments--archives)
 - [What I build](#what-i-build)
 - [Tech Stack](#tech-stack-high-level)
@@ -43,6 +44,7 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 
 ## Production Projects
 
+- **Agenthood** — A society of AI agents with impeccable standards. 14 specialized members, a 10-layer TypeScript framework, and a VS Code extension that brings the Society into your editor in real time. v1.4.0 shipped June 2026. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
 - **Driveline ELD & Route Planner** — Full-stack FMCSA-compliant ELD platform for trucking HOS compliance: trip planning, logbooks, interactive maps, and route analytics. React 19 + TypeScript + MUI frontend, Django REST API backend. [API Repo](https://github.com/fworks-tech/driveline-api) · [App Repo](https://github.com/fworks-tech/driveline-app)
 - **Jupyter-Crypto-Wizard** — Streamlit crypto intelligence workspace with KPIs, trends, risk panels, alerts, news, and newsletter flows. [Live demo](https://jupyter-crypto-wizard.streamlit.app) · [Repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard)
 - **VeriHire** — Assistive GenAI / RAG for recruiter workflows: cross-check candidate documents against job descriptions using Chroma vector search and Claude AI. [Repo](https://github.com/fworks-tech/verihire)
@@ -51,7 +53,33 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 
 ## AI & Agents
 
-- **Agenthood** — A society of AI agent skills with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members — each a Markdown skill file any agent runtime can load. [Repo](https://github.com/fworks-tech/agenthood)
+### Agenthood — A society of AI agents
+
+[![Agenthood](https://img.shields.io/badge/Agenthood-v1.4.0%20shipped-4CAF50?style=flat-square)](https://github.com/fworks-tech/agenthood)
+[![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood)
+
+A society of AI agents with impeccable standards and zero tolerance for `fix stuff` commits. 14 specialized members — each a Markdown skill file any agent runtime can load (Claude Code, GitHub Copilot, Gemini CLI, Codex CLI).
+
+**Recently shipped:**
+
+**v1.4.0 — The Living Editor** — VS Code extension: real-time SCM commit message validation via the Doorman, on-save secret and wildcard dependency scanning via the Auditor, `[blocking]`/`[suggestion]`/`[nit]` review annotation diagnostics via the Reviewer, stale documentation nudge via the Librarian, and a live 14-member activity panel in the sidebar that shows which members are watching or just triggered.
+
+**Coming next:**
+
+**v1.5.0 — Open Standard** — SKILL.md spec migration for all 14 members, making every member fully portable as a standalone agent skill file across every major agent runtime.
+
+**v1.6.0 — The Academy** — 25 structured learning articles (3 levels: GenAI & RAG Basics → AI Agent Essentials → Advanced Agent Skills) mapped to live Agenthood source code, published to GitHub Pages and repurposed as LinkedIn / blog content.
+
+**v2.0.0 — Foundation** — Autonomous TypeScript runtime: `ILLMProvider`, `ReActLoop` (ReAct reasoning), `BaseAgent`, `GroqProvider` (free), `SkillRegistry`, dynamic model routing by query complexity.
+
+**v2.1.0 — Memory & RAG** — 4-tier memory (Short/Long/Episodic/Residual), LanceDB vector store, Tree-sitter AST indexing, hierarchical Parent→Child chunking, AgenticRAG (agent-controlled retrieval), `SocietyIndexer` (Society indexes itself).
+
+**v2.2.0+ — Full Team, Workflows, Evals** — `OracleAgent` for Society self-awareness, `WorkflowEngine`, `GoalChain`, `WorkflowCheckpoint` with rollback, `EvalRunner`, `EpisodeLearner` (self-improving feedback loop).
+
+[Repo](https://github.com/fworks-tech/agenthood)
+
+---
+
 - **ApolloDroid** — 100% Python voice assistant for Android. Wake-word activated, processes commands with Claude AI, and responds out loud — always running in the background. [Repo](https://github.com/fworks-tech/ApolloDroid)
 
 ---
@@ -59,10 +87,49 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 ## Recent Focus
 
 Currently building and expanding:
-- 🤖 **Multi-agent AI frameworks** — Enhancing Agenthood with advanced skill orchestration
-- 🎙️ **Voice-first assistants** — Expanding ApolloDroid ecosystem
-- 📊 **Crypto intelligence platforms** — Advanced analytics and risk management
-- 🚚 **Transportation logistics** — FMCSA compliance and route optimization
+- 🤖 **Agenthood v1.5.0** — Open Standard: SKILL.md spec migration for all 14 members (agent-agnostic skill format)
+- 🧠 **Agentic AI framework design** — Planning v2.0.0 TypeScript runtime: ReAct reasoning loops, tiered memory, LanceDB RAG, Society self-awareness via OracleAgent
+- 📚 **The Academy** — Structured AI agent learning documentation (v1.6.0): 25 articles across 3 levels mapped to live Agenthood source code
+- 🚚 **Driveline ELD platform** — React 19 + Django: FMCSA-compliant ELD logbooks, trip planning, and route analytics
+
+---
+
+## Agentic AI Knowledge
+
+Working at the intersection of production AI systems and software engineering. Key domains:
+
+**Reasoning & Planning**
+- ReAct loops (Reason + Act cycles), Chain-of-Thought, Tree-of-Thought
+- Multi-step agentic workflows with human-in-the-loop approval gates
+- Goal chaining across sessions, rollback on rejection
+
+**Memory Architecture**
+- 4-tier memory: Short-Term (working context) → Long-Term (persistent facts) → Episodic (past executions) → Residual (decay-weighted trace signals)
+- Context compression before LLM calls (token budget management)
+- Memory governance: TTL, retention policies, per-project namespacing
+
+**Retrieval-Augmented Generation**
+- Agentic RAG: agent decides *whether, what, and when* to retrieve — not a mandatory pipeline step
+- Hierarchical Parent→Child chunking: child embeds for precision, parent retrieved for context
+- Knowledge Graph DB (`IGraphStore`): structural/relationship queries alongside vector similarity
+- Tree-sitter: deterministic AST parsing for TypeScript/Python/Go — real code entity extraction
+
+**Multi-Agent Orchestration**
+- Orchestrator pattern: user → validator → queue → orchestrator → member → safety guard → response
+- 14 specialized members over one general-purpose agent
+- Society self-awareness: `SocietyIndexer` + `OracleAgent` — any member can query the collective institutional memory
+- Dynamic model routing: `ComplexityScorer` → cheap model (Groq/local) or capable model (Anthropic) by query budget
+
+**Production Hardening**
+- RiskManager: per-tool constraint validation, process sandboxing (filesystem/network allowlists)
+- `IProtocol`: typed failure modes and retry policies for agent-to-user, agent-to-agent, and agent-to-tool surfaces
+- EvalRunner: automated quality metrics (hallucination rate, relevance, groundedness, latency)
+- EpisodeLearner: self-improving feedback loop — eval scores → long-term memory → better future responses
+
+**Agent-Agnostic Design**
+- Skills as Markdown files — portable across Claude Code, GitHub Copilot, Gemini CLI, OpenAI Codex CLI
+- `ILLMProvider` abstraction with automatic failover across providers
+- Groq as default free provider; Ollama for fully offline execution
 
 ---
 
@@ -83,11 +150,13 @@ Currently building and expanding:
 
 ## What I build
 
+- **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration, ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, Society self-awareness
+- **VS Code extensions:** real-time commit validation, on-save diagnostics, live TreeView panels, SCM integration via vscode.git API
 - **GraphQL & integrations:** federated subgraphs, schema design, resolvers, and production readiness
 - **Frontend platforms:** reusable React components, Storybook, performance tuning, Jest + Playwright testing
-- **GenAI, RAG & voice:** document-grounded assistants, Chroma/Vector store integrations, Claude AI integrations, Android voice assistants
-- **AI agent systems:** multi-agent skill frameworks, agentic workflows, commitlint/PR automation, cross-provider agent translation
-- **Quality & observability:** CI pipelines, Lighthouse-driven performance improvements, observability (New Relic/CloudWatch)
+- **GenAI & RAG pipelines:** document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI integrations, semantic chunking strategies
+- **Voice assistants:** wake-word detection, Android background services, TTS/ASR pipelines
+- **Quality & observability:** CI pipelines, Lighthouse-driven performance improvements, token budgeting, eval frameworks
 
 ---
 
@@ -105,11 +174,16 @@ Currently building and expanding:
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django)
 
-**Data & AI:** 
+**AI & Agents:** 
+![Claude AI](https://img.shields.io/badge/Claude_AI-000000?style=flat-square)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square)
+![LanceDB](https://img.shields.io/badge/LanceDB-44B585?style=flat-square)
+![Chroma](https://img.shields.io/badge/Chroma_DB-44B585?style=flat-square)
+![Tree-sitter](https://img.shields.io/badge/Tree--sitter-999999?style=flat-square)
+
+**Data:** 
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
-![Claude AI](https://img.shields.io/badge/Claude_AI-000000?style=flat-square&logo=openai)
-![Chroma](https://img.shields.io/badge/Chroma_DB-44B585?style=flat-square)
 
 **Cloud & DevOps:** 
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
@@ -124,4 +198,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: June 3, 2026
+Last updated: June 8, 2026
