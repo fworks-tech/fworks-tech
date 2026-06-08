@@ -69,15 +69,17 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
+![WunderGraph](https://img.shields.io/badge/WunderGraph-FF4785?style=flat-square)
 ![New Relic](https://img.shields.io/badge/New_Relic-008C99?style=flat-square&logo=newrelic&logoColor=white)
 
 GraphQL and Apollo are at the core of how I design and ship backend APIs. I work schema-first, treat the SDL as a contract, and enforce type safety end-to-end via TypeScript code generation.
 
-**In production — current role at BairesDev (Dec 2025 – present)**
+**Recent real-life working cases — BairesDev (Dec 2025 – present)**
 - Engineered automated AI checkout systems using **GraphQL federation** for major US telecom partners, processing **1,000+ daily transactions**
 - Architected **federated subgraph solutions** end-to-end: API analysis → subgraph design → CI/infrastructure setup → production rollout
+- Used **WunderGraph** as the federation gateway layer — routing, composition, and type-safe client generation across subgraphs
 - Implemented **New Relic flow-tracking instrumentation** for real-time observability across the federated graph
-- Stack: GraphQL · Apollo Federation · TypeScript · Node.js · AWS · Clean Architecture · OpenAPI · New Relic
+- Stack: GraphQL · Apollo Federation · WunderGraph · TypeScript · Node.js · AWS · Clean Architecture · OpenAPI · New Relic
 
 **Apollo Server & Federation**
 - Apollo Server with TypeScript — typed resolvers, context setup, plugin authoring
