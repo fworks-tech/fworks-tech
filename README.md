@@ -5,9 +5,9 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square)](https://github.com/fworks-tech/fworks-tech)
 
-Senior full-stack engineer & AI systems architect — TypeScript · React · Next.js · Agentic AI · RAG
+Senior backend engineer & AI systems architect — GraphQL · Apollo · TypeScript · Node.js · Agentic AI
 
-Based in Joinville, Brazil. I build production-ready web platforms, autonomous AI agent frameworks, and federated APIs with an emphasis on clean architecture, performance (Core Web Vitals), and accessibility.
+Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, federated backend services, and autonomous AI agent frameworks with an emphasis on scalable architecture, clean TypeScript code, and operational reliability.
 
 ---
 
@@ -32,6 +32,7 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 ## Contents
 
 - [Production Projects](#production-projects)
+- [GraphQL & API Engineering](#graphql--api-engineering)
 - [AI & Agents](#ai--agents)
 - [Recent Focus](#recent-focus)
 - [Agentic AI Knowledge](#agentic-ai-knowledge)
@@ -48,6 +49,52 @@ Your sponsorship helps me maintain open-source projects, create educational cont
 - **Driveline ELD & Route Planner** — Full-stack FMCSA-compliant ELD platform for trucking HOS compliance: trip planning, logbooks, interactive maps, and route analytics. React 19 + TypeScript + MUI frontend, Django REST API backend. [API Repo](https://github.com/fworks-tech/driveline-api) · [App Repo](https://github.com/fworks-tech/driveline-app)
 - **Jupyter-Crypto-Wizard** — Streamlit crypto intelligence workspace with KPIs, trends, risk panels, alerts, news, and newsletter flows. [Live demo](https://jupyter-crypto-wizard.streamlit.app) · [Repo](https://github.com/fworks-tech/Jupyter-Crypto-Wizard)
 - **VeriHire** — Assistive GenAI / RAG for recruiter workflows: cross-check candidate documents against job descriptions using Chroma vector search and Claude AI. [Repo](https://github.com/fworks-tech/verihire)
+
+---
+
+## GraphQL & API Engineering
+
+![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
+![Apollo](https://img.shields.io/badge/Apollo-311C87?style=flat-square&logo=apollographql&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
+
+GraphQL and Apollo are at the core of how I design and ship backend APIs. I work schema-first, treat the SDL as a contract, and enforce type safety end-to-end via TypeScript code generation.
+
+**Apollo Server & Federation**
+- Apollo Server with TypeScript — typed resolvers, context setup, plugin authoring
+- Apollo Federation: distributed subgraph schemas unified behind a single gateway; each domain owns its slice of the graph
+- Federated entities, `@key` directives, reference resolvers, and cross-subgraph extends patterns
+- Gateway-level query planning, subgraph health checks, and graceful degradation
+
+**Schema Design**
+- Schema-first: SDL defines the contract before implementation starts — shared between frontend, backend, and QA
+- Nullable vs non-null discipline: every field decided intentionally, not defaulted
+- Input types, custom scalars, enums, and union/interface patterns for polymorphic domains
+- Versioning strategy: additive evolution, deprecation workflow, breaking-change detection in CI
+
+**Resolvers & Data Layer**
+- N+1 elimination via DataLoader — batching and per-request caching as a standard practice, not an afterthought
+- Query complexity analysis and depth limits to protect backend services from abusive queries
+- Resolver middleware chains for auth (JWT / API key), rate limiting, and audit logging
+- Cursor-based pagination (`first`/`after`) and offset pagination depending on data access patterns
+
+**Mutations & Subscriptions**
+- Input validation at the GraphQL layer (before business logic) — schema-enforced constraints + custom validation
+- Subscription resolvers with `PubSub` / Redis channels for real-time data delivery
+- Error handling: typed error unions vs generic `GraphQLError`, client-readable codes
+
+**Performance & Observability**
+- Response caching: `@cacheControl` directives, CDN-compatible GET caching for persisted queries
+- Persisted queries (APQ) to reduce payload size and enable CDN caching
+- Distributed tracing: resolver-level spans via Apollo Studio / custom OpenTelemetry instrumentation
+- Schema change alerting and performance regression detection integrated into CI
+
+**AI-Assisted Development**
+- Daily use of [Claude Code](https://claude.ai/code) for schema review, resolver implementation, test generation, and refactoring
+- Built [Agenthood](https://github.com/fworks-tech/agenthood) — an open-source AI agent framework that enforces code quality, commit standards, and PR review discipline through 14 specialized agent skills
 
 ---
 
@@ -152,7 +199,7 @@ Working at the intersection of production AI systems and software engineering. K
 
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration, ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, Society self-awareness
 - **VS Code extensions:** real-time commit validation, on-save diagnostics, live TreeView panels, SCM integration via vscode.git API
-- **GraphQL & integrations:** federated subgraphs, schema design, resolvers, and production readiness
+- **GraphQL APIs:** Apollo Server + Apollo Federation, schema-first design, federated subgraphs, DataLoader N+1 elimination, cursor pagination, subscriptions, persisted queries, schema versioning, and CI-enforced breaking-change detection
 - **Frontend platforms:** reusable React components, Storybook, performance tuning, Jest + Playwright testing
 - **GenAI & RAG pipelines:** document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI integrations, semantic chunking strategies
 - **Voice assistants:** wake-word detection, Android background services, TTS/ASR pipelines
@@ -168,9 +215,10 @@ Working at the intersection of production AI systems and software engineering. K
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 
-**Backend:** 
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+**Backend & APIs:** 
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
+![Apollo](https://img.shields.io/badge/Apollo-311C87?style=flat-square&logo=apollographql&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django)
 
