@@ -5,7 +5,7 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square)](https://github.com/fworks-tech/fworks-tech)
 
-Senior backend engineer & AI systems architect — GraphQL · Apollo · TypeScript · Node.js · Agentic AI
+Senior Full-Stack (backend-heavy) Engineer & AI Systems Architect — GraphQL · Apollo · TypeScript · Node.js · Agentic AI
 
 Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, federated backend services, and autonomous AI agent frameworks with an emphasis on scalable architecture, clean TypeScript code, and operational reliability.
 
