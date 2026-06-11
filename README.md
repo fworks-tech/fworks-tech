@@ -25,8 +25,23 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 ---
 
+## 🚀 Recent Activity
+
+| Repository | Description | Last Push |
+|---|---|---|
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — TypeScript framework + VS Code extension | Jun 11, 2026 |
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Personal site: experience, projects, Agentic AI workflows | Jun 11, 2026 |
+| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
+| [driveline-api](https://github.com/fworks-tech/driveline-api) | FMCSA-compliant ELD — Django REST API backend | Jun 8, 2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Landing page for Agenthood — agent-agnostic SKILL.md skills | Jun 8, 2026 |
+| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD — React 19 + TypeScript + MUI frontend | Jun 3, 2026 |
+| [fritzelborges](https://github.com/fworks-tech/fritzelborges) | Personal website | Jun 2, 2026 |
+
+---
+
 ## Contents
 
+- [Recent Activity](#recent-activity)
 - [Projects](#projects)
 - [What I build](#what-i-build)
 - [GraphQL & API Engineering](#graphql--api-engineering)
@@ -226,4 +241,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: June 8, 2026
+Last updated: June 11, 2026
