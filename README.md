@@ -35,7 +35,6 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 | [driveline-api](https://github.com/fworks-tech/driveline-api) | FMCSA-compliant ELD — Django REST API backend | Jun 8, 2026 |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Landing page for Agenthood — agent-agnostic SKILL.md skills | Jun 8, 2026 |
 | [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD — React 19 + TypeScript + MUI frontend | Jun 3, 2026 |
-| [fritzelborges](https://github.com/fworks-tech/fritzelborges) | Personal website | Jun 2, 2026 |
 
 ---
 
@@ -80,7 +79,6 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 - **FWORKS.tech** — Official full-stack portfolio. [Repo](https://github.com/fworks-tech/fworks.tech)
 - **flabs.tech** — Personal site focusing on experience and Agentic AI workflows. [Repo](https://github.com/fworks-tech/flabs.tech)
 - **Agenthood Site** — Landing page for the Agenthood society of AI agents. [Repo](https://github.com/fworks-tech/agenthood-site)
-- **fritzelborges** — Personal website. [Repo](https://github.com/fworks-tech/fritzelborges)
 
 **Experiments & Archives:** [devices-manager](https://github.com/fworks-tech/devices-manager) · [blockchain-explorer](https://github.com/fworks-tech/blockchain-explorer) · [fashionista](https://github.com/fworks-tech/fashionista) · [deepagents](https://github.com/fworks-tech/deepagents)
 
