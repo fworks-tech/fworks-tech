@@ -29,11 +29,11 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 | Repository | Description | Last Push |
 |---|---|---|
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — TypeScript framework + VS Code extension | Jun 11, 2026 |
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Personal site: experience, projects, Agentic AI workflows | Jun 11, 2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 13, 2026 |
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Personal site: experience, projects, Agentic AI workflows | Jun 13, 2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 12, 2026 |
 | [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
 | [driveline-api](https://github.com/fworks-tech/driveline-api) | FMCSA-compliant ELD — Django REST API backend | Jun 8, 2026 |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Landing page for Agenthood — agent-agnostic SKILL.md skills | Jun 8, 2026 |
 | [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD — React 19 + TypeScript + MUI frontend | Jun 3, 2026 |
 
 ---
@@ -52,11 +52,11 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 ## Projects
 
-**Agenthood** — A society of AI agents with impeccable standards. 14 specialized members, a 10-layer TypeScript framework, and a VS Code extension that brings the Society into your editor in real time. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
+**Agenthood** — A society of AI agents with impeccable standards. 14 specialized members on the SKILL.md open standard (agent-agnostic, MIT-licensed), a 10-layer TypeScript framework, a VS Code extension, and a live learning Academy. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
 
 - **v1.4.0 — The Living Editor** ✅ shipped — VS Code: real-time SCM commit validation, on-save secret scanning, `[blocking]`/`[suggestion]`/`[nit]` diagnostics, documentation nudge, live 14-member activity panel
-- **v1.5.0 — Open Standard** — SKILL.md spec migration for all 14 members (agent-agnostic portable skills)
-- **v1.6.0 — The Academy** — 25 structured learning articles across 3 levels mapped to live Agenthood source
+- **v1.5.0 — Open Standard** ✅ shipped — all 14 members migrated to SKILL.md open standard (agent-agnostic, MIT-licensed, portable across AI editors)
+- **v1.6.0 — The Academy** ✅ shipped — 25 structured learning articles across 3 levels mapped to live Agenthood source, live at [agenthood.flabs.tech/academy](https://agenthood.flabs.tech/academy/)
 - **v2.0.0 — Foundation** — Autonomous TypeScript runtime: `ILLMProvider`, `ReActLoop`, `BaseAgent`, `GroqProvider`, dynamic model routing
 - **v2.1.0 — Memory & RAG** — 4-tier memory, LanceDB, Tree-sitter indexing, AgenticRAG, hierarchical chunking, `SocietyIndexer`
 - **v2.2.0+ — Full Team · Workflows · Evals** — `OracleAgent`, `WorkflowEngine`, `GoalChain`, `EvalRunner`, `EpisodeLearner`
@@ -235,8 +235,8 @@ Working at the intersection of production AI systems and software engineering. K
 
 ## Contact
 
-Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedin.com/in/fabiorborges)
+Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedin.com/in/fabiorborges) · Portfolio: [flabs.tech](https://flabs.tech)
 
 ---
 
-Last updated: June 11, 2026
+Last updated: June 14, 2026
