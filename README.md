@@ -52,21 +52,29 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 ## Projects
 
-**Agenthood** — A society of AI agents with impeccable standards. 14 specialized members on the SKILL.md open standard (agent-agnostic, MIT-licensed), a 10-layer TypeScript framework, a VS Code extension, and a live learning Academy. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
+**Agenthood** — A society of AI agents with impeccable standards. 14 specialized members, a 10-layer TypeScript framework, a VS Code extension, and a live learning Academy. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
 
-- **v1.4.0 — The Living Editor** ✅ shipped — VS Code: real-time SCM commit validation, on-save secret scanning, `[blocking]`/`[suggestion]`/`[nit]` diagnostics, documentation nudge, live 14-member activity panel
-- **v1.5.0 — Open Standard** ✅ shipped — all 14 members migrated to SKILL.md open standard (agent-agnostic, MIT-licensed, portable across AI editors)
-- **v1.6.0 — The Academy** ✅ shipped — 25 structured learning articles across 3 levels mapped to live Agenthood source, live at [agenthood.flabs.tech/academy](https://agenthood.flabs.tech/academy/)
-- **v2.0.0 — Foundation** — Autonomous TypeScript runtime: `ILLMProvider`, `ReActLoop`, `BaseAgent`, `GroqProvider`, dynamic model routing
-- **v2.1.0 — Memory & RAG** — 4-tier memory, LanceDB, Tree-sitter indexing, AgenticRAG, hierarchical chunking, `SocietyIndexer`
-- **v2.2.0+ — Full Team · Workflows · Evals** — `OracleAgent`, `WorkflowEngine`, `GoalChain`, `EvalRunner`, `EpisodeLearner`
+Shipped:
+- **v1.0.0 — Operationally Ready** ✅ — usable in real projects, consistent APIs, test harness
+- **v1.2.0 — Society Expansion** ✅ — portals, ADRs, agentic workflows, config example
+- **v1.3.1 — The Living Editor - IDE Inception** ✅ — VS Code extension, commit validation, diagnostics
+- **v2.2.0 — Full Team** ✅ — OracleAgent, QAAgent, ReviewerAgent
+- **v2.3.0 — Workflows** ✅ — WorkflowEngine, GoalChain, parallel/conditional steps
+
+Current priority:
+- **v1.4.0 — The Living Editor** (in progress) — real-time SCM validation, on-save secret scanning, docs nudge, live activity panel
+- **M1 — Open Standard** (in progress) — SKILL.md open standard, registry submission
+- **M4 — Foundation** (due Jun 22) — ILLMProvider, ReActLoop, BaseAgent, GroqProvider
+- **M5 — Intelligence** (due Jul 6) — 5-tier memory, LanceDB, AgenticRAG, SocietyIndexer
 
 **ApolloDroid** — 100% Python voice assistant for Android. Wake-word activated, processes commands with Claude AI, responds out loud. [Repo](https://github.com/fworks-tech/ApolloDroid)
 
-- **Always-On Background Service** — Runs persistently on Android with offline, low-battery optimized wake word detection ("Hey Apollo").
-- **Native Android Integration** — Built entirely with Python (Kivy + Briefcase) and packaged as a real APK without requiring Android Studio.
-- **AI-Powered NLP** — Natural language understanding powered by the Claude API for intelligent, contextual conversation.
-- **Built-in Skills & UI** — Native support for alarms, timers, weather, and web searches, plus a live "Presence Window" chat UI displaying Apollo's current state.
+- **v0.1.0 — Initial Foundation** (in progress) — infrastructure, core pipeline, UI scaffold, CI
+- **v0.2.0 — Talk to Apollo** — full voice pipeline: "Hey Apollo" → STT → Claude → TTS
+- **v0.3.0 — Apollo IoT Speaker** — Raspberry Pi DIY smart speaker, offline fallback
+- **Core Pipeline** — wake-word detection, speech-to-text, Claude API, text-to-speech end-to-end
+- **Skills & Commands** — smart home, messaging, calendar, music, translation
+- **Technical Quality** — streaming responses, Kivy UI polish, test suite
 
 **Driveline ELD & Route Planner** — Full-stack FMCSA-compliant ELD platform: trip planning, logbooks, interactive maps, route analytics. React 19 + TypeScript + MUI frontend, Django REST API backend. [API Repo](https://github.com/fworks-tech/driveline-api) · [App Repo](https://github.com/fworks-tech/driveline-app)
 
