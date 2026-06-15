@@ -29,12 +29,12 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 | Repository | Description | Last Push |
 |---|---|---|
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 13, 2026 |
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Personal site: experience, projects, Agentic AI workflows | Jun 13, 2026 |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 12, 2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 15, 2026 |
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 15, 2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 13, 2026 |
+| [opencode](https://github.com/fworks-tech/opencode) | Interactive CLI for software engineering — fork with Agenthood oversight | Jun 11, 2026 |
+| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news | Jun 11, 2026 |
 | [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
-| [driveline-api](https://github.com/fworks-tech/driveline-api) | FMCSA-compliant ELD — Django REST API backend | Jun 8, 2026 |
-| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD — React 19 + TypeScript + MUI frontend | Jun 3, 2026 |
 
 ---
 
@@ -77,10 +77,10 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 **Portfolios & Web Showcases** — A collection of modern web platforms built with React, Next.js, and TypeScript to showcase open-source projects, Agentic AI skills, and professional experience.
 
 - **FWORKS.tech** — Official full-stack portfolio. [Repo](https://github.com/fworks-tech/fworks.tech)
-- **flabs.tech** — Personal site focusing on experience and Agentic AI workflows. [Repo](https://github.com/fworks-tech/flabs.tech)
+- **flabs.tech** — Next.js 16 portfolio with Vitest, Playwright E2E, visual snapshots, CI. [Repo](https://github.com/fworks-tech/flabs.tech)
 - **Agenthood Site** — Landing page for the Agenthood society of AI agents. [Repo](https://github.com/fworks-tech/agenthood-site)
 
-**Experiments & Archives:** [devices-manager](https://github.com/fworks-tech/devices-manager) · [blockchain-explorer](https://github.com/fworks-tech/blockchain-explorer) · [fashionista](https://github.com/fworks-tech/fashionista) · [deepagents](https://github.com/fworks-tech/deepagents)
+**Experiments & Archives:** [opencode](https://github.com/fworks-tech/opencode) · [devices-manager](https://github.com/fworks-tech/devices-manager) · [blockchain-explorer](https://github.com/fworks-tech/blockchain-explorer) · [fashionista](https://github.com/fworks-tech/fashionista) · [deepagents](https://github.com/fworks-tech/deepagents) · [nextjs-motherduck-embedded-dives](https://github.com/fworks-tech/nextjs-motherduck-embedded-dives)
 
 ---
 
@@ -91,7 +91,7 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 - **Backend services:** scalable Node.js + TypeScript APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js, TypeScript, Storybook, performance tuning, Jest + Playwright testing
 - **GenAI & RAG pipelines:** document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI, semantic chunking strategies
-- **Quality & CI:** conventional commits enforcement, PR review automation, Lighthouse performance budgets, eval frameworks, token budgeting
+- **Quality & CI:** Vitest 4 unit testing, Playwright E2E + visual snapshots, CI-enforced lint/build/test gates, conventional commits, PR review automation, eval frameworks
 
 ---
 
@@ -210,6 +210,10 @@ Working at the intersection of production AI systems and software engineering. K
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 
+**Testing:**
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
+
 **Backend & APIs:**
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
 ![Apollo](https://img.shields.io/badge/Apollo-311C87?style=flat-square&logo=apollographql&logoColor=white)
@@ -239,4 +243,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: June 14, 2026
+Last updated: June 15, 2026
