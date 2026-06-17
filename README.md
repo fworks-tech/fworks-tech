@@ -56,16 +56,17 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 Shipped:
 - **v1.0.0 — Operationally Ready** ✅ — usable in real projects, consistent APIs, test harness
-- **v1.2.0 — Society Expansion** ✅ — portals, ADRs, agentic workflows, config example
-- **v1.3.1 — The Living Editor - IDE Inception** ✅ — VS Code extension, commit validation, diagnostics
-- **v2.2.0 — Full Team** ✅ — OracleAgent, QAAgent, ReviewerAgent
-- **v2.3.0 — Workflows** ✅ — WorkflowEngine, GoalChain, parallel/conditional steps
+- **v1.1.0 — VS Code Modernization & Runtime Bootstrap** ✅ — workspace observer, Python runtime, 14-member registry
+- **v1.2.0 — Observer Event Bus** ✅ — passive workspace event bus for VS Code
+- **v1.4.0 — The Living Editor** ✅ — Doorman SCM validation, Auditor on-save scanning, Reviewer Diagnostics, Librarian nudge, Members Watch Panel
+- **v1.5.0 — Open Standard** ✅ — SKILL.md migration for all 14 members (Anthropic standard)
+- **v1.6.x — The Academy** 🔄 — Level 1 GenAI & RAG Basics (9 articles) shipped, Level 2–3 in progress
 
-Current priority:
-- **v1.4.0 — The Living Editor** (in progress) — real-time SCM validation, on-save secret scanning, docs nudge, live activity panel
-- **M1 — Open Standard** (in progress) — SKILL.md open standard, registry submission
-- **M4 — Foundation** (due Jun 22) — ILLMProvider, ReActLoop, BaseAgent, GroqProvider
-- **M5 — Intelligence** (due Jul 6) — 5-tier memory, LanceDB, AgenticRAG, SocietyIndexer
+Upcoming:
+- **M4 — Foundation** (due Jun 22) — ILLMProvider, LLMRouter, ReActLoop, BaseAgent, GroqProvider, SkillRegistry
+- **M3 — Distribution & Traction** (due Jul 3) — Skills.sh, SkillsMP, VS Code Marketplace, npm optimization
+- **M5 — Intelligence** (due Jul 6) — 5-tier memory, LanceDB, AgenticRAG, Tree-sitter, SocietyIndexer
+- **M6 — The Full Society** (due Aug 9) — OracleAgent, DiffImpactAnalyzer, IProtocol, WorkflowCheckpoint
 
 **ApolloDroid** — 100% Python voice assistant for Android. Wake-word activated, processes commands with Claude AI, responds out loud. [Repo](https://github.com/fworks-tech/ApolloDroid)
 
@@ -177,7 +178,7 @@ Working at the intersection of production AI systems and software engineering. K
 
 **Memory Architecture**
 
-- 4-tier memory: Short-Term (working context) → Long-Term (persistent facts) → Episodic (past executions) → Residual (decay-weighted trace signals)
+- 5-tier memory: Short-Term (working context) → Long-Term (persistent facts) → Episodic (past executions) → Project (per-project adaptation) → Residual (decay-weighted trace signals)
 - Context compression before LLM calls (token budget management)
 - Memory governance: TTL, retention policies, per-project namespacing
 
@@ -204,7 +205,7 @@ Working at the intersection of production AI systems and software engineering. K
 
 **Agent-Agnostic Design**
 
-- Skills as Markdown files — portable across Claude Code, GitHub Copilot, Gemini CLI, OpenAI Codex CLI
+- Skills as Markdown files — portable across Claude Code, GitHub Copilot, Gemini CLI, OpenAI Codex CLI, CodeBuddy
 - `ILLMProvider` abstraction with automatic failover across providers
 - Groq as default free provider; Ollama for fully offline execution
 
@@ -251,4 +252,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: June 15, 2026
+Last updated: June 17, 2026
