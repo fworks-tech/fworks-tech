@@ -52,7 +52,7 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 ## Projects
 
-**Agenthood** — A society of AI agents with impeccable standards. 14 specialized members, a 10-layer TypeScript framework, a VS Code extension, and a live learning Academy. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
+**Agenthood** — A full AI engineering team as plain Markdown files. 14 specialized agents — architect, reviewer, security expert, DevOps engineer, and more — each a single Markdown skill file any agent runtime can load. No lock-in. No configuration. Just drop them in. [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square)](https://www.npmjs.com/package/agenthood) [Repo](https://github.com/fworks-tech/agenthood)
 
 Shipped:
 - **v1.0.0 — Operationally Ready** ✅ — usable in real projects, consistent APIs, test harness
