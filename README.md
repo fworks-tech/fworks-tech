@@ -5,9 +5,7 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![GitHub last commit](https://img.shields.io/github/last-commit/fworks-tech/fworks-tech?style=flat-square)](https://github.com/fworks-tech/fworks-tech)
 
-Senior Full-Stack (backend-heavy) Engineer & AI Systems Architect — GraphQL · Apollo · TypeScript · Node.js · Agentic AI
-
-Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, federated backend services, and autonomous AI agent frameworks with an emphasis on scalable architecture, clean TypeScript code, and operational reliability.
+I'm a Senior Full-Stack & AI Engineer with 10+ years of experience across frontend, backend, and testing. I've shipped products for companies in the US, Europe, and Brazil, always balancing solid architecture with real‑world delivery.
 
 ---
 
@@ -29,12 +27,12 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 | Repository | Description | Last Push |
 |---|---|---|
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 17, 2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 17, 2026 |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 17, 2026 |
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 15, 2026 |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 13, 2026 |
-| [opencode](https://github.com/fworks-tech/opencode) | Interactive CLI for software engineering — fork with Agenthood oversight | Jun 11, 2026 |
+| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend, Django REST API | Jun 17, 2026 |
 | [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news | Jun 11, 2026 |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
+| [opencode](https://github.com/fworks-tech/opencode) | Interactive CLI for software engineering — fork with Agenthood oversight | Jun 11, 2026 |
 
 ---
 
@@ -43,8 +41,8 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 - [Recent Activity](#recent-activity)
 - [Projects](#projects)
 - [What I build](#what-i-build)
-- [GraphQL & API Engineering](#graphql--api-engineering)
-- [Agentic AI Knowledge](#agentic-ai-knowledge)
+<!-- - [GraphQL & API Engineering](#graphql--api-engineering) -->
+<!-- - [Agentic AI Knowledge](#agentic-ai-knowledge) -->
 - [Tech Stack](#tech-stack-high-level)
 - [Contact](#contact)
 
@@ -85,7 +83,7 @@ Upcoming:
 
 **Portfolios & Web Showcases** — A collection of modern web platforms built with React, Next.js, and TypeScript to showcase open-source projects, Agentic AI skills, and professional experience.
 
-- **FWORKS.tech** — Official full-stack portfolio. [Repo](https://github.com/fworks-tech/fworks.tech)
+<!-- - **FWORKS.tech** — Official full-stack portfolio. [Repo](https://github.com/fworks-tech/fworks.tech) -->
 - **flabs.tech** — Next.js 16 portfolio with Vitest, Playwright E2E, visual snapshots, CI. [Repo](https://github.com/fworks-tech/flabs.tech)
 - **Agenthood Site** — Landing page for the Agenthood society of AI agents. [Repo](https://github.com/fworks-tech/agenthood-site)
 
@@ -104,6 +102,7 @@ Upcoming:
 
 ---
 
+<!--
 ## GraphQL & API Engineering
 
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
@@ -210,6 +209,7 @@ Working at the intersection of production AI systems and software engineering. K
 - Groq as default free provider; Ollama for fully offline execution
 
 ---
+-->
 
 ## Tech Stack (high level)
 
