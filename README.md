@@ -29,7 +29,7 @@ Based in Joinville, Brazil. I design and build production-ready GraphQL APIs, fe
 
 | Repository | Description | Last Push |
 |---|---|---|
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 15, 2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 17, 2026 |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 15, 2026 |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 13, 2026 |
 | [opencode](https://github.com/fworks-tech/opencode) | Interactive CLI for software engineering — fork with Agenthood oversight | Jun 11, 2026 |
@@ -60,7 +60,7 @@ Shipped:
 - **v1.2.0 — Observer Event Bus** ✅ — passive workspace event bus for VS Code
 - **v1.4.0 — The Living Editor** ✅ — Doorman SCM validation, Auditor on-save scanning, Reviewer Diagnostics, Librarian nudge, Members Watch Panel
 - **v1.5.0 — Open Standard** ✅ — SKILL.md migration for all 14 members (Anthropic standard)
-- **v1.6.x — The Academy** 🔄 — Level 1 GenAI & RAG Basics (9 articles) shipped, Level 2–3 in progress
+- **v1.6.x — The Academy** ✅ — Level 1 GenAI & RAG Basics (9 articles) shipped, npm publishing via OIDC Trusted Publisher, Level 2–3 in progress
 
 Upcoming:
 - **M4 — Foundation** (due Jun 22) — ILLMProvider, LLMRouter, ReActLoop, BaseAgent, GroqProvider, SkillRegistry
