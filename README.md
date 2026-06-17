@@ -96,8 +96,9 @@ Upcoming:
 
 - **GraphQL APIs:** Apollo Federation in production for major US telecoms (1,000+ daily transactions) — subgraph architecture, schema-first design, DataLoader N+1 elimination, cursor pagination, subscriptions, persisted queries, New Relic observability, and CI-enforced breaking-change detection
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration, ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, Society self-awareness
-- **Backend services:** scalable Node.js + TypeScript APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
+- **Backend services:** scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
+- **Python apps & voice:** Streamlit data dashboards (KPIs, risk panels, alerts, news flows) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
 - **GenAI & RAG pipelines:** document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI, semantic chunking strategies
 - **Quality & CI:** Vitest 4 unit testing, Playwright E2E + visual snapshots, CI-enforced lint/build/test gates, conventional commits, PR review automation, eval frameworks
 
