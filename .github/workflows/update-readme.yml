@@ -1,0 +1,58 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: "0 8 * * *"   # daily at 08:00 UTC
+  workflow_dispatch:        # allow manual trigger from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run README updater
+        id: update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/update_readme.py
+
+      - name: Close stale auto-update PRs
+        if: steps.update.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for pr in $(gh pr list --repo fworks-tech/fworks-tech --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("chore/auto-update-readme-")) | .number'); do
+            gh pr close "$pr" --repo fworks-tech/fworks-tech --comment "Superseded by newer auto-update run."
+          done
+
+      - name: Create PR
+        if: steps.update.outputs.changed == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          BRANCH="chore/auto-update-readme-$DATE"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add README.md
+          git commit -m "chore(readme): auto-update recent activity [skip ci]"
+          git push origin "$BRANCH" --force
+          gh pr create \
+            --repo fworks-tech/fworks-tech \
+            --base main \
+            --head "$BRANCH" \
+            --title "chore(readme): auto-update recent activity ($DATE)" \
+            --body-file scripts/update_summary.txt
+          echo "PR created on branch $BRANCH"
+
+      - name: No changes
+        if: steps.update.outputs.changed == '0'
+        run: echo "No activity detected, skipping PR."
