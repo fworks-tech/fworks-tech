@@ -33,7 +33,7 @@ I'm a Senior Full-Stack & AI Engineer with 10+ years of experience across fronte
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 17, 2026 |
 | [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend | Jun 17, 2026 |
 | [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news | Jun 11, 2026 |
-| [opencode](https://github.com/fworks-tech/opencode) | Interactive CLI for software engineering — fork with Agenthood oversight | Jun 11, 2026 |
+| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
 
 ---
 
@@ -145,4 +145,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: Jun 17, 2026
+Last updated: Jun 18, 2026
