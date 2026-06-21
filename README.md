@@ -28,7 +28,7 @@ I'm a Senior Full-Stack & AI Engineer with 10+ years of experience across fronte
 
 | Repository | Description | Last Push |
 |---|---|---|
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 20, 2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 21, 2026 |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 19, 2026 |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 19, 2026 |
 | [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend | Jun 17, 2026 |
@@ -90,4 +90,4 @@ Prefer messages via LinkedIn: [linkedin.com/in/fabiorborges](https://www.linkedi
 
 ---
 
-Last updated: Jun 20, 2026
+Last updated: Jun 21, 2026
