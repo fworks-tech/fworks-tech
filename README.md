@@ -24,16 +24,13 @@ I'm a Senior Full-Stack & AI Engineer with 10+ years of experience across fronte
 
 ---
 
-## 🚀 Recent Activity
+## 🚀Featured Recent Activity
 
 | Repository | Description | Last Push |
 |---|---|---|
-| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend | Jun 22, 2026 |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy | Jun 21, 2026 |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI | Jun 19, 2026 |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized | Jun 19, 2026 |
-| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news | Jun 11, 2026 |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI | Jun 8, 2026 |
 
 ---
 
