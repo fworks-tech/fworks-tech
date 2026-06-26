@@ -44,7 +44,7 @@ README_PATH = os.path.join(REPO_ROOT, "README.md")
 SUMMARY_PATH = os.path.join(SCRIPT_DIR, "update_summary.txt")
 
 TABLE_RE = re.compile(
-    r"(\| Repository \| Description \| Last Push \|\n\|---\|---\|---\|\n)"
+    r"(\| Repository \| Description \|\n\|---\|---\|\n)"
     r"((?:\|.*\n)*)"
 )
 
@@ -85,8 +85,7 @@ def build_table(top_repos):
         name = repo["name"]
         url = repo["html_url"]
         desc = get_description(repo)
-        date = format_date(repo["pushed_at"])
-        rows.append(f"| [{name}]({url}) | {desc} | {date} |")
+        rows.append(f"| [{name}]({url}) | {desc} |")
     return "\n".join(rows) + "\n"
 
 

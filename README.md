@@ -5,6 +5,7 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
+[![Profile updater](https://img.shields.io/github/actions/workflow/status/fworks-tech/fworks-tech/update-readme.yml?style=flat-square&logo=githubactions&label=profile)](https://github.com/fworks-tech/fworks-tech/actions)
 
 I build AI agents that write better code than most humans. 10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery, and I have zero tolerance for "fix stuff" commits.
 

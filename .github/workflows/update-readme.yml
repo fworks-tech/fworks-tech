@@ -20,13 +20,13 @@ jobs:
       - name: Run README updater
         id: update
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: python3 scripts/update_readme.py
 
       - name: Close stale auto-update PRs
         if: steps.update.outputs.changed == '1'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           for pr in $(gh pr list --repo fworks-tech/fworks-tech --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("chore/auto-update-readme-")) | .number'); do
             gh pr close "$pr" --repo fworks-tech/fworks-tech --comment "Superseded by newer auto-update run."
@@ -35,7 +35,7 @@ jobs:
       - name: Create PR
         if: steps.update.outputs.changed == '1'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           DATE=$(date -u +%Y-%m-%d)
           BRANCH="chore/auto-update-readme-$DATE"
