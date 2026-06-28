@@ -31,12 +31,12 @@
 
 | Repository | Description |
 |---|---|
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
-| [driveline-app](https://github.com/fworks-tech/driveline-app) | *DEMO* FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend |
-| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | *REVIEWING* Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | *PLANNED* 100% Python voice assistant for Android powered by Claude AI |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized |
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |
+| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend |
+| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news |
+| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
 
@@ -99,4 +99,4 @@
 
 ---
 
-*Last updated: Jun 27, 2026
+*Last updated: Jun 28, 2026
