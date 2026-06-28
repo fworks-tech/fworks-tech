@@ -7,7 +7,7 @@
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
 [![Profile updater](https://img.shields.io/github/actions/workflow/status/fworks-tech/fworks-tech/update-readme.yml?style=flat-square&logo=githubactions&label=profile)](https://github.com/fworks-tech/fworks-tech/actions)
 
-I build AI agents that write better code than most humans. 10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery, and I have zero tolerance for "fix stuff" commits.
+10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
 
 ---
 
@@ -34,17 +34,15 @@ I build AI agents that write better code than most humans. 10+ years across fron
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
-| [driveline-app](https://github.com/fworks-tech/driveline-app) | FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend |
-| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
+| [driveline-app](https://github.com/fworks-tech/driveline-app) | *DEMO* FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend |
+| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | *REVIEWING* Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news |
+| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | *PLANNED* 100% Python voice assistant for Android powered by Claude AI |
 
 ---
 
 ## What I build
 
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (14 agents), ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
-- **OpenCode Go provider:** OpenAI-compatible TypeScript provider for opencode.ai with DeepSeek V4 Flash — tools, failover, CI integration
-- **GraphQL APIs:** Apollo Federation in production for major US telecoms (1,000+ daily transactions) — subgraph architecture, schema-first design, DataLoader N+1 elimination, cursor pagination, subscriptions, persisted queries, New Relic observability, CI-enforced breaking-change detection
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
 - **Python apps & voice:** Streamlit data dashboards (KPIs, risk panels, alerts, news flows) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
