@@ -23,9 +23,7 @@ from datetime import datetime, timezone
 REPO_DESCRIPTIONS = {
     "agenthood": "Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy",
     "flabs.tech": "Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI",
-    "agenthood-site": "Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized",
-    "driveline-app": "FMCSA-compliant ELD & route planner — React 19 + TypeScript + MUI frontend",
-    "driveline-api": "FMCSA-compliant ELD & route planner — Django REST API backend",
+    "agenthood-site": "Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground",
     "Jupyter-Crypto-Wizard": "Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news",
     "ApolloDroid": "100% Python voice assistant for Android powered by Claude AI",
     "verihire": "GenAI / RAG recruiter tool — Chroma vector search, Claude AI",

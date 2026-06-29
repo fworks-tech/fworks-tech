@@ -31,20 +31,21 @@
 
 | Repository | Description |
 |---|---|
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page + Studio playground — chat with AI agents in your browser |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized |
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 
 ---
 
 ## What I build
 
-- **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (14 agents), ReAct reasoning loops, tiered memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
+- **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (16 agents), ReAct reasoning loops, 5-tier memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
+- **Browser-based Studio:** Chat playground at [agenthood.flabs.tech](https://agenthood.flabs.tech/studio/playground) — SSE streaming, provider switching (Anthropic/OpenAI/Groq/Ollama/OpenCode), BYOK, server-side rate limiting and auth
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
 - **Python apps & voice:** Streamlit data dashboards (KPIs, risk panels, alerts, news flows) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
 - **GenAI & RAG pipelines:** Document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI, semantic chunking strategies, fixed-size and hierarchical chunking
-- **Quality & CI:** Vitest (49 test files, 527 tests), Playwright E2E + visual snapshots, 13 CI workflows, conventional commits, PR review automation, eval frameworks, gitleaks secret scanning
+- **Quality & CI:** Vitest (49+ test files, 544+ tests), Playwright E2E + visual snapshots, 13 CI workflows, conventional commits, PR review automation, eval frameworks, gitleaks secret scanning
 
 ---
 
@@ -96,4 +97,4 @@
 
 ---
 
-*Last updated: Jun 27, 2026
+*Last updated: Jun 29, 2026
