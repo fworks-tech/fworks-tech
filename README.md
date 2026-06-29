@@ -42,6 +42,7 @@
 
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (16 agents), ReAct reasoning loops, 5-tier memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
 - **Browser-based Studio:** Chat playground at [agenthood.flabs.tech](https://agenthood.flabs.tech/studio/playground) — SSE streaming, provider switching (Anthropic/OpenAI/Groq/Ollama/OpenCode), BYOK, server-side rate limiting and auth
+- **FMCSA-compliant ELD & route planning:** Full-stack Django + React app at [logroute-app.vercel.app](https://logroute-app.vercel.app) — HOS engine simulating 6 FMCSA rules (11hr/14hr/30min/10hr/70hr/34hr), real-time OSRM routing, Nominatim geocoding, Leaflet maps, and canvas-based DOT log sheet generation with jsPDF export
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
 - **Python apps & voice:** Streamlit data dashboards (KPIs, risk panels, alerts, news flows) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
@@ -56,8 +57,10 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 ![MUI](https://img.shields.io/badge/MUI-007FFF?style=flat-square&logo=mui&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=flat-square&logo=leaflet&logoColor=white)
 ![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=flat-square&logo=storybook&logoColor=white)
 
 **Testing:**
