@@ -31,6 +31,7 @@
 
 | Repository | Description |
 |---|---|
+| [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page + Studio playground — chat with AI agents in your browser |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |

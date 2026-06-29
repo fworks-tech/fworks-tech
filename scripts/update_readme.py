@@ -24,6 +24,7 @@ REPO_DESCRIPTIONS = {
     "agenthood": "Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy",
     "flabs.tech": "Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI",
     "agenthood-site": "Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground",
+    "logroute": "FMCSA ELD logbook & route planner — Django + React, live at logroute-app.vercel.app",
     "Jupyter-Crypto-Wizard": "Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news",
     "ApolloDroid": "100% Python voice assistant for Android powered by Claude AI",
     "verihire": "GenAI / RAG recruiter tool — Chroma vector search, Claude AI",
