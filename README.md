@@ -41,7 +41,7 @@
 ## What I build
 
 - **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (16 agents), ReAct reasoning loops, 5-tier memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
-- **Browser-based Studio:** Chat playground at [agenthood.flabs.tech](https://agenthood.flabs.tech/studio/playground) — SSE streaming, provider switching (Anthropic/OpenAI/Groq/Ollama/OpenCode), BYOK, server-side rate limiting and auth
+- **Browser-based Studio:** Chat playground at [agenthood.flabs.tech](https://agenthood.flabs.tech/studio/playground) — Next.js 16 + Tailwind CSS 4 + agenthood runtime, SSE streaming, 6-provider routing with automatic failover, server-side rate limiting, BYOK, Edge middleware, structured logging with secret redaction, vitest, 17 tests
 - **FMCSA-compliant ELD & route planning:** Full-stack Django + React app at [logroute-app.vercel.app](https://logroute-app.vercel.app) — HOS engine simulating 6 FMCSA rules (11hr/14hr/30min/10hr/70hr/34hr), real-time OSRM routing, Nominatim geocoding, Leaflet maps, and canvas-based DOT log sheet generation with jsPDF export
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
@@ -81,9 +81,13 @@
 ![OpenCode](https://img.shields.io/badge/OpenCode-6C5CE7?style=flat-square)
 ![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
+![Anthropic](https://img.shields.io/badge/Anthropic-191919?style=flat-square)
 ![LanceDB](https://img.shields.io/badge/LanceDB-44B585?style=flat-square)
 ![Chroma](https://img.shields.io/badge/Chroma_DB-44B585?style=flat-square)
 ![Tree-sitter](https://img.shields.io/badge/Tree--sitter-999999?style=flat-square)
+![react-markdown](https://img.shields.io/badge/react--markdown-000000?style=flat-square)
+![SSE](https://img.shields.io/badge/SSE-009688?style=flat-square)
 
 **Cloud & DevOps:**
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
