@@ -32,7 +32,7 @@
 | Repository | Description |
 |---|---|
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground |
-| [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at logroute-app.vercel.app |
+| [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news |
