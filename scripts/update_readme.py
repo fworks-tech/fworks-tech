@@ -25,7 +25,7 @@ REPO_DESCRIPTIONS = {
     "flabs.tech": "Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI",
     "agenthood-site": "Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground",
     "logroute": 'FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app)',
-    "Jupyter-Crypto-Wizard": "Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news",
+    "Jupyter-Crypto-Wizard": 'Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news, live at [jupyter-crypto-wizard.streamlit.app](https://jupyter-crypto-wizard.streamlit.app)',
     "ApolloDroid": "100% Python voice assistant for Android powered by Claude AI",
     "verihire": "GenAI / RAG recruiter tool — Chroma vector search, Claude AI",
     "pagination-with-ssg": "Next.js pagination with static site generation",
