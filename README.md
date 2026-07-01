@@ -35,7 +35,7 @@
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
 | [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
-| [Chain Telescope](https://github.com/fworks-tech/chain-telescope) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news, live at [https://chain-telescope.streamlit.app/](https://chain-telescope.streamlit.app/) |
+| [ChainTelescope](https://github.com/fworks-tech/chain-telescope) | [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit)](https://chain-telescope.streamlit.app/) Modular crypto command center — Streamlit dashboard with FastAPI backend, ccxt exchange adapter, AI assistant, RSS news aggregation, alert rules, newsletter, 65 tests, deployment docs, live at [chain-telescope.streamlit.app](https://chain-telescope.streamlit.app/) |
 | [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
@@ -47,7 +47,7 @@
 - **FMCSA-compliant ELD & route planning:** Full-stack Django + React app at [logroute-app.vercel.app](https://logroute-app.vercel.app) — HOS engine simulating 6 FMCSA rules (11hr/14hr/30min/10hr/70hr/34hr), real-time OSRM routing, Nominatim geocoding, Leaflet maps, and canvas-based DOT log sheet generation with jsPDF export
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
-- **Python apps & voice:** Streamlit data dashboards (KPIs, risk panels, alerts, news flows) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
+- **Python apps & voice:** Streamlit + FastAPI data dashboards (KPIs, risk panels, alerts, news flows, AI assistant, newsletter with ccxt exchange integration) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
 - **GenAI & RAG pipelines:** Document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI, semantic chunking strategies, fixed-size and hierarchical chunking
 - **Quality & CI:** Vitest (49+ test files, 544+ tests), Playwright E2E + visual snapshots, 13 CI workflows, conventional commits, PR review automation, eval frameworks, gitleaks secret scanning
 
