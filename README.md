@@ -35,7 +35,7 @@
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
 | [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
-| [Jupyter-Crypto-Wizard](https://github.com/fworks-tech/Jupyter-Crypto-Wizard) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news, live at [jupyter-crypto-wizard.streamlit.app](https://jupyter-crypto-wizard.streamlit.app) |
+| [Chain Telescope](https://github.com/fworks-tech/chain-telescope) | Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news, live at [https://chain-telescope.streamlit.app/](https://chain-telescope.streamlit.app/) |
 | [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
