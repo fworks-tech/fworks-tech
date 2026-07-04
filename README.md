@@ -31,11 +31,11 @@
 
 | Repository | Description |
 |---|---|
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
+| [chain-telescope](https://github.com/fworks-tech/chain-telescope) | Streamlit crypto dashboard and intelligence workspace — KPIs, trends, risk pa... |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
 | [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
-| [ChainTelescope](https://github.com/fworks-tech/chain-telescope) | [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit)](https://chain-telescope.streamlit.app/) Modular crypto command center — Streamlit dashboard with FastAPI backend, ccxt exchange adapter, AI assistant, RSS news aggregation, alert rules, newsletter, 65 tests, deployment docs, live at [chain-telescope.streamlit.app](https://chain-telescope.streamlit.app/) |
 | [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
@@ -107,4 +107,4 @@
 
 ---
 
-*Last updated: Jul 1, 2026
+*Last updated: Jul 3, 2026
