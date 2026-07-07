@@ -1,0 +1,41 @@
+name: PR Standards
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate PR title
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          if ! echo "$title" | grep -qE '^(feat|fix|docs|test|refactor|ci|chore)(\(.+\))?: .+'; then
+            echo "PR title must follow Conventional Commits: type(scope): subject"
+            exit 1
+          fi
+
+  python-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Python syntax
+        run: python3 -m py_compile scripts/update_readme.py
+
+  readme-table:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify README has required sections
+        run: |
+          for section in "Featured Projects" "Tech Stack" "Contact"; do
+            if ! grep -q "## $section" README.md; then
+              echo "Missing section: $section"
+              exit 1
+            fi
+          done
