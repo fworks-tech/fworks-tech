@@ -27,7 +27,7 @@
 
 ---
 
-## 🚀 Featured Projects
+## Featured Projects
 
 | Repository | Description |
 |---|---|
