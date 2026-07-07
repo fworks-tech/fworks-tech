@@ -28,6 +28,8 @@ REPO_DESCRIPTIONS = {
     "Jupyter-Crypto-Wizard": 'Streamlit crypto dashboard — KPIs, trends, risk panels, alerts, news, live at [jupyter-crypto-wizard.streamlit.app](https://jupyter-crypto-wizard.streamlit.app)',
     "ApolloDroid": "100% Python voice assistant for Android powered by Claude AI",
     "verihire": "GenAI / RAG recruiter tool — Chroma vector search, Claude AI",
+    "hasheyes": "Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant",
+    "atmydesk": "Full-stack device management platform",
     "pagination-with-ssg": "Next.js pagination with static site generation",
     "fabionismos-blog": "Next.js + Markdown blog deployed on Vercel",
     "devices-manager": "Full-stack device management demo",
