@@ -41,7 +41,7 @@ to understand the Society's standards before taking any action in this repositor
 
 ## The Members
 
-Load skills from `docs/members/` to activate specialized agents:
+Skills for each member are available via the skill-loading system (see `~/.config/opencode/skills/`). The members:
 
 - `the-scribe` — commit messages, PR descriptions, changelogs
 - `the-architect` — spec-driven development, planning, ADRs

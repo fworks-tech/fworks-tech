@@ -33,12 +33,11 @@ Then use this file as your primary reference for commands and project structure.
 ├── oath.md                           # The Society oath
 ├── .github/
 │   └── workflows/
+│       ├── pr.yml                    # PR Standards: commitlint, python lint, readme check
 │       └── update-readme.yml         # Daily scheduled: auto-updates README project table
 ├── scripts/
 │   ├── update_readme.py              # Python: fetches repos, regenerates table
 │   └── update_summary.txt            # Output log from last auto-update
-├── docs/
-│   └── graphql-and-ai.md             # Knowledge doc: GraphQL + AI engineering
 └── .gitignore                        # Empty — all files tracked
 ```
 
@@ -47,8 +46,11 @@ Then use this file as your primary reference for commands and project structure.
 | File | Purpose |
 |------|---------|
 | `README.md` | The profile README — badges, featured projects, tech stack, contact |
+| `AGENTS.md` | Convention registry for AI coding agents |
+| `oath.md` | The Society oath — operational principles |
 | `scripts/update_readme.py` | Python script that auto-generates the featured projects table from the GitHub API |
-| `.github/workflows/update-readme.yml` | CI workflow — runs daily at 08:00 UTC, creates PR if table changed |
+| `.github/workflows/pr.yml` | PR Standards CI — validates commits, lint, and README sections |
+| `.github/workflows/update-readme.yml` | Daily scheduled workflow — runs at 08:00 UTC, creates PR if table changed |
 
 ## Conventions
 
