@@ -31,12 +31,12 @@
 
 | Repository | Description |
 |---|---|
+| [atmydesk](https://github.com/fworks-tech/atmydesk) | Full-stack device management platform |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [hasheyes](https://github.com/fworks-tech/hasheyes) | Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant |
 | [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
 
@@ -107,4 +107,4 @@
 
 ---
 
-*Last updated: Jul 8, 2026
+*Last updated: Jul 9, 2026
