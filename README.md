@@ -31,12 +31,12 @@
 
 | Repository | Description |
 |---|---|
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
+| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered assistant for creating challenging visual-reasoning Q&A tasks from... |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
 | [hasheyes](https://github.com/fworks-tech/hasheyes) | Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant |
 | [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
-| [ApolloDroid](https://github.com/fworks-tech/ApolloDroid) | 100% Python voice assistant for Android powered by Claude AI |
 
 ---
 
@@ -107,4 +107,4 @@
 
 ---
 
-*Last updated: Jul 11, 2026
+*Last updated: Jul 23, 2026
