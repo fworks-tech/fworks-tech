@@ -5,8 +5,6 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
-[![arxiv-manager](https://img.shields.io/github/stars/fworks-tech/arxiv-manager?style=flat-square&logo=python&label=arxiv-manager)](https://github.com/fworks-tech/arxiv-manager)
-[![Profile updater](https://img.shields.io/github/actions/workflow/status/fworks-tech/fworks-tech/update-readme.yml?style=flat-square&logo=githubactions&label=profile)](https://github.com/fworks-tech/fworks-tech/actions)
 
 10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
 
