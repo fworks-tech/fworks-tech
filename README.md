@@ -5,6 +5,7 @@
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
+[![arxiv-manager](https://img.shields.io/github/stars/fworks-tech/arxiv-manager?style=flat-square&logo=python&label=arxiv-manager)](https://github.com/fworks-tech/arxiv-manager)
 [![Profile updater](https://img.shields.io/github/actions/workflow/status/fworks-tech/fworks-tech/update-readme.yml?style=flat-square&logo=githubactions&label=profile)](https://github.com/fworks-tech/fworks-tech/actions)
 
 10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
@@ -31,7 +32,7 @@
 
 | Repository | Description |
 |---|---|
-| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered assistant for creating challenging visual-reasoning Q&A tasks from... |
+| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning image evaluation tool — CRAG (CAG + RAG), self-critique generation pipeline, ChromaDB + sentence-transformers, MCP server, observability, hot-swappable prompts |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
@@ -48,7 +49,8 @@
 - **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
 - **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
 - **Python apps & voice:** Streamlit + FastAPI data dashboards (KPIs, risk panels, alerts, news flows, AI assistant, newsletter with ccxt exchange integration) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
-- **GenAI & RAG pipelines:** Document-grounded assistants, vector store integrations (LanceDB, Chroma), Claude AI, semantic chunking strategies, fixed-size and hierarchical chunking
+- **Visual-reasoning image evaluation (arxiv-manager):** AI-powered tool generating Challenging/HARDEST Q&A from scientific figures with self-critique loops, consensus drafting, and 28+ handbook validation rules — CRAG architecture (semantic cache + hybrid ChromaDB retrieve + cross-encoder rerank), MCP server (6 tools), hot-swappable prompt registry, structured observability with token/cost tracking, security guardrails (injection detection, PII filter, rate limiting), guardrails with auto-retry, dynamic model selection, and 220 tests — all Python/FastAPI at [arxiv-manager](https://github.com/fworks-tech/arxiv-manager)
+- **GenAI & RAG pipelines:** Document-grounded assistants, vector store integrations (LanceDB, Chroma, FAISS), Claude AI, semantic chunking strategies, fixed-size and hierarchical chunking
 - **Quality & CI:** Vitest (49+ test files, 544+ tests), Playwright E2E + visual snapshots, 13 CI workflows, conventional commits, PR review automation, eval frameworks, gitleaks secret scanning
 
 ---
@@ -70,17 +72,35 @@
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
 
 **Backend & APIs:**
-![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
-![Apollo](https://img.shields.io/badge/Apollo-311C87?style=flat-square&logo=apollographql&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django)
+![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+
+**Web & Templating:**
+![HTMX](https://img.shields.io/badge/HTMX-3366CC?style=flat-square&logo=htmx&logoColor=white)
+![Jinja2](https://img.shields.io/badge/Jinja2-B41717?style=flat-square&logo=jinja&logoColor=white)
+![Apollo](https://img.shields.io/badge/Apollo-311C87?style=flat-square&logo=apollographql&logoColor=white)
+
+**Python Ecosystem:**
+![Typer](https://img.shields.io/badge/Typer-000000?style=flat-square)
+![Rich](https://img.shields.io/badge/Rich-FF6F00?style=flat-square)
+![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white)
+![SQLModel](https://img.shields.io/badge/SQLModel-000000?style=flat-square)
+![PyMuPDF](https://img.shields.io/badge/PyMuPDF-003D7A?style=flat-square)
+![Pillow](https://img.shields.io/badge/Pillow-3776AB?style=flat-square)
 
 **AI & Agents:**
 ![Claude AI](https://img.shields.io/badge/Claude_AI-000000?style=flat-square)
 ![OpenCode](https://img.shields.io/badge/OpenCode-6C5CE7?style=flat-square)
+![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+![sentence-transformers](https://img.shields.io/badge/sentence--transformers-FF6F00?style=flat-square)
+![MCP](https://img.shields.io/badge/MCP-000000?style=flat-square)
 ![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
@@ -88,14 +108,19 @@
 ![LanceDB](https://img.shields.io/badge/LanceDB-44B585?style=flat-square)
 ![Chroma](https://img.shields.io/badge/Chroma_DB-44B585?style=flat-square)
 ![Tree-sitter](https://img.shields.io/badge/Tree--sitter-999999?style=flat-square)
-![react-markdown](https://img.shields.io/badge/react--markdown-000000?style=flat-square)
 ![SSE](https://img.shields.io/badge/SSE-009688?style=flat-square)
 
+**Testing:**
+![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
+
 **Cloud & DevOps:**
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
 
 ---
 
@@ -107,4 +132,4 @@
 
 ---
 
-*Last updated: Jul 23, 2026
+*Last updated: Jul 25, 2026

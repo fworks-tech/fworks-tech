@@ -29,7 +29,7 @@ REPO_DESCRIPTIONS = {
     "ApolloDroid": "100% Python voice assistant for Android powered by Claude AI",
     "verihire": "GenAI / RAG recruiter tool — Chroma vector search, Claude AI",
     "hasheyes": "Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant",
-    "atmydesk": "Full-stack device management platform",
+    "arxiv-manager": "AI-powered visual-reasoning image evaluation tool — CRAG (CAG + RAG), self-critique generation pipeline, ChromaDB + sentence-transformers, MCP server, observability, hot-swappable prompts",
     "pagination-with-ssg": "Next.js pagination with static site generation",
     "fabionismos-blog": "Next.js + Markdown blog deployed on Vercel",
     "devices-manager": "Full-stack device management demo",

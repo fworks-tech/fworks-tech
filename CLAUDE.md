@@ -16,6 +16,10 @@ python3 scripts/update_readme.py    # Manually regenerate the project table
 
 No npm/yarn/build step needed — this is not a Node.js project.
 
+The profile features two Python-heavy repos that may be relevant:
+- **arxiv-manager** — FastAPI + ChromaDB CRAG + MCP + OpenCode (production AI lifecycle)
+- **Jupyter-Crypto-Wizard** — Streamlit + ccxt crypto dashboard
+
 ### If you are an AI coding agent
 
 Read `AGENTS.md` and `oath.md` first to understand behavior and standards.
