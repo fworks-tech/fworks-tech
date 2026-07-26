@@ -30,8 +30,8 @@
 
 | Repository | Description |
 |---|---|
-| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning image evaluation tool — CRAG (CAG + RAG), self-critique generation pipeline, ChromaDB + sentence-transformers, MCP server, observability, hot-swappable prompts |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
+| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning image evaluation tool — CRAG (CAG + RAG), self-critique generation pipeline, ChromaDB + sentence-transformers, MCP server, observability, hot-swappable prompts |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
 | [hasheyes](https://github.com/fworks-tech/hasheyes) | Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant |
@@ -126,4 +126,4 @@
 
 ---
 
-*Last updated: Jul 25, 2026
+*Last updated: Jul 26, 2026
