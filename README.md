@@ -55,6 +55,9 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
+- **agenthood** — created branch feat/add-builder-member
+- **flabs.tech** — pushed to github-sso-admin-area
+- **arxiv-manager** — pushed to pipeline-hardening-qwen-targeting
 <!-- recent-activity:end -->
 
 ---
@@ -132,4 +135,4 @@
 
 ---
 
-*Last updated: Jul 28, 2026
+*Last updated: Aug 5, 2026
