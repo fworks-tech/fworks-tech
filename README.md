@@ -43,26 +43,19 @@
 
 | Repository | Description |
 |---|---|
-| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning image evaluation tool — CRAG (CAG + RAG), self-critique generation pipeline, ChromaDB + sentence-transformers, MCP server, observability, hot-swappable prompts |
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Vitest, Playwright E2E, visual snapshots, CI, live at [flabs.tech](https://flabs.tech) |
-| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 16 AI agents — SKILL.md open standard · TS framework · VS Code extension · Academy |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood landing page — agent-agnostic SKILL.md skills, SEO-optimized, Studio playground, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
-| [hasheyes](https://github.com/fworks-tech/hasheyes) | Blockchain explorer — FastAPI, ccxt, LLM-powered AI assistant |
-| [logroute](https://github.com/fworks-tech/logroute) | FMCSA ELD logbook & route planner — Django + React, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
+| [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning Q&A generator — 7-agent pipeline (draft, self-critique, consensus), CRAG architecture (semantic cache + hybrid retrieve + cross-encoder rerank), 8 MCP tools, hot-swappable prompts, structured observability with token/cost tracking, 220+ tests |
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Once UI design system, MDX blog, dynamic OG images, WCAG 2.1 AA, Vitest + Playwright E2E, Storybook 10, Lighthouse CI, live at [flabs.tech](https://flabs.tech) |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Society of 18 AI agents as Markdown skill files — SKILL.md open standard, TypeScript runtime, npm package, VS Code extension, Academy, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood marketing site — landing, Academy, ADR docs, Studio chat playground with SSE streaming and 6-provider routing, runtime dashboard, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
+| [hasheyes](https://github.com/fworks-tech/hasheyes) | Crypto intelligence dashboard — Streamlit, market KPIs, trend charts, risk panels, alerts, news aggregation, newsletter flows, live at [chain-telescope.streamlit.app](https://chain-telescope.streamlit.app) |
+| [logroute](https://github.com/fworks-tech/logroute) | FMCSA-compliant ELD logbook & route planner — Django + React, HOS engine (6 FMCSA rules), OSRM routing, Nominatim geocoding, Leaflet maps, DOT log sheet generation, live at [logroute-app.vercel.app](https://logroute-app.vercel.app) |
 
 ---
 
-## What I build
+## Recent Activity
 
-- **AI agent frameworks:** 10-layer TypeScript framework design, multi-agent orchestration (16 agents), ReAct reasoning loops, 5-tier memory, Agentic RAG, Knowledge Graph retrieval, hierarchical chunking, Society self-awareness, MemberOrchestrator — all shipped as [agenthood](https://github.com/fworks-tech/agenthood)
-- **Browser-based Studio:** Chat playground at [agenthood.flabs.tech](https://agenthood.flabs.tech/studio/playground) — Next.js 16 + Tailwind CSS 4 + agenthood runtime, SSE streaming, 6-provider routing with automatic failover, server-side rate limiting, BYOK, Edge middleware, structured logging with secret redaction, vitest, 17 tests
-- **FMCSA-compliant ELD & route planning:** Full-stack Django + React app at [logroute-app.vercel.app](https://logroute-app.vercel.app) — HOS engine simulating 6 FMCSA rules (11hr/14hr/30min/10hr/70hr/34hr), real-time OSRM routing, Nominatim geocoding, Leaflet maps, and canvas-based DOT log sheet generation with jsPDF export
-- **Backend services:** Scalable Node.js + TypeScript and Python/Django REST APIs, auth middleware, rate limiting, distributed tracing, PostgreSQL optimization
-- **Frontend platforms:** React 19, Next.js 16, TypeScript, Storybook, performance tuning, Vitest + Playwright testing
-- **Python apps & voice:** Streamlit + FastAPI data dashboards (KPIs, risk panels, alerts, news flows, AI assistant, newsletter with ccxt exchange integration) and Python voice assistants for Android with wake-word, STT/TTS pipelines, and Claude AI integration
-- **Visual-reasoning image evaluation (arxiv-manager):** AI-powered tool generating Challenging/HARDEST Q&A from scientific figures with self-critique loops, consensus drafting, and 28+ handbook validation rules — CRAG architecture (semantic cache + hybrid ChromaDB retrieve + cross-encoder rerank), MCP server (6 tools), hot-swappable prompt registry, structured observability with token/cost tracking, security guardrails (injection detection, PII filter, rate limiting), guardrails with auto-retry, dynamic model selection, and 220 tests — all Python/FastAPI at [arxiv-manager](https://github.com/fworks-tech/arxiv-manager)
-- **GenAI & RAG pipelines:** Document-grounded assistants, vector store integrations (LanceDB, Chroma, FAISS), Claude AI, semantic chunking strategies, fixed-size and hierarchical chunking
-- **Quality & CI:** Vitest (49+ test files, 544+ tests), Playwright E2E + visual snapshots, 13 CI workflows, conventional commits, PR review automation, eval frameworks, gitleaks secret scanning
+<!-- recent-activity:start -->
+<!-- recent-activity:end -->
 
 ---
 
