@@ -24,7 +24,6 @@ jobs:
         run: python3 scripts/update_readme.py
 
       - name: Close stale auto-update PRs
-        if: steps.update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -33,7 +32,6 @@ jobs:
           done
 
       - name: Create PR
-        if: steps.update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -52,7 +50,3 @@ jobs:
             --title "chore(readme): auto-update recent activity ($DATE)" \
             --body-file scripts/update_summary.txt
           echo "PR created on branch $BRANCH"
-
-      - name: No changes
-        if: steps.update.outputs.changed == '0'
-        run: echo "No activity detected, skipping PR."
