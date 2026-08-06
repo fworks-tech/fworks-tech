@@ -42,9 +42,10 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood** — created branch feat/add-builder-member
-- **flabs.tech** — pushed to github-sso-admin-area
-- **arxiv-manager** — pushed to pipeline-hardening-qwen-targeting
+- **flabs.tech** — opened PR #221: update
+- **agenthood** — deleted branch fix/ci-gate-review-gaps
+- **agenthood-site** — pushed to main
+- **logroute** — pushed to master
 <!-- recent-activity:end -->
 
 ---
@@ -122,4 +123,4 @@
 
 ---
 
-*Last updated: Aug 5, 2026
+*Last updated: Aug 6, 2026
