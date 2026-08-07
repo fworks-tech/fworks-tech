@@ -1,12 +1,12 @@
-# Fábio Ritzel Borges
-**Senior Full-Stack & AI Engineer · Joinville, Brazil** · [flabs.tech](https://flabs.tech)
+# Fábio R. Borges
+**Full-Stack & AI Engineer · Joinville, Brazil** · [flabs.tech](https://flabs.tech)
 
 [![GitHub followers](https://img.shields.io/github/followers/fworks-tech?style=flat-square&logo=github)](https://github.com/fworks-tech)
 [![Profile Views](https://komarev.com/ghpvc/?username=fworks-tech&style=flat-square&color=blue)](https://github.com/fworks-tech)
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
 
-10+ years across frontend, backend, and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
+10+ years across frontend, backend, testing, devops and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
 
 ---
 
