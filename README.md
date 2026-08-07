@@ -42,10 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **flabs.tech** — opened PR #221: update
-- **agenthood** — deleted branch fix/ci-gate-review-gaps
-- **agenthood-site** — pushed to main
-- **logroute** — pushed to master
+- **agenthood** — pushed to issue-385-build-gate-and-ci-nits
+- **flabs.tech** — pushed to main
 <!-- recent-activity:end -->
 
 ---
@@ -123,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 6, 2026
+*Last updated: Aug 7, 2026
