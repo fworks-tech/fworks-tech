@@ -42,8 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood** — pushed to issue-385-build-gate-and-ci-nits
-- **flabs.tech** — pushed to main
+- **flabs.tech** — deleted branch fix/quiz-leaderboard-deserialization
+- **agenthood-site** — pushed to main
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 8, 2026
+*Last updated: Aug 9, 2026
