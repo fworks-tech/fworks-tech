@@ -42,8 +42,9 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **flabs.tech** — pushed to main
-- **agenthood-site** — assigned PR #63: update
+- **agenthood-site** — deleted branch news-digest/2026-08-11
+- **agenthood** — deleted branch ci/issue-393-package-smoke-test
+- **flabs.tech** — deleted branch fix/262-mobile-overflow-spacing
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +122,4 @@
 
 ---
 
-*Last updated: Aug 10, 2026
+*Last updated: Aug 11, 2026
