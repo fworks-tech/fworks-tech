@@ -42,8 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **flabs.tech** — deleted branch fix/quiz-leaderboard-deserialization
-- **agenthood-site** — pushed to main
+- **flabs.tech** — pushed to main
+- **agenthood-site** — assigned PR #63: update
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 9, 2026
+*Last updated: Aug 10, 2026
