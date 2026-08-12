@@ -42,9 +42,10 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood-site** — deleted branch news-digest/2026-08-11
-- **agenthood** — deleted branch ci/issue-393-package-smoke-test
-- **flabs.tech** — deleted branch fix/262-mobile-overflow-spacing
+- **agenthood** — merged PR #401: update
+- **agenthood-site** — pushed to main
+- **flabs.tech** — deleted branch feat/agenthood-news-digest-blog-post
+- **logroute** — pushed to master
 <!-- recent-activity:end -->
 
 ---
@@ -122,4 +123,4 @@
 
 ---
 
-*Last updated: Aug 11, 2026
+*Last updated: Aug 12, 2026
