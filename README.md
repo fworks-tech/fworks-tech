@@ -42,10 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood** — merged PR #401: update
+- **agenthood** — merged PR #403: update
 - **agenthood-site** — pushed to main
-- **flabs.tech** — deleted branch feat/agenthood-news-digest-blog-post
-- **logroute** — pushed to master
 <!-- recent-activity:end -->
 
 ---
@@ -123,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 12, 2026
+*Last updated: Aug 13, 2026
