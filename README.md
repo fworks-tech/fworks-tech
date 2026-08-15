@@ -42,8 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
+- **agenthood-site** — deleted branch fix/issue-55-e2e-selector-fragility
 - **agenthood** — commented on issue #313
-- **agenthood-site** — opened issue #70: feat: emit playground traces and propagate X-Correlation-Id
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 14, 2026
+*Last updated: Aug 15, 2026
