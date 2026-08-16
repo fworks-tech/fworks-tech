@@ -42,8 +42,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood** — commented on issue #313
-- **agenthood-site** — opened issue #70: feat: emit playground traces and propagate X-Correlation-Id
+- **agenthood-site** — deleted branch studio/feat-agenthood-studio
+- **agenthood** — deleted branch feat/issue-454-member-catalogs
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +121,4 @@
 
 ---
 
-*Last updated: Aug 14, 2026
+*Last updated: Aug 16, 2026
