@@ -42,8 +42,9 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood-site** — deleted branch studio/feat-agenthood-studio
-- **agenthood** — deleted branch feat/issue-454-member-catalogs
+- **agenthood-site** — merged PR #86: update
+- **flabs.tech** — deleted branch feat/analytics-collection-health
+- **agenthood** — opened PR #459: update
 <!-- recent-activity:end -->
 
 ---
@@ -121,4 +122,4 @@
 
 ---
 
-*Last updated: Aug 17, 2026
+*Last updated: Aug 18, 2026
