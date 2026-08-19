@@ -43,6 +43,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
+> ⚡ 3 recent repos just moved — fresh commits, PRs and branches from the fworks-tech workshop.
+
 - 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · just now
 - 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `89-studio-captcha-widget-visibility` · 1h ago
 - 🗑️ [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — deleted branch feat/analytics-collection-health · yesterday

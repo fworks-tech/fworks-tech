@@ -255,36 +255,55 @@ class TestPolishLines(unittest.TestCase):
         def read(self):
             return self._data
 
-    def content(self, lines):
-        return json.dumps({"choices": [{"message": {"content": json.dumps({"lines": lines})}}]}).encode()
+    def content(self, lines, hook="\u26A1 Moving fast"):
+        body = json.dumps({"hook": hook, "lines": lines})
+        return json.dumps({"choices": [{"message": {"content": body}}]}).encode()
 
-    def test_no_key_keeps_input(self):
+    def test_no_key_uses_default_hook(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- a", "- b"])
+            hook, lines = u.polish_lines(["- a", "- b"])
+        self.assertEqual(lines, ["- a", "- b"])
+        self.assertIn("2", hook)
+
+    def test_default_hook_singular(self):
+        self.assertIn("1 recent repo", u.default_hook(["- a"]))
 
     def test_valid_response_rewrites(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.content(["- A", "- B"]))
+            "urllib.request.urlopen",
+            return_value=self.FakeResp(self.content(["- A", "- B"], "\u26A1 On a roll")),
         ):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- A", "- B"])
+            hook, lines = u.polish_lines(["- a", "- b"])
+        self.assertEqual(lines, ["- A", "- B"])
+        self.assertEqual(hook, "\u26A1 On a roll")
 
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.content(["A", "B"]))
+            "urllib.request.urlopen",
+            return_value=self.FakeResp(self.content(["A", "B"])),
         ):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- A", "- B"])
+            hook, lines = u.polish_lines(["- a", "- b"])
+        self.assertEqual(lines, ["- A", "- B"])
 
     def test_bad_payload_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", return_value=self.FakeResp(b"not json")
         ):
-            self.assertEqual(u.polish_lines(["- a"]), ["- a"])
+            hook, lines = u.polish_lines(["- a"])
+        self.assertEqual(lines, ["- a"])
+        self.assertIn("1", hook)
 
     def test_network_error_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", side_effect=OSError("boom")
         ):
-            self.assertEqual(u.polish_lines(["- a"]), ["- a"])
+            hook, lines = u.polish_lines(["- a"])
+        self.assertEqual(lines, ["- a"])
+        self.assertIn("1", hook)
+
+    def test_build_activity_lines_renders_hook(self):
+        block = u.build_activity_lines({"a": "- a", "b": "- b"}, "\u26A1 Ho")
+        self.assertIn("> \u26A1 Ho\n\n- a\n- b\n", block)
 
 
 if __name__ == "__main__":
