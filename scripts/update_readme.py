@@ -94,7 +94,7 @@ def clean_text(text):
 
 
 def parse_events(events):
-    """Extract one human-readable line per repo from recent events.
+    """Extract one (bullet, context) pair per repo from recent events.
 
     Deduplicates by repo, keeping only the most recent event for each.
     Skips noise events (WatchEvent, ForkEvent, MemberEvent).
@@ -109,10 +109,62 @@ def parse_events(events):
             continue
         if repo_short in seen:
             continue
-        seen[repo_short] = describe_event(event, repo_short, repo_full)
+        seen[repo_short] = (
+            describe_event(event, repo_short, repo_full),
+            event_context(event),
+        )
         if len(seen) >= TOP_N:
             break
     return seen
+
+
+def event_context(event):
+    """Structured one-line digest of an event, used for the LLM prompt."""
+    etype = event.get("type", "")
+    payload = event.get("payload", {})
+
+    if etype == "PushEvent":
+        commits = payload.get("commits", [])
+        ref = payload.get("ref", "").split("/")[-1]
+        if len(commits) == 1:
+            msg = commits[0].get("message", "").split("\n")[0][:80]
+            return f"pushed 1 commit to branch {ref}: {msg}"
+        return f"pushed {len(commits)} commits to branch {ref}"
+
+    if etype == "PullRequestEvent":
+        pr = payload.get("pull_request", {})
+        verb = "merged" if pr.get("merged_at") else payload.get("action", "opened")
+        title = pr.get("title", "")[:80]
+        author = pr.get("user", {}).get("login", "")
+        return f"{verb} PR #{pr.get('number', '')}: {title} by @{author}"
+
+    if etype == "IssuesEvent":
+        issue = payload.get("issue", {})
+        labels = [label.get("name") for label in issue.get("labels", [])][:2]
+        label_part = f" labels: {', '.join(labels)}" if labels else ""
+        author = issue.get("user", {}).get("login", "")
+        return (
+            f"{payload.get('action', 'opened')} issue #{issue.get('number', '')}: "
+            f"{issue.get('title', '')[:80]} by @{author}{label_part}"
+        )
+
+    if etype == "ReleaseEvent":
+        release = payload.get("release", {})
+        return f"{payload.get('action', 'published')} release {release.get('tag_name', '')}"
+
+    if etype == "PullRequestReviewEvent":
+        pr = payload.get("pull_request", {})
+        state = payload.get("review", {}).get("state", "reviewed")
+        return f"{state} PR #{pr.get('number', '')}"
+
+    if etype == "IssueCommentEvent":
+        issue = payload.get("issue", {})
+        return f"commented on issue #{issue.get('number', '')}"
+
+    if etype in ("CreateEvent", "DeleteEvent"):
+        return f"{etype.replace('Event', '').lower()} {payload.get('ref_type', '')} {payload.get('ref', '')}"
+
+    return etype.replace("Event", "")
 
 
 def describe_event(event, repo_short, repo_full):
@@ -208,17 +260,32 @@ def describe_event(event, repo_short, repo_full):
     return f"- {emoji} [**{repo_short}**]({base}) \u2014 activity{age}"
 
 
-def build_activity_lines(event_map):
-    """Build the markdown bullet list."""
-    return "\n".join(event_map.values()) + "\n"
+def build_activity_lines(event_map, summaries):
+    """Build the bullet list, each bullet followed by an indented summary."""
+    blocks = []
+    for i, line in enumerate(event_map.values()):
+        block = line
+        if summaries and summaries[i]:
+            block += "\n  " + "\n  ".join(summaries[i])
+        blocks.append(block)
+    return "\n\n".join(blocks) + "\n"
 
 
-def polish_lines(lines):
-    """Reword bullets via OpenCode Go; input unchanged on any failure."""
+def polish_lines(items):
+    """Reword bullets and write a per-item quick summary via OpenCode Go.
+
+    items: list of (bullet_line, context_text). Returns (lines, summaries)
+    where summaries[i] is a list of 2-3 summary lines for lines[i]. Falls
+    back to the original bullets and empty summaries on any failure.
+    """
     key = os.environ.get("OPENCODE_API_KEY")
     if not key:
-        return lines
+        return [bullet for bullet, _ in items], [None] * len(items)
     try:
+        numbered = "\n".join(
+            f"ITEM {i + 1}: {bullet}\nCONTEXT {i + 1}: {context}"
+            for i, (bullet, context) in enumerate(items)
+        )
         payload = {
             "model": MODEL,
             "temperature": 0.5,
@@ -226,13 +293,19 @@ def polish_lines(lines):
                 {
                     "role": "system",
                     "content": (
-                        "You reword GitHub activity bullets for a developer's README. "
-                        "Keep every repo name and markdown link exactly as-is, one line "
-                        "per bullet, concise and slightly more engaging. Reply with JSON "
-                        'only: {"lines": ["...", "..."]}.'
+                        "You polish GitHub activity bullets for a developer's README. "
+                        "For every ITEM keep the repo name, markdown links and the "
+                        "action verb exactly as-is while making the bullet concise and "
+                        "engaging, then write a short 2-3 line quick summary right "
+                        "below the bullet explaining what the activity is and why it "
+                        "matters, catching a recruiter's eye. Each summary line must "
+                        "stand on its own (it renders as an indented paragraph under "
+                        "the bullet). Reply with JSON only: "
+                        '{"entries": [{"line": "...", "summary": ["...", "..."]}, ...]}, '
+                        "one entry per ITEM."
                     ),
                 },
-                {"role": "user", "content": "\n".join(lines)},
+                {"role": "user", "content": numbered},
             ],
             "response_format": {"type": "json_object"},
         }
@@ -246,15 +319,22 @@ def polish_lines(lines):
         )
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read())
-        items = json.loads(data["choices"][0]["message"]["content"])["lines"]
-        if isinstance(items, list) and len(items) == len(lines):
-            return [
-                item if str(item).lstrip().startswith("-") else f"- {item}"
-                for item in items
-            ]
+        entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
+        if not isinstance(entries, list) or len(entries) != len(items):
+            raise ValueError("entries length mismatch")
+        lines = []
+        summaries = []
+        for entry in entries:
+            line = str(entry.get("line", "")).strip()
+            summary = entry.get("summary")
+            if not line or not isinstance(summary, list) or not 2 <= len(summary) <= 3:
+                raise ValueError("bad entry shape")
+            lines.append(line if line.lstrip().startswith("-") else f"- {line}")
+            summaries.append([str(s).strip() for s in summary])
+        return lines, summaries
     except Exception as e:
         print(f"LLM polish unavailable, keeping fallback text: {e}")
-    return lines
+        return [bullet for bullet, _ in items], [None] * len(items)
 
 
 def set_output(value):
@@ -281,9 +361,11 @@ def main():
         return
 
     event_map = parse_events(events)
+    summaries = []
     if event_map:
-        polished = polish_lines(list(event_map.values()))
-        event_map = dict(zip(event_map.keys(), polished))
+        items = list(event_map.values())
+        lines, summaries = polish_lines(items)
+        event_map = dict(zip(event_map.keys(), lines))
 
     with open(README_PATH, "r", encoding="utf-8") as f:
         content = f.read()
@@ -294,7 +376,7 @@ def main():
         set_output(0)
         return
 
-    new_rows = build_activity_lines(event_map) if event_map else "\n"
+    new_rows = build_activity_lines(event_map, summaries) if event_map else "\n"
     old_activity = m.group(1).strip()
     old_date = re.search(r"Last updated: (.+)", content)
     old_date_str = old_date.group(1) if old_date else ""
@@ -317,17 +399,19 @@ def main():
         f.write(new_content)
 
     repos = list(event_map.keys())
-    summary_lines = ["Auto-generated by update-readme workflow", ""]
+    body_lines = ["Auto-generated by update-readme workflow", ""]
     if event_map:
-        summary_lines.append("Recent activity:")
-        for line in event_map.values():
-            summary_lines.append(line)
+        body_lines.append("Recent activity:")
+        for i, line in enumerate(event_map.values()):
+            body_lines.append(line)
+            if summaries[i]:
+                body_lines.extend("  " + s for s in summaries[i])
     else:
-        summary_lines.append("No contribution events found.")
-    summary_lines.append(f"\nLast updated bumped to {today}.")
+        body_lines.append("No contribution events found.")
+    body_lines.append(f"\nLast updated bumped to {today}.")
 
     with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
-        f.write("\n".join(summary_lines) + "\n")
+        f.write("\n".join(body_lines) + "\n")
 
     change_desc = ", ".join(repos) if repos else "date bump only"
     print(f"README updated. Changes: {change_desc}")

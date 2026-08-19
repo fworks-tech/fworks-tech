@@ -222,7 +222,7 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
         ]
         parsed = u.parse_events(events)
         self.assertEqual(len(parsed), 1)
-        self.assertIn("2h ago", parsed["agenthood"])
+        self.assertIn("2h ago", parsed["agenthood"][0])
 
     def test_skips_noise_and_org_repo(self):
         events = [
@@ -241,6 +241,56 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
         self.assertEqual(len(parsed), u.TOP_N)
 
 
+class TestEventContext(unittest.TestCase):
+    def test_push(self):
+        ctx = u.event_context(
+            {
+                "type": "PushEvent",
+                "payload": {
+                    "ref": "refs/heads/feat/x",
+                    "commits": [
+                        {"message": "feat: wire builder\n\nbody", "sha": "a" * 40}
+                    ],
+                },
+            }
+        )
+        self.assertIn("pushed 1 commit to branch x: feat: wire builder", ctx)
+
+    def test_merged_pr(self):
+        ctx = u.event_context(
+            {
+                "type": "PullRequestEvent",
+                "payload": {
+                    "action": "closed",
+                    "pull_request": {
+                        "number": 42,
+                        "title": "harden eval",
+                        "merged_at": "t",
+                        "user": {"login": "fabio"},
+                    },
+                },
+            }
+        )
+        self.assertIn("merged PR #42: harden eval by @fabio", ctx)
+
+    def test_issue_with_labels(self):
+        ctx = u.event_context(
+            {
+                "type": "IssuesEvent",
+                "payload": {
+                    "action": "opened",
+                    "issue": {
+                        "number": 7,
+                        "title": "OG broken",
+                        "user": {"login": "fabio"},
+                        "labels": [{"name": "bug"}],
+                    },
+                },
+            }
+        )
+        self.assertIn("opened issue #7: OG broken by @fabio labels: bug", ctx)
+
+
 class TestPolishLines(unittest.TestCase):
     class FakeResp:
         def __init__(self, data):
@@ -255,36 +305,80 @@ class TestPolishLines(unittest.TestCase):
         def read(self):
             return self._data
 
-    def content(self, lines):
-        return json.dumps({"choices": [{"message": {"content": json.dumps({"lines": lines})}}]}).encode()
+    def content(self, entries):
+        body = json.dumps({"entries": entries})
+        return json.dumps({"choices": [{"message": {"content": body}}]}).encode()
+
+    def entry(self, line="- a", summary=("On it", "Really on it.")):
+        return {"line": line, "summary": list(summary)}
 
     def test_no_key_keeps_input(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- a", "- b"])
+            lines, summaries = u.polish_lines([("- a", "ctx")])
+        self.assertEqual(lines, ["- a"])
+        self.assertEqual(summaries, [None])
 
     def test_valid_response_rewrites(self):
+        entries = [
+            self.entry("- A", ("\u26A1 Shipped it.", "The builder is live.")),
+            self.entry("- B", ("Second line.", "More detail.")),
+        ]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.content(["- A", "- B"]))
+            "urllib.request.urlopen", return_value=self.FakeResp(self.content(entries))
         ):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- A", "- B"])
+            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
+        self.assertEqual(lines, ["- A", "- B"])
+        self.assertEqual(summaries, [["\u26A1 Shipped it.", "The builder is live."], ["Second line.", "More detail."]])
 
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.content(["A", "B"]))
+            "urllib.request.urlopen",
+            return_value=self.FakeResp(self.content([self.entry("A")])),
         ):
-            self.assertEqual(u.polish_lines(["- a", "- b"]), ["- A", "- B"])
+            lines, summaries = u.polish_lines([("- a", "ctx")])
+        self.assertEqual(lines, ["- A"])
+
+    def test_bad_entry_shape_falls_back(self):
+        bad = json.dumps({"entries": [{"line": "- x", "summary": ["only one"]}]})
+        body = json.dumps({"choices": [{"message": {"content": bad}}]}).encode()
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
+            "urllib.request.urlopen", return_value=self.FakeResp(body)
+        ):
+            lines, summaries = u.polish_lines([("- x", "ctx")])
+        self.assertEqual(lines, ["- x"])
+        self.assertEqual(summaries, [None])
+
+    def test_entries_mismatch_falls_back(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
+            "urllib.request.urlopen",
+            return_value=self.FakeResp(self.content([self.entry()])),
+        ):
+            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
+        self.assertEqual(lines, ["- a", "- b"])
+        self.assertEqual(summaries, [None, None])
 
     def test_bad_payload_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", return_value=self.FakeResp(b"not json")
         ):
-            self.assertEqual(u.polish_lines(["- a"]), ["- a"])
+            lines, summaries = u.polish_lines([("- a", "ctx")])
+        self.assertEqual(lines, ["- a"])
+        self.assertEqual(summaries, [None])
 
     def test_network_error_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", side_effect=OSError("boom")
         ):
-            self.assertEqual(u.polish_lines(["- a"]), ["- a"])
+            lines, summaries = u.polish_lines([("- a", "ctx")])
+        self.assertEqual(lines, ["- a"])
+        self.assertEqual(summaries, [None])
+
+    def test_build_activity_lines_renders_summaries(self):
+        block = u.build_activity_lines(
+            {"a": "- a", "b": "- b"},
+            [["Line one", "Line two."], None],
+        )
+        self.assertIn("- a\n  Line one\n  Line two.\n\n- b\n", block)
 
 
 if __name__ == "__main__":
