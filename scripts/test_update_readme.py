@@ -292,22 +292,9 @@ class TestEventContext(unittest.TestCase):
 
 
 class TestPolishLines(unittest.TestCase):
-    class FakeResp:
-        def __init__(self, data):
-            self._data = data
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            return False
-
-        def read(self):
-            return self._data
-
-    def content(self, entries):
-        body = json.dumps({"entries": entries})
-        return json.dumps({"choices": [{"message": {"content": body}}]}).encode()
+    def resp(self, entries):
+        content = json.dumps({"entries": entries})
+        return {"choices": [{"message": {"content": content}}]}
 
     def entry(self, line="- a", summary=("On it", "Really on it.")):
         return {"line": line, "summary": list(summary)}
@@ -323,51 +310,51 @@ class TestPolishLines(unittest.TestCase):
             self.entry("- A", ("\u26A1 Shipped it.", "The builder is live.")),
             self.entry("- B", ("Second line.", "More detail.")),
         ]
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.content(entries))
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=self.resp(entries)
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
         self.assertEqual(lines, ["- A", "- B"])
-        self.assertEqual(summaries, [["\u26A1 Shipped it.", "The builder is live."], ["Second line.", "More detail."]])
+        self.assertEqual(
+            summaries,
+            [["\u26A1 Shipped it.", "The builder is live."], ["Second line.", "More detail."]],
+        )
 
     def test_missing_dash_prefix_readded(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen",
-            return_value=self.FakeResp(self.content([self.entry("A")])),
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=self.resp([self.entry("A")])
         ):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- A"])
 
     def test_bad_entry_shape_falls_back(self):
-        bad = json.dumps({"entries": [{"line": "- x", "summary": ["only one"]}]})
-        body = json.dumps({"choices": [{"message": {"content": bad}}]}).encode()
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(body)
+        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "- x", "summary": ["only one"]}]})}}]}
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=bad
         ):
             lines, summaries = u.polish_lines([("- x", "ctx")])
         self.assertEqual(lines, ["- x"])
         self.assertEqual(summaries, [None])
 
     def test_entries_mismatch_falls_back(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen",
-            return_value=self.FakeResp(self.content([self.entry()])),
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=self.resp([self.entry()])
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
         self.assertEqual(lines, ["- a", "- b"])
         self.assertEqual(summaries, [None, None])
 
-    def test_bad_payload_falls_back(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(b"not json")
+    def test_http_error_falls_back(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", side_effect=RuntimeError("curl failed: boom")
         ):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- a"])
         self.assertEqual(summaries, [None])
 
-    def test_network_error_falls_back(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
-            "urllib.request.urlopen", side_effect=OSError("boom")
+    def test_invalid_json_falls_back(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", side_effect=ValueError("bad json")
         ):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- a"])
