@@ -43,17 +43,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🌱 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — created branch [`main`](https://github.com/fworks-tech/atlaslink/tree/main) · 1h ago
-  The main branch now exists for atlaslink.
-  This event only records the branch creation.
+- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `main` · just now
+  Five commits landed on flabs.tech's main branch, tightening the site around the featured project set.
+  Detail pages, sitemap, chat suggestions, and the e2e smoke list now all point to that same curated catalog.
 
-- 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · 1h ago
-  A new main branch was added to byewalls.
-  No code changes are included in this update.
-
-- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `89-studio-captcha-widget-visibility` · 2h ago
-  One commit landed on this branch.
-  It gates the visible Turnstile widget to the playground.
+- 🌱 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — created branch [`feat/90-studio-live-log-model`](https://github.com/fworks-tech/agenthood-site/tree/feat/90-studio-live-log-model) · 1h ago
+  agenthood-site now has a branch named feat/90-studio-live-log-model.
+  The branch name references issue 90 and work on a studio live-log model.
 <!-- recent-activity:end -->
 
 ---
