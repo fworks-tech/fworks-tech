@@ -43,9 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · just now
+- 🌱 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — created branch [`main`](https://github.com/fworks-tech/atlaslink/tree/main) · 1h ago
+  The main branch was created in atlaslink.
+  No commit or push details are included in this event.
+
+- 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · 1h ago
+  The main branch was created in byewalls.
+  No commit or push details are included in this event.
+
 - 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `89-studio-captcha-widget-visibility` · 1h ago
-- 🗑️ [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — deleted branch feat/analytics-collection-health · yesterday
+  Pushed one commit to the 89-studio-captcha-widget-visibility branch.
+  The commit message says: fix(studio): gate visible turnstile widget to playground.
 <!-- recent-activity:end -->
 
 ---
