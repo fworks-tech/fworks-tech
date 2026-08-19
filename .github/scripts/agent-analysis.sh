@@ -109,7 +109,7 @@ build_task
 echo "agent-analysis: running $AGENT_NAME on $(echo "$SAFE_CHANGED" | tr '\n' ' ')"
 
 rc=0
-npx --yes agenthood run "$AGENT_NAME" "$TASK" --provider opencode-go \
+npx --yes agenthood@3.35.0 run "$AGENT_NAME" "$TASK" --provider opencode-go \
   1> "$analysis_file" \
   2>> "$error_file" || rc=$?
 
