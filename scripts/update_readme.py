@@ -88,6 +88,11 @@ def repo_url(repo_full):
     return f"https://github.com/{repo_full}"
 
 
+def clean_text(text):
+    """Strip markdown metacharacters that would break a bullet's rendering."""
+    return text.replace("[", "").replace("]", "").replace("`", "")
+
+
 def parse_events(events):
     """Extract one human-readable line per repo from recent events.
 
@@ -122,7 +127,7 @@ def describe_event(event, repo_short, repo_full):
     if etype == "PullRequestEvent":
         pr = payload.get("pull_request", {})
         action = payload.get("action", "opened")
-        title = pr.get("title", "")[:60]
+        title = clean_text(pr.get("title", ""))[:60]
         number = pr.get("number", "")
         author = pr.get("user", {}).get("login", "")
         merged = pr.get("merged_at")
@@ -138,7 +143,7 @@ def describe_event(event, repo_short, repo_full):
     if etype == "IssuesEvent":
         issue = payload.get("issue", {})
         action = payload.get("action", "opened")
-        title = issue.get("title", "")[:60]
+        title = clean_text(issue.get("title", ""))[:60]
         number = issue.get("number", "")
         author = issue.get("user", {}).get("login", "")
         labels = [label.get("name") for label in issue.get("labels", [])][:2]
@@ -156,10 +161,13 @@ def describe_event(event, repo_short, repo_full):
         commits = payload.get("commits", [])
         ref = payload.get("ref", "").split("/")[-1]
         if len(commits) == 1:
-            sha = commits[0].get("sha", "")[:7]
-            msg = commits[0].get("message", "").split("\n")[0][:60]
-            sha_link = f"[`{sha}`]({base}/commit/{sha})"
-            return f"- {emoji} [**{repo_short}**]({base}) \u2014 pushed {sha_link} to `{ref}`: {msg}{age}"
+            sha = commits[0].get("sha", "")
+            msg = clean_text(commits[0].get("message", "").split("\n")[0])[:60]
+            if sha:
+                short = sha[:7]
+                sha_link = f"[`{short}`]({base}/commit/{sha})"
+                return f"- {emoji} [**{repo_short}**]({base}) \u2014 pushed {sha_link} to `{ref}`: {msg}{age}"
+            return f"- {emoji} [**{repo_short}**]({base}) \u2014 pushed to `{ref}`: {msg}{age}"
         if len(commits) > 1:
             return f"- {emoji} [**{repo_short}**]({base}) \u2014 pushed {len(commits)} commits to `{ref}`{age}"
         return f"- {emoji} [**{repo_short}**]({base}) \u2014 pushed to `{ref}`{age}"
