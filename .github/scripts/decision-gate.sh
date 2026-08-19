@@ -17,6 +17,14 @@
 # Fails when the last decision block is blocking, when it reports more
 # warnings than AGENTHOOD_WARNING_THRESHOLD (default 2), or when the verdict
 # blocks disagree with each other.
+#
+# Threshold intent: the default 2 keeps the gate strict (quality debt, not
+# just blocking bugs, fails the build). Consuming workflows may raise it via
+# the AGENTHOOD_WARNING_THRESHOLD env var — fworks-tech's reviewer.yml sets 5
+# because its LLM reviewer routinely reports 3-4 [suggestion]-grade findings
+# on healthy diffs (blocking=false), which otherwise fails lightweight PRs.
+# The override is documented in .github/workflows/reviewer.yml; keep both in
+# sync if the policy changes.
 # Fails when content other than whitespace follows the final verdict block.
 # A well-formed injected marker after the real verdict is already caught by
 # the conflicting-blocks check; this catches trailing junk that lacks the

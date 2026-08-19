@@ -16,6 +16,11 @@ jobs:
   review:
     runs-on: ubuntu-latest
     env:
+      # Above the decision-gate default (2) on purpose: this repo's reviewer
+      # routinely flags 3-4 [suggestion]-grade findings on healthy diffs
+      # (blocking=false), which would fail lightweight PRs. Blocking findings
+      # always fail regardless of this value. Keep in sync with the threshold
+      # note in .github/scripts/decision-gate.sh.
       AGENTHOOD_WARNING_THRESHOLD: "5"
     steps:
       - uses: actions/checkout@v4
