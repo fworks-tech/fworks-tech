@@ -295,12 +295,47 @@ def llm_completions(payload):
     return json.loads(proc.stdout)
 
 
+FORBIDDEN_WORDS = [
+    "foundation",
+    "critical",
+    "essential",
+    "seamless",
+    "establishing",
+    "single source of truth",
+    "robust",
+    "streamline",
+    "ensures",
+    "empowers",
+]
+
+SYSTEM_PROMPT = (
+    "You polish GitHub activity for a developer's README profile. "
+    "For every ITEM keep the repo name, markdown links and the action verb "
+    "exactly as-is. Then write a short summary of exactly 2 lines to place "
+    "under the bullet. STRICT RULES: "
+    "(1) GROUNDING — write a REAL summary. State only facts present in the "
+    "CONTEXT; never invent features, fixes, motivations or code you cannot "
+    "see. A 1-commit push is a small change, not a milestone. "
+    f"(2) NO BOILERPLATE — never use these words: {', '.join(FORBIDDEN_WORDS)}. "
+    "If a summary could apply to any repo, rewrite it. "
+    "(3) BE SPECIFIC — name the concrete artifact: repo, branch, PR number, "
+    "tag or commit subject. "
+    "(4) VARY — no two summaries may share their opening words or sentence "
+    "structure; rotate the angle (what, why, technical detail). "
+    "(5) SHORT — each line must fit one line and be scannable. "
+    "Reply with JSON only: "
+    '{"entries": [{"line": "...", "summary": ["...", "..."]}, ...]}, '
+    "one entry per ITEM."
+)
+
+
 def polish_lines(items):
     """Reword bullets and write a per-item quick summary via OpenCode Go.
 
     items: list of (bullet_line, context_text). Returns (lines, summaries)
-    where summaries[i] is a list of 2-3 summary lines for lines[i]. Falls
-    back to the original bullets and empty summaries on any failure.
+    where summaries[i] is a list of 1-2 summary lines for lines[i]. Falls
+    back to the original bullets and empty summaries on any failure; a
+    single malformed entry degrades only that entry, not the whole list.
     """
     key = os.environ.get("OPENCODE_API_KEY")
     if not key:
@@ -314,36 +349,28 @@ def polish_lines(items):
             "model": MODEL,
             "temperature": 0.5,
             "messages": [
-                {
-                    "role": "system",
-                    "content": (
-                        "You polish GitHub activity bullets for a developer's README. "
-                        "For every ITEM keep the repo name, markdown links and the "
-                        "action verb exactly as-is while making the bullet concise and "
-                        "engaging, then write a short 2-3 line quick summary right "
-                        "below the bullet explaining what the activity is and why it "
-                        "matters, catching a recruiter's eye. Each summary line must "
-                        "stand on its own (it renders as an indented paragraph under "
-                        "the bullet). Reply with JSON only: "
-                        '{"entries": [{"line": "...", "summary": ["...", "..."]}, ...]}, '
-                        "one entry per ITEM."
-                    ),
-                },
+                {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": numbered},
             ],
             "response_format": {"type": "json_object"},
         }
         data = llm_completions(payload)
         entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
-        if not isinstance(entries, list) or len(entries) != len(items):
-            raise ValueError("entries length mismatch")
+        if not isinstance(entries, list):
+            raise ValueError("entries not a list")
+        entries_by_index = {
+            i: entry for i, entry in enumerate(entries[: len(items)]) if isinstance(entry, dict)
+        }
         lines = []
         summaries = []
-        for entry in entries:
-            line = str(entry.get("line", "")).strip()
-            summary = entry.get("summary")
-            if not line or not isinstance(summary, list) or not 2 <= len(summary) <= 3:
-                raise ValueError("bad entry shape")
+        for i, (bullet, _) in enumerate(items):
+            entry = entries_by_index.get(i)
+            line = str(entry.get("line", "")).strip() if entry else ""
+            summary = entry.get("summary") if entry else None
+            if not line or not isinstance(summary, list) or not 1 <= len(summary) <= 2:
+                lines.append(bullet)
+                summaries.append([])
+                continue
             lines.append(line if line.lstrip().startswith("-") else f"- {line}")
             summaries.append([str(s).strip() for s in summary])
         return lines, summaries

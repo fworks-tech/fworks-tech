@@ -327,22 +327,31 @@ class TestPolishLines(unittest.TestCase):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- A"])
 
-    def test_bad_entry_shape_falls_back(self):
-        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "- x", "summary": ["only one"]}]})}}]}
+    def test_bad_entry_shape_degrades_only_that_entry(self):
+        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "", "summary": ["a", "b"]}]})}}]}
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=bad
         ):
             lines, summaries = u.polish_lines([("- x", "ctx")])
         self.assertEqual(lines, ["- x"])
-        self.assertEqual(summaries, [None])
+        self.assertEqual(summaries, [[]])
 
-    def test_entries_mismatch_falls_back(self):
+    def test_fewer_entries_degrades_missing(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry()])
+            u, "llm_completions", return_value=self.resp([self.entry("- A", ("On it", "Keep calm."))])
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
-        self.assertEqual(lines, ["- a", "- b"])
-        self.assertEqual(summaries, [None, None])
+        self.assertEqual(lines, ["- A", "- b"])
+        self.assertEqual(summaries, [["On it", "Keep calm."], []])
+
+    def test_partial_bad_entry_keeps_good_ones(self):
+        entries = [self.entry("- A", ("Good line.", "Second good.")), {"line": "x"}]
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=self.resp(entries)
+        ):
+            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
+        self.assertEqual(lines, ["- A", "- b"])
+        self.assertEqual(summaries, [["Good line.", "Second good."], []])
 
     def test_http_error_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
@@ -359,6 +368,13 @@ class TestPolishLines(unittest.TestCase):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- a"])
         self.assertEqual(summaries, [None])
+
+    def test_system_prompt_grounds_against_invention(self):
+        self.assertIn("never invent", u.SYSTEM_PROMPT)
+        self.assertIn("REAL summary", u.SYSTEM_PROMPT)
+        self.assertIn("exactly 2", u.SYSTEM_PROMPT)
+        self.assertIn("foundation", u.SYSTEM_PROMPT)
+        self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
 
     def test_build_activity_lines_renders_summaries(self):
         block = u.build_activity_lines(
