@@ -375,6 +375,8 @@ class TestPolishLines(unittest.TestCase):
         self.assertIn("exactly 2", u.SYSTEM_PROMPT)
         self.assertIn("foundation", u.SYSTEM_PROMPT)
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
+        self.assertIn("confident", u.SYSTEM_PROMPT)
+        self.assertIn("never clinical or robotic", u.SYSTEM_PROMPT)
 
     def test_build_activity_lines_renders_summaries(self):
         block = u.build_activity_lines(
