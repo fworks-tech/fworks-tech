@@ -42,9 +42,9 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- **agenthood-site** — merged PR #86: update
-- **flabs.tech** — deleted branch feat/analytics-collection-health
-- **agenthood** — opened PR #459: update
+- 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · just now
+- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `89-studio-captcha-widget-visibility` · 1h ago
+- 🗑️ [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — deleted branch feat/analytics-collection-health · yesterday
 <!-- recent-activity:end -->
 
 ---
@@ -122,4 +122,4 @@
 
 ---
 
-*Last updated: Aug 18, 2026
+*Last updated: Aug 19, 2026
