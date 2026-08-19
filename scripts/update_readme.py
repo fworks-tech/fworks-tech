@@ -130,7 +130,9 @@ def event_context(event):
         if len(commits) == 1:
             msg = commits[0].get("message", "").split("\n")[0][:80]
             return f"pushed 1 commit to branch {ref}: {msg}"
-        return f"pushed {len(commits)} commits to branch {ref}"
+        if len(commits) > 1:
+            return f"pushed {len(commits)} commits to branch {ref}"
+        return f"pushed to branch {ref} (GitHub did not include commit details)"
 
     if etype == "PullRequestEvent":
         pr = payload.get("pull_request", {})
@@ -322,9 +324,12 @@ SYSTEM_PROMPT = (
     "If a summary could apply to any repo, rewrite it. "
     "(3) BE SPECIFIC — name the concrete artifact: repo, branch, PR number, "
     "tag or commit subject. "
-    "(4) VARY — no two summaries may share their opening words or sentence "
+    "(4) NO NEGATIVE CLAIMS — never assert \"zero commits\", \"no changes\" "
+    "or similar absent facts. An empty or missing commits list only means "
+    "details were not included; say so if relevant. "
+    "(5) VARY — no two summaries may share their opening words or sentence "
     "structure; rotate the angle (what, why, technical detail). "
-    "(5) SHORT — each line must fit one line and be scannable. "
+    "(6) SHORT — each line must fit one line and be scannable. "
     "Reply with JSON only: "
     '{"entries": [{"line": "...", "summary": ["...", "..."]}, ...]}, '
     "one entry per ITEM."

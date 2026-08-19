@@ -256,6 +256,29 @@ class TestEventContext(unittest.TestCase):
         )
         self.assertIn("pushed 1 commit to branch x: feat: wire builder", ctx)
 
+    def test_push_empty_commits_is_ambiguous_not_zero(self):
+        ctx = u.event_context(
+            {
+                "type": "PushEvent",
+                "payload": {"ref": "refs/heads/feat/x", "commits": []},
+            }
+        )
+        self.assertIn("pushed to branch x", ctx)
+        self.assertIn("did not include commit details", ctx)
+        self.assertNotIn("0 commits", ctx)
+
+    def test_push_many_commits(self):
+        ctx = u.event_context(
+            {
+                "type": "PushEvent",
+                "payload": {
+                    "ref": "refs/heads/feat/x",
+                    "commits": [{"sha": "a" * 40}, {"sha": "b" * 40}],
+                },
+            }
+        )
+        self.assertIn("pushed 2 commits to branch x", ctx)
+
     def test_merged_pr(self):
         ctx = u.event_context(
             {
@@ -377,6 +400,8 @@ class TestPolishLines(unittest.TestCase):
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
         self.assertIn("confident", u.SYSTEM_PROMPT)
         self.assertIn("never clinical or robotic", u.SYSTEM_PROMPT)
+        self.assertIn("zero commits", u.SYSTEM_PROMPT)
+        self.assertIn("NO NEGATIVE CLAIMS", u.SYSTEM_PROMPT)
 
     def test_build_activity_lines_renders_summaries(self):
         block = u.build_activity_lines(
