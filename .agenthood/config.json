@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "runtime": "agenthood/agents",
+  "members": [
+    "the-scribe",
+    "the-architect",
+    "the-builder",
+    "the-reviewer",
+    "the-tester",
+    "the-debugger",
+    "the-auditor",
+    "the-herald",
+    "the-librarian",
+    "the-doorman",
+    "the-oracle",
+    "the-envoy",
+    "the-sentinel",
+    "the-warden",
+    "the-steward",
+    "the-operator",
+    "the-strategist",
+    "the-mailman",
+    "the-inspector"
+  ],
+  "providers": [
+    {
+      "name": "opencode-go",
+      "model": "deepseek-v4-flash",
+      "priority": 1
+    },
+    {
+      "name": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "priority": 2
+    }
+  ],
+  "failover": {
+    "failureThreshold": 3,
+    "cooldownMs": 60000,
+    "probeEnabled": true
+  },
+  "qualityGates": {
+    "typescript": false,
+    "tests": true,
+    "impact": true,
+    "lint": false
+  }
+}
