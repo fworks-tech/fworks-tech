@@ -388,6 +388,29 @@ class TestFetchPushMessages(unittest.TestCase):
         self.assertNotIn("did not include", ctx)
 
 
+class TestRenderPrBody(unittest.TestCase):
+    def test_with_activity_has_scribe_sections(self):
+        body = u.render_pr_body(
+            ["agenthood"],
+            {"agenthood": "- \U0001F680 **agenthood**"},
+            [["Real line.", "Second line."]],
+            "Aug 19, 2026",
+        )
+        text = "\n".join(body)
+        self.assertIn("## What", text)
+        self.assertIn("## Why", text)
+        self.assertIn("## How to test", text)
+        self.assertIn("1 entry: agenthood", text)
+        self.assertIn("- \U0001F680 **agenthood**\n  Real line.\n  Second line.", text)
+        self.assertIn("Last updated bumped to Aug 19, 2026.", text)
+
+    def test_without_activity_is_explicit(self):
+        body = u.render_pr_body([], {}, [], "Aug 19, 2026")
+        text = "\n".join(body)
+        self.assertIn("No qualifying public events", text)
+        self.assertNotIn("Recent activity", text)
+
+
 class TestPolishLines(unittest.TestCase):
     def resp(self, entries):
         content = json.dumps({"entries": entries})

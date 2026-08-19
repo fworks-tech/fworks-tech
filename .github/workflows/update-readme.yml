@@ -42,12 +42,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
           git add README.md
-          git commit -m "chore(readme): auto-update recent activity [skip ci]"
+          git commit -m "chore(readme): auto-update recent activity [skip ci]" -m "Refreshed from the GitHub Events API by the update-readme workflow."
           git push origin "$BRANCH" --force
           gh pr create \
             --repo fworks-tech/fworks-tech \
             --base main \
             --head "$BRANCH" \
+            --assignee fworks-tech \
+            --label documentation \
             --title "chore(readme): auto-update recent activity ($DATE)" \
             --body-file scripts/update_summary.txt
           echo "PR created on branch $BRANCH"
