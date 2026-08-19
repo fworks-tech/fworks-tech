@@ -15,6 +15,7 @@ section is missing or the API call fails.
 import json
 import os
 import re
+import subprocess
 import urllib.request
 from datetime import datetime, timezone
 
@@ -271,6 +272,29 @@ def build_activity_lines(event_map, summaries):
     return "\n\n".join(blocks) + "\n"
 
 
+def llm_completions(payload):
+    """POST a chat completion to the LLM gateway via curl.
+
+    Uses curl instead of urllib because the gateway sits behind Cloudflare
+    and rejects urllib's TLS fingerprint (HTTP 1010).
+    """
+    proc = subprocess.run(
+        [
+            "curl", "-sS", "-m", "30", "-X", "POST",
+            f"{API_BASE}/chat/completions",
+            "-H", f"Authorization: Bearer {os.environ['OPENCODE_API_KEY']}",
+            "-H", "Content-Type: application/json",
+            "-d", json.dumps(payload),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=35,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"curl failed: {proc.stderr.strip()}")
+    return json.loads(proc.stdout)
+
+
 def polish_lines(items):
     """Reword bullets and write a per-item quick summary via OpenCode Go.
 
@@ -309,16 +333,7 @@ def polish_lines(items):
             ],
             "response_format": {"type": "json_object"},
         }
-        req = urllib.request.Request(
-            f"{API_BASE}/chat/completions",
-            data=json.dumps(payload).encode(),
-            headers={
-                "Authorization": f"Bearer {key}",
-                "Content-Type": "application/json",
-            },
-        )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = json.loads(resp.read())
+        data = llm_completions(payload)
         entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
         if not isinstance(entries, list) or len(entries) != len(items):
             raise ValueError("entries length mismatch")
