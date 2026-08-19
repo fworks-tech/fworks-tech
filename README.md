@@ -30,7 +30,7 @@
 
 | Repository | Description |
 |---|---|
-| [atlaslink](https://github.com/fworks-tech/atlaslink) | Multi-agent orchestrator — Agenthood proof-of-concept with gorgeous live diagram flows to connect and run AI agents, landing soon at [atlas.flabs.tech](https://atlas.flabs.tech) |
+| [atlaslink](https://github.com/fworks-tech/atlaslink) | (coming soon) Multi-agent orchestrator — Agenthood proof-of-concept with gorgeous live diagram flows to connect and run AI agents, landing soon at [atlas.flabs.tech](https://atlas.flabs.tech) |
 | [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning Q&A generator — 7-agent pipeline (draft, self-critique, consensus), CRAG architecture (semantic cache + hybrid retrieve + cross-encoder rerank), 8 MCP tools, hot-swappable prompts, structured observability with token/cost tracking, 220+ tests |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Once UI design system, MDX blog, dynamic OG images, WCAG 2.1 AA, Vitest + Playwright E2E, Storybook 10, Lighthouse CI, live at [flabs.tech](https://flabs.tech) |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 18 AI agents as Markdown skill files — SKILL.md open standard, TypeScript runtime, npm package, VS Code extension, Academy, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
