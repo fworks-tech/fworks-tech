@@ -255,55 +255,71 @@ class TestPolishLines(unittest.TestCase):
         def read(self):
             return self._data
 
-    def content(self, lines, hook="\u26A1 Moving fast"):
-        body = json.dumps({"hook": hook, "lines": lines})
+    def content(self, lines, summary=("\u26A1 Moving fast", "Second summary line.")):
+        body = json.dumps({"summary": list(summary), "lines": lines})
         return json.dumps({"choices": [{"message": {"content": body}}]}).encode()
 
-    def test_no_key_uses_default_hook(self):
+    def test_no_key_uses_default_summary(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
-            hook, lines = u.polish_lines(["- a", "- b"])
+            summary, lines = u.polish_lines(["- a", "- b"])
         self.assertEqual(lines, ["- a", "- b"])
-        self.assertIn("2", hook)
+        self.assertEqual(len(summary), 3)
+        self.assertIn("2", summary[0])
 
-    def test_default_hook_singular(self):
-        self.assertIn("1 recent repo", u.default_hook(["- a"]))
+    def test_default_summary_singular(self):
+        self.assertIn("1 repo", u.default_summary(["- a"])[0])
 
     def test_valid_response_rewrites(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen",
-            return_value=self.FakeResp(self.content(["- A", "- B"], "\u26A1 On a roll")),
+            return_value=self.FakeResp(
+                self.content(["- A", "- B"], ("\u26A1 On a roll", "Two lines."))
+            ),
         ):
-            hook, lines = u.polish_lines(["- a", "- b"])
+            summary, lines = u.polish_lines(["- a", "- b"])
         self.assertEqual(lines, ["- A", "- B"])
-        self.assertEqual(hook, "\u26A1 On a roll")
+        self.assertEqual(summary, ["\u26A1 On a roll", "Two lines."])
 
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen",
             return_value=self.FakeResp(self.content(["A", "B"])),
         ):
-            hook, lines = u.polish_lines(["- a", "- b"])
+            summary, lines = u.polish_lines(["- a", "- b"])
         self.assertEqual(lines, ["- A", "- B"])
+
+    def test_bad_summary_shape_falls_back(self):
+        bad = json.dumps({"summary": "not a list", "lines": ["- x"]})
+        body = json.dumps({"choices": [{"message": {"content": bad}}]}).encode()
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
+            "urllib.request.urlopen", return_value=self.FakeResp(body)
+        ):
+            summary, lines = u.polish_lines(["- x"])
+        self.assertEqual(lines, ["- x"])
+        self.assertEqual(len(summary), 3)
+        self.assertIn("1", summary[0])
 
     def test_bad_payload_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", return_value=self.FakeResp(b"not json")
         ):
-            hook, lines = u.polish_lines(["- a"])
+            summary, lines = u.polish_lines(["- a"])
         self.assertEqual(lines, ["- a"])
-        self.assertIn("1", hook)
+        self.assertEqual(len(summary), 3)
 
     def test_network_error_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch(
             "urllib.request.urlopen", side_effect=OSError("boom")
         ):
-            hook, lines = u.polish_lines(["- a"])
+            summary, lines = u.polish_lines(["- a"])
         self.assertEqual(lines, ["- a"])
-        self.assertIn("1", hook)
+        self.assertEqual(len(summary), 3)
 
-    def test_build_activity_lines_renders_hook(self):
-        block = u.build_activity_lines({"a": "- a", "b": "- b"}, "\u26A1 Ho")
-        self.assertIn("> \u26A1 Ho\n\n- a\n- b\n", block)
+    def test_build_activity_lines_renders_summary(self):
+        block = u.build_activity_lines(
+            {"a": "- a", "b": "- b"}, ["\u26A1 Ho", "Second line."]
+        )
+        self.assertIn("> \u26A1 Ho\n> Second line.\n\n- a\n- b\n", block)
 
 
 if __name__ == "__main__":

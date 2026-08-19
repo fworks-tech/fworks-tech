@@ -208,27 +208,33 @@ def describe_event(event, repo_short, repo_full):
     return f"- {emoji} [**{repo_short}**]({base}) \u2014 activity{age}"
 
 
-def build_activity_lines(event_map, hook):
-    """Build the markdown block: hook line followed by the bullet list."""
-    return f"> {hook}\n\n" + "\n".join(event_map.values()) + "\n"
+def build_activity_lines(event_map, summary):
+    """Build the markdown block: summary quote lines followed by bullets."""
+    quote = "\n".join(f"> {line}" for line in summary)
+    return f"{quote}\n\n" + "\n".join(event_map.values()) + "\n"
 
 
-def default_hook(lines):
-    """Deterministic one-line summary used when the LLM is unavailable."""
+def default_summary(lines):
+    """Deterministic 3-line summary used when the LLM is unavailable."""
     count = len(lines)
     noun = "repos" if count != 1 else "repo"
-    return f"\u26A1 {count} recent {noun} just moved \u2014 fresh commits, PRs and branches from the fworks-tech workshop."
+    return [
+        f"\u26A1 {count} {noun} just moved in the fworks-tech workshop.",
+        "Fresh branches, commits and PRs \u2014 all public, all recent.",
+        "Explore the repos below to see what is shipping today.",
+    ]
 
 
 def polish_lines(lines):
-    """Reword bullets and write a hook line via OpenCode Go.
+    """Reword bullets and write a short summary via OpenCode Go.
 
-    Returns (hook, lines). Falls back to the deterministic summary and the
-    original bullets on any failure.
+    Returns (summary, lines) where summary is a list of 2-3 quote lines.
+    Falls back to the deterministic summary and the original bullets on
+    any failure.
     """
     key = os.environ.get("OPENCODE_API_KEY")
     if not key:
-        return default_hook(lines), lines
+        return default_summary(lines), lines
     try:
         payload = {
             "model": MODEL,
@@ -237,13 +243,15 @@ def polish_lines(lines):
                 {
                     "role": "system",
                     "content": (
-                        "You reword GitHub activity for a developer's README. "
-                        "Keep every repo name and markdown link exactly as-is, one line "
-                        "per bullet, concise and slightly more engaging. Write one "
-                        "short energizing hook line (with an emoji, max 120 chars, "
-                        "no markdown heading) that summarizes the activity and catches "
-                        "a recruiter's eye. Reply with JSON only: "
-                        '{"hook": "...", "lines": ["...", "..."]}.'
+                        "You summarize GitHub activity for a developer's README. "
+                        "Keep every repo name and markdown link in the bullets "
+                        "exactly as-is, one line per bullet, concise and slightly "
+                        "more engaging. Write a short 2-3 line summary in plain "
+                        "prose (one emoji allowed, no markdown headings) that "
+                        "explains the activity and catches a recruiter's eye; each "
+                        "line becomes a blockquote line and must stand on its own. "
+                        "Reply with JSON only: "
+                        '{"summary": ["...", "...", "..."], "lines": ["...", "..."]}.'
                     ),
                 },
                 {"role": "user", "content": "\n".join(lines)},
@@ -262,17 +270,21 @@ def polish_lines(lines):
             data = json.loads(resp.read())
         result = json.loads(data["choices"][0]["message"]["content"])
         items = result.get("lines")
-        hook = result.get("hook", "").strip()
-        if isinstance(items, list) and len(items) == len(lines):
+        summary = result.get("summary")
+        if (
+            isinstance(items, list)
+            and len(items) == len(lines)
+            and isinstance(summary, list)
+            and 2 <= len(summary) <= 3
+        ):
             polished = [
                 item if str(item).lstrip().startswith("-") else f"- {item}"
                 for item in items
             ]
-            if hook:
-                return hook, polished
+            return [str(line).strip() for line in summary], polished
     except Exception as e:
         print(f"LLM polish unavailable, keeping fallback text: {e}")
-    return default_hook(lines), lines
+    return default_summary(lines), lines
 
 
 def set_output(value):
@@ -299,9 +311,9 @@ def main():
         return
 
     event_map = parse_events(events)
-    hook = None
+    summary = None
     if event_map:
-        hook, polished = polish_lines(list(event_map.values()))
+        summary, polished = polish_lines(list(event_map.values()))
         event_map = dict(zip(event_map.keys(), polished))
 
     with open(README_PATH, "r", encoding="utf-8") as f:
@@ -313,7 +325,7 @@ def main():
         set_output(0)
         return
 
-    new_rows = build_activity_lines(event_map, hook) if event_map else "\n"
+    new_rows = build_activity_lines(event_map, summary) if event_map else "\n"
     old_activity = m.group(1).strip()
     old_date = re.search(r"Last updated: (.+)", content)
     old_date_str = old_date.group(1) if old_date else ""
@@ -336,19 +348,19 @@ def main():
         f.write(new_content)
 
     repos = list(event_map.keys())
-    summary_lines = ["Auto-generated by update-readme workflow", ""]
+    body_lines = ["Auto-generated by update-readme workflow", ""]
     if event_map:
-        if hook:
-            summary_lines.append(f"Hook: {hook}")
-        summary_lines.append("Recent activity:")
+        body_lines.append("Summary:")
+        body_lines.extend(summary)
+        body_lines.append("Recent activity:")
         for line in event_map.values():
-            summary_lines.append(line)
+            body_lines.append(line)
     else:
-        summary_lines.append("No contribution events found.")
-    summary_lines.append(f"\nLast updated bumped to {today}.")
+        body_lines.append("No contribution events found.")
+    body_lines.append(f"\nLast updated bumped to {today}.")
 
     with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
-        f.write("\n".join(summary_lines) + "\n")
+        f.write("\n".join(body_lines) + "\n")
 
     change_desc = ", ".join(repos) if repos else "date bump only"
     print(f"README updated. Changes: {change_desc}")

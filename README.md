@@ -43,7 +43,9 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-> ⚡ 3 recent repos just moved — fresh commits, PRs and branches from the fworks-tech workshop.
+> ⚡ 3 repos just moved in the fworks-tech workshop.
+> Fresh branches, commits and PRs — all public, all recent.
+> Explore the repos below to see what is shipping today.
 
 - 🌱 [**byewalls**](https://github.com/fworks-tech/byewalls) — created branch [`main`](https://github.com/fworks-tech/byewalls/tree/main) · just now
 - 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `89-studio-captcha-widget-visibility` · 1h ago
