@@ -94,7 +94,46 @@ def clean_text(text):
     return text.replace("[", "").replace("]", "").replace("`", "")
 
 
-def parse_events(events):
+def fetch_push_messages(event, token):
+    """Fetch the real commit subjects for a push that omitted them.
+
+    Uses the compare endpoint between the push's before and head SHAs so
+    the LLM sees exactly the commits that were pushed.
+    """
+    repo_full = event.get("repo", {}).get("name", "")
+    payload = event.get("payload", {})
+    before, head = payload.get("before"), payload.get("head")
+    if not (repo_full and before and head):
+        return []
+    url = f"https://api.github.com/repos/{repo_full}/compare/{before}...{head}"
+    req = urllib.request.Request(url)
+    req.add_header("Authorization", f"Bearer {token}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("User-Agent", "update-readme-script")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read())
+    except Exception as e:
+        print(f"Failed to fetch push commits for {repo_full}: {e}")
+        return []
+    return [
+        c.get("commit", {}).get("message", "").split("\n")[0][:80]
+        for c in data.get("commits", [])[:10]
+    ]
+
+
+def push_messages(event, token=None):
+    """Commit subjects for a push: from the payload when present, else fetched."""
+    messages = [
+        c.get("message", "").split("\n")[0][:80]
+        for c in event.get("payload", {}).get("commits", [])
+    ]
+    if messages or not token:
+        return messages
+    return fetch_push_messages(event, token)
+
+
+def parse_events(events, token=None):
     """Extract one (bullet, context) pair per repo from recent events.
 
     Deduplicates by repo, keeping only the most recent event for each.
@@ -112,14 +151,14 @@ def parse_events(events):
             continue
         seen[repo_short] = (
             describe_event(event, repo_short, repo_full),
-            event_context(event),
+            event_context(event, push_messages(event, token)),
         )
         if len(seen) >= TOP_N:
             break
     return seen
 
 
-def event_context(event):
+def event_context(event, push_messages=None):
     """Structured one-line digest of an event, used for the LLM prompt."""
     etype = event.get("type", "")
     payload = event.get("payload", {})
@@ -127,11 +166,17 @@ def event_context(event):
     if etype == "PushEvent":
         commits = payload.get("commits", [])
         ref = payload.get("ref", "").split("/")[-1]
+        if push_messages:
+            joined = "; ".join(push_messages)[:200]
+            return f"pushed {len(push_messages)} commits to branch {ref}: {joined}"
         if len(commits) == 1:
             msg = commits[0].get("message", "").split("\n")[0][:80]
             return f"pushed 1 commit to branch {ref}: {msg}"
         if len(commits) > 1:
-            return f"pushed {len(commits)} commits to branch {ref}"
+            joined = "; ".join(
+                c.get("message", "").split("\n")[0][:80] for c in commits[:10]
+            )
+            return f"pushed {len(commits)} commits to branch {ref}: {joined}"
         return f"pushed to branch {ref} (GitHub did not include commit details)"
 
     if etype == "PullRequestEvent":
@@ -409,7 +454,7 @@ def main():
         set_output(0)
         return
 
-    event_map = parse_events(events)
+    event_map = parse_events(events, token)
     summaries = []
     if event_map:
         items = list(event_map.values())

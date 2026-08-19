@@ -267,17 +267,29 @@ class TestEventContext(unittest.TestCase):
         self.assertIn("did not include commit details", ctx)
         self.assertNotIn("0 commits", ctx)
 
+    def test_push_context_includes_real_messages(self):
+        ctx = u.event_context(
+            {
+                "type": "PushEvent",
+                "payload": {"ref": "refs/heads/feat/x", "commits": []},
+            },
+            push_messages=["fix: wire captcha", "feat: add visibility toggle"],
+        )
+        self.assertIn("pushed 2 commits to branch x", ctx)
+        self.assertIn("fix: wire captcha", ctx)
+        self.assertNotIn("did not include", ctx)
+
     def test_push_many_commits(self):
         ctx = u.event_context(
             {
                 "type": "PushEvent",
                 "payload": {
                     "ref": "refs/heads/feat/x",
-                    "commits": [{"sha": "a" * 40}, {"sha": "b" * 40}],
+                    "commits": [{"message": "one"}, {"message": "two"}],
                 },
             }
         )
-        self.assertIn("pushed 2 commits to branch x", ctx)
+        self.assertIn("pushed 2 commits to branch x: one; two", ctx)
 
     def test_merged_pr(self):
         ctx = u.event_context(
@@ -312,6 +324,68 @@ class TestEventContext(unittest.TestCase):
             }
         )
         self.assertIn("opened issue #7: OG broken by @fabio labels: bug", ctx)
+
+
+class TestFetchPushMessages(unittest.TestCase):
+    class FakeResp:
+        def __init__(self, data):
+            self._data = json.dumps(data).encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return self._data
+
+    def event(self):
+        return {
+            "type": "PushEvent",
+            "repo": {"name": "fworks-tech/agenthood-site"},
+            "payload": {
+                "ref": "refs/heads/89-studio-captcha-widget-visibility",
+                "before": "abc123",
+                "head": "def456",
+                "commits": [],
+            },
+        }
+
+    def resp(self):
+        return {
+            "commits": [
+                {"commit": {"message": "fix: wire captcha\nbody"}},
+                {"commit": {"message": "feat: add toggle"}},
+            ]
+        }
+
+    def test_returns_commit_subjects(self):
+        with mock.patch(
+            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+        ):
+            msgs = u.fetch_push_messages(self.event(), "token")
+        self.assertEqual(msgs, ["fix: wire captcha", "feat: add toggle"])
+
+    def test_failure_returns_empty(self):
+        with mock.patch("urllib.request.urlopen", side_effect=OSError("boom")):
+            msgs = u.fetch_push_messages(self.event(), "token")
+        self.assertEqual(msgs, [])
+
+    def test_missing_head_returns_empty(self):
+        ev = self.event()
+        ev["payload"] = {"commits": []}
+        self.assertEqual(u.fetch_push_messages(ev, "token"), [])
+
+    def test_parse_events_feeds_real_messages_to_context(self):
+        with mock.patch(
+            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+        ):
+            parsed = u.parse_events([self.event()], "token")
+        ctx = parsed["agenthood-site"][1]
+        self.assertIn("pushed 2 commits", ctx)
+        self.assertIn("fix: wire captcha", ctx)
+        self.assertNotIn("did not include", ctx)
 
 
 class TestPolishLines(unittest.TestCase):
