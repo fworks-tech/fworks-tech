@@ -43,13 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `main` · just now
-  Five commits landed on flabs.tech's main branch, tightening the site around the featured project set.
-  Detail pages, sitemap, chat suggestions, and the e2e smoke list now all point to that same curated catalog.
+- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-460-mind-virus-defense` · 6h ago
+  Pushed a single commit to `issue-460-mind-virus-defense` completing the mind virus defense feature.
+  The commit handles corrupt lockfile scenarios and adds marker logic to the security layer.
 
-- 🌱 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — created branch [`feat/90-studio-live-log-model`](https://github.com/fworks-tech/agenthood-site/tree/feat/90-studio-live-log-model) · 1h ago
-  agenthood-site now has a branch named feat/90-studio-live-log-model.
-  The branch name references issue 90 and work on a studio live-log model.
+- 🌱 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — created branch [`feat/76-atlaslink-coming-soon`](https://github.com/fworks-tech/flabs.tech/tree/feat/76-atlaslink-coming-soon) · 7h ago
+  Created branch `feat/76-atlaslink-coming-soon` in flabs.tech.
+  This branch is set up for upcoming AtlasLink-related work.
+
+- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch feat/123-captcha-gates-save-button · 9h ago
+  Removed the `feat/123-captcha-gates-save-button` branch from agenthood-site.
+  The branch is no longer active, indicating that work on that feature has concluded.
 <!-- recent-activity:end -->
 
 ---
@@ -127,4 +131,4 @@
 
 ---
 
-*Last updated: Aug 19, 2026
+*Last updated: Aug 20, 2026
