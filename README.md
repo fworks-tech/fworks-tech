@@ -10,6 +10,14 @@
 
 ---
 
+## 📊 GitHub Activity
+
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=fworks-tech&theme=react-dark&hide_border=true&area=true" width="100%" alt="fworks-tech GitHub Activity Graph" />
+</div>
+
+---
+
 ## 💝 Support My Work
 
 [![GitHub Sponsor](https://img.shields.io/badge/Sponsor%20Me-%F0%9F%A4%97-ea4aaa?style=for-the-badge&logo=github)](https://github.com/sponsors/fworks-tech)
