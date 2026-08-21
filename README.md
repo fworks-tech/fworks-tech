@@ -43,17 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-460-mind-virus-defense` · 6h ago
-  Pushed a single commit to `issue-460-mind-virus-defense` completing the mind virus defense feature.
-  The commit handles corrupt lockfile scenarios and adds marker logic to the security layer.
+- 🗑️ [**atlaslink**](https://github.com/fworks-tech/atlaslink) — deleted branch docs/issue-13-sequence-diagram-evidence · 1h ago
+  Cleaned up the docs branch tied to issue 13, removing the sequence diagram evidence after it was no longer needed.
+  The branch docs/issue-13-sequence-diagram-evidence is gone, keeping the repo's branch list tidy.
 
-- 🌱 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — created branch [`feat/76-atlaslink-coming-soon`](https://github.com/fworks-tech/flabs.tech/tree/feat/76-atlaslink-coming-soon) · 7h ago
-  Created branch `feat/76-atlaslink-coming-soon` in flabs.tech.
-  This branch is set up for upcoming AtlasLink-related work.
+- 🌱 [**agenthood**](https://github.com/fworks-tech/agenthood) — created branch [`refactor/issue-479-reframe-steward-routing`](https://github.com/fworks-tech/agenthood/tree/refactor/issue-479-reframe-steward-routing) · 1h ago
+  Started a new refactor branch for issue 479, focusing on reworking steward routing logic.
+  The branch refactor/issue-479-reframe-steward-routing is now open for upcoming changes.
 
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch feat/123-captcha-gates-save-button · 9h ago
-  Removed the `feat/123-captcha-gates-save-button` branch from agenthood-site.
-  The branch is no longer active, indicating that work on that feature has concluded.
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — merged [PR #141](https://github.com/fworks-tech/agenthood-site/pull/141) · 1h ago
+  Merged PR #141 into agenthood-site, integrating the proposed changes from that pull request.
+  The merge brings PR #141's updates into the main codebase, closing out that review cycle.
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +131,4 @@
 
 ---
 
-*Last updated: Aug 20, 2026
+*Last updated: Aug 21, 2026
