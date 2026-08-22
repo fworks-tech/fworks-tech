@@ -43,17 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**atlaslink**](https://github.com/fworks-tech/atlaslink) — deleted branch docs/issue-13-sequence-diagram-evidence · 1h ago
-  Cleaned up the docs branch tied to issue 13, removing the sequence diagram evidence after it was no longer needed.
-  The branch docs/issue-13-sequence-diagram-evidence is gone, keeping the repo's branch list tidy.
+- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
+  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
+  The branch was deleted from the remote around 10h ago.
 
-- 🌱 [**agenthood**](https://github.com/fworks-tech/agenthood) — created branch [`refactor/issue-479-reframe-steward-routing`](https://github.com/fworks-tech/agenthood/tree/refactor/issue-479-reframe-steward-routing) · 1h ago
-  Started a new refactor branch for issue 479, focusing on reworking steward routing logic.
-  The branch refactor/issue-479-reframe-steward-routing is now open for upcoming changes.
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
+  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
+  It syncs repository documentation with the M1 shipped status.
 
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — merged [PR #141](https://github.com/fworks-tech/agenthood-site/pull/141) · 1h ago
-  Merged PR #141 into agenthood-site, integrating the proposed changes from that pull request.
-  The merge brings PR #141's updates into the main codebase, closing out that review cycle.
+- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
+  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
+  That removes the branch named for the issue-479 steward routing refactor.
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +131,4 @@
 
 ---
 
-*Last updated: Aug 21, 2026
+*Last updated: Aug 22, 2026
