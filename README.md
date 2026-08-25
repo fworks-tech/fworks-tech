@@ -43,17 +43,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
-  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
-  The branch was deleted from the remote around 10h ago.
+- 🌱 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — created branch [`feat/3-session-store`](https://github.com/fworks-tech/atlaslink/tree/feat/3-session-store) · 3h ago
+  Branch feat/3-session-store was created in atlaslink 3 hours ago.
+  The branch name points toward session store work as its focus.
 
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
-  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
-  It syncs repository documentation with the M1 shipped status.
-
-- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
-  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
-  That removes the branch named for the issue-479 steward routing refactor.
+- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-category-filter-test · 12h ago
+  Removed the fix/e2e-category-filter-test branch from agenthood-site.
+  That branch is now gone from the repository's branch list.
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +127,4 @@
 
 ---
 
-*Last updated: Aug 22, 2026
+*Last updated: Aug 25, 2026
