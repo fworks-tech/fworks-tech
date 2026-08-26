@@ -43,17 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
-  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
-  The branch was deleted from the remote around 10h ago.
+- 🌱 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — created branch [`feat/43-conversation-export`](https://github.com/fworks-tech/agenthood-site/tree/feat/43-conversation-export) · 7h ago
+  Created branch feat/43-conversation-export in agenthood-site.
+  Branch name references conversation-export work.
 
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
-  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
-  It syncs repository documentation with the M1 shipped status.
+- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-474-run-event-bus-tests` · 8h ago
+  Pushed one commit to issue-474-run-event-bus-tests.
+  Commit subject: fix(ci): restore mixed-node advisory reporting in audit gate.
 
-- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
-  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
-  That removes the branch named for the issue-479 steward routing refactor.
+- 🗑️ [**atlaslink**](https://github.com/fworks-tech/atlaslink) — deleted branch docs/3-m3-task-api · 10h ago
+  Removed branch docs/3-m3-task-api from atlaslink.
+  Branch name references docs for the M3 task API.
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +131,4 @@
 
 ---
 
-*Last updated: Aug 22, 2026
+*Last updated: Aug 26, 2026
