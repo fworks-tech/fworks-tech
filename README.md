@@ -43,17 +43,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
-  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
-  The branch was deleted from the remote around 10h ago.
+- 💬 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — commented on [issue #40](https://github.com/fworks-tech/atlaslink/issues/40) · 6h ago
+  Joined the discussion on atlaslink issue #40.
+  Left a comment on the reported topic.
 
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
-  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
-  It syncs repository documentation with the M1 shipped status.
+- 🌱 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — created branch [`feat/42-tool-history-replay`](https://github.com/fworks-tech/agenthood-site/tree/feat/42-tool-history-replay) · yesterday
+  Created feat/42-tool-history-replay on agenthood-site.
+  The new branch points toward tool history replay work.
 
-- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
-  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
-  That removes the branch named for the issue-479 steward routing refactor.
+- 🌱 [**agenthood**](https://github.com/fworks-tech/agenthood) — created branch [`fix/issue-473-architect-echo`](https://github.com/fworks-tech/agenthood/tree/fix/issue-473-architect-echo) · yesterday
+  Added fix/issue-473-architect-echo to agenthood.
+  The branch targets the architect echo issue from #473.
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +131,4 @@
 
 ---
 
-*Last updated: Aug 22, 2026
+*Last updated: Aug 27, 2026
