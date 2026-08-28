@@ -13,6 +13,22 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_readme as u  # noqa: E402
 
 
+class _FakeResp:
+    """Context-manager HTTP response stub for mocked urlopen."""
+
+    def __init__(self, data):
+        self._data = json.dumps(data).encode()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+    def read(self):
+        return self._data
+
+
 class FrozenNow(datetime):
     @classmethod
     def now(cls, tz=None):
@@ -241,55 +257,134 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
         self.assertEqual(len(parsed), u.TOP_N)
 
 
+class TestFetchEvents(unittest.TestCase):
+    def test_returns_none_on_api_failure(self):
+        with mock.patch.object(u, "api_get", return_value=None):
+            self.assertIsNone(u.fetch_events("token"))
+
+    def test_returns_none_on_non_list_response(self):
+        with mock.patch.object(u, "api_get", return_value={"message": "rate limited"}):
+            self.assertIsNone(u.fetch_events("token"))
+
+    def test_returns_empty_list_when_no_activity(self):
+        with mock.patch.object(u, "api_get", return_value=[]):
+            self.assertEqual(u.fetch_events("token"), [])
+
+    def test_distinguishes_error_from_empty(self):
+        with mock.patch.object(u, "api_get", side_effect=[None, []]):
+            self.assertIsNone(u.fetch_events("token"))
+            self.assertEqual(u.fetch_events("token"), [])
+
+
+class TestEnrichEvent(unittest.TestCase):
+    def pr_event(self):
+        return {
+            "type": "PullRequestEvent",
+            "repo": {"name": "fworks-tech/agenthood"},
+            "payload": {
+                "action": "closed",
+                "pull_request": {
+                    "number": 9,
+                    "title": "wire captcha widget",
+                    "body": "Fixes #5",
+                    "merged_at": "t",
+                    "user": {"login": "fabio"},
+                    "head": {"ref": "feat/x"},
+                    "base": {"ref": "main"},
+                },
+            },
+        }
+
+    def respond_by_url(self):
+        def open_url(req, timeout=None):
+            url = req.full_url
+            if "/pulls/9/commits" in url:
+                return _FakeResp(
+                    [{"sha": "c" * 40, "commit": {"message": "feat: wire captcha (#9)"}}]
+                )
+            if "/issues/5" in url:
+                return _FakeResp({"number": 5, "title": "caption broken"})
+            if "/issues/9" in url:
+                return _FakeResp({"number": 9, "title": "captcha widget"})
+            raise AssertionError(f"unexpected url: {url}")
+
+        return open_url
+
+    def test_pr_wires_commits_issues_and_prs(self):
+        with mock.patch("urllib.request.urlopen", side_effect=self.respond_by_url()):
+            detail = u.enrich_event(self.pr_event(), "token")
+        self.assertEqual(detail["commits"], [("c" * 40, "feat: wire captcha (#9)")])
+        self.assertEqual(detail["issues"], {5: "caption broken"})
+        self.assertEqual(detail["prs"], {9: "captcha widget"})
+        self.assertEqual(detail["pr"]["head"], "feat/x")
+
+    def test_no_token_skips_network(self):
+        with mock.patch.object(u, "fetch_pr_commits") as fpc, mock.patch.object(
+            u, "fetch_issue_titles"
+        ) as fit:
+            detail = u.enrich_event(self.pr_event(), None)
+        fpc.assert_not_called()
+        fit.assert_not_called()
+        self.assertEqual(detail["commits"], [])
+        self.assertEqual(detail["issues"], {})
+        self.assertEqual(detail["prs"], {})
+
+
 class TestEventContext(unittest.TestCase):
+    def push_event(self):
+        return {
+            "type": "PushEvent",
+            "payload": {"ref": "refs/heads/feat/x", "commits": []},
+        }
+
     def test_push(self):
         ctx = u.event_context(
-            {
-                "type": "PushEvent",
-                "payload": {
-                    "ref": "refs/heads/feat/x",
-                    "commits": [
-                        {"message": "feat: wire builder\n\nbody", "sha": "a" * 40}
-                    ],
-                },
-            }
+            self.push_event(),
+            {"commits": [("a" * 40, "feat: wire builder")], "ref": "feat/x"},
         )
-        self.assertIn("pushed 1 commit to branch x: feat: wire builder", ctx)
+        self.assertIn("pushed 1 commit to branch feat/x: feat: wire builder", ctx)
 
     def test_push_empty_commits_is_ambiguous_not_zero(self):
-        ctx = u.event_context(
-            {
-                "type": "PushEvent",
-                "payload": {"ref": "refs/heads/feat/x", "commits": []},
-            }
-        )
-        self.assertIn("pushed to branch x", ctx)
+        ctx = u.event_context(self.push_event(), {"ref": "feat/x"})
+        self.assertIn("pushed to branch feat/x", ctx)
         self.assertIn("did not include commit details", ctx)
         self.assertNotIn("0 commits", ctx)
 
-    def test_push_context_includes_real_messages(self):
+    def test_push_context_includes_fetched_messages(self):
         ctx = u.event_context(
+            self.push_event(),
             {
-                "type": "PushEvent",
-                "payload": {"ref": "refs/heads/feat/x", "commits": []},
+                "ref": "feat/x",
+                "commits": [
+                    ("4" * 40, "fix: wire captcha"),
+                    ("9" * 40, "feat: add visibility toggle"),
+                ],
             },
-            push_messages=["fix: wire captcha", "feat: add visibility toggle"],
         )
-        self.assertIn("pushed 2 commits to branch x", ctx)
-        self.assertIn("fix: wire captcha", ctx)
+        self.assertIn(
+            "pushed 2 commits to branch feat/x: fix: wire captcha; feat: add visibility toggle",
+            ctx,
+        )
         self.assertNotIn("did not include", ctx)
 
     def test_push_many_commits(self):
         ctx = u.event_context(
-            {
-                "type": "PushEvent",
-                "payload": {
-                    "ref": "refs/heads/feat/x",
-                    "commits": [{"message": "one"}, {"message": "two"}],
-                },
-            }
+            self.push_event(),
+            {"commits": [("1" * 40, "one"), ("2" * 40, "two")], "ref": "feat/x"},
         )
-        self.assertIn("pushed 2 commits to branch x: one; two", ctx)
+        self.assertIn("pushed 2 commits to branch feat/x: one; two", ctx)
+
+    def test_push_lists_linked_issues_and_prs(self):
+        ctx = u.event_context(
+            self.push_event(),
+            {
+                "commits": [("1" * 40, "fix: bump deps (#42)")],
+                "issues": {5: "OG broken"},
+                "prs": {42: "bump deps"},
+            },
+        )
+        self.assertIn("linked issues: #5 OG broken", ctx)
+        self.assertIn("referenced PRs: #42 bump deps", ctx)
 
     def test_merged_pr(self):
         ctx = u.event_context(
@@ -304,9 +399,39 @@ class TestEventContext(unittest.TestCase):
                         "user": {"login": "fabio"},
                     },
                 },
-            }
+            },
+            {"pr": {"number": 42, "title": "harden eval", "author": "fabio", "merged_at": "t"}},
         )
         self.assertIn("merged PR #42: harden eval by @fabio", ctx)
+
+    def test_pr_includes_commits_body_and_linked_issues(self):
+        ctx = u.event_context(
+            {
+                "type": "PullRequestEvent",
+                "payload": {
+                    "action": "closed",
+                    "pull_request": {"number": 42, "merged_at": "t"},
+                },
+            },
+            {
+                "pr": {
+                    "number": 42,
+                    "title": "harden eval",
+                    "body": "closes #5",
+                    "head": "feat/x",
+                    "base": "main",
+                    "merged_at": "t",
+                    "author": "fabio",
+                },
+                "commits": [("c9c3b0a" + "0" * 33, "fix: wire captcha")],
+                "issues": {5: "OG broken"},
+                "prs": {},
+            },
+        )
+        self.assertIn("PR body excerpt: closes #5", ctx)
+        self.assertIn("head branch: feat/x, base branch: main", ctx)
+        self.assertIn("PR commits: fix: wire captcha", ctx)
+        self.assertIn("linked issues: #5 OG broken", ctx)
 
     def test_issue_with_labels(self):
         ctx = u.event_context(
@@ -321,25 +446,13 @@ class TestEventContext(unittest.TestCase):
                         "labels": [{"name": "bug"}],
                     },
                 },
-            }
+            },
+            {"issue": {"number": 7, "title": "OG broken", "labels": ["bug"]}},
         )
         self.assertIn("opened issue #7: OG broken by @fabio labels: bug", ctx)
 
 
-class TestFetchPushMessages(unittest.TestCase):
-    class FakeResp:
-        def __init__(self, data):
-            self._data = json.dumps(data).encode()
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            return False
-
-        def read(self):
-            return self._data
-
+class TestFetchPushCommits(unittest.TestCase):
     def event(self):
         return {
             "type": "PushEvent",
@@ -355,57 +468,149 @@ class TestFetchPushMessages(unittest.TestCase):
     def resp(self):
         return {
             "commits": [
-                {"commit": {"message": "fix: wire captcha\nbody"}},
-                {"commit": {"message": "feat: add toggle"}},
+                {"sha": "a" * 40, "commit": {"message": "fix: wire captcha\nbody"}},
+                {"sha": "b" * 40, "commit": {"message": "feat: add toggle"}},
             ]
         }
 
-    def test_returns_commit_subjects(self):
+    def test_returns_commit_shas_and_subjects(self):
         with mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
         ):
-            msgs = u.fetch_push_messages(self.event(), "token")
-        self.assertEqual(msgs, ["fix: wire captcha", "feat: add toggle"])
+            commits = u.fetch_push_commits(
+                "fworks-tech/agenthood-site", "abc123", "def456", "token"
+            )
+        self.assertEqual(
+            commits, [("a" * 40, "fix: wire captcha"), ("b" * 40, "feat: add toggle")]
+        )
 
     def test_failure_returns_empty(self):
         with mock.patch("urllib.request.urlopen", side_effect=OSError("boom")):
-            msgs = u.fetch_push_messages(self.event(), "token")
-        self.assertEqual(msgs, [])
+            self.assertEqual(u.fetch_push_commits("r/o", "a", "b", "token"), [])
 
-    def test_missing_head_returns_empty(self):
-        ev = self.event()
-        ev["payload"] = {"commits": []}
-        self.assertEqual(u.fetch_push_messages(ev, "token"), [])
+    def test_no_token_returns_empty(self):
+        self.assertEqual(u.fetch_push_commits("r/o", "a", "b", None), [])
 
-    def test_parse_events_feeds_real_messages_to_context(self):
+    def test_parse_events_feeds_fetched_commits_to_context_and_refs(self):
         with mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
         ):
             parsed = u.parse_events([self.event()], "token")
-        ctx = parsed["agenthood-site"][1]
-        self.assertIn("pushed 2 commits", ctx)
-        self.assertIn("fix: wire captcha", ctx)
-        self.assertNotIn("did not include", ctx)
+        bullet, ctx, refs = parsed["agenthood-site"]
+        self.assertIn(
+            "pushed 2 commits to branch 89-studio-captcha-widget-visibility: "
+            "fix: wire captcha; feat: add toggle",
+            ctx,
+        )
+        commit_refs = [r for r in refs if r["kind"] == "commit"]
+        self.assertGreaterEqual(len(commit_refs), 2)
+        self.assertTrue(commit_refs[0]["url"].startswith("https://github.com/"))
+
+
+class TestLinkedRefs(unittest.TestCase):
+    def test_keyword_refs_map_to_issues(self):
+        issues, prs = u.linked_refs("Fixes #5\nCloses #12")
+        self.assertEqual(issues, [5, 12])
+        self.assertEqual(prs, [])
+
+    def test_squash_suffix_maps_to_prs(self):
+        issues, prs = u.linked_refs("chore: bump deps (#42)")
+        self.assertEqual(prs, [42])
+        self.assertEqual(issues, [])
+
+    def test_commit_subjects_scanned(self):
+        issues, prs = u.linked_refs("", "fix: resolve issue #8", "feat: add panel (#9)")
+        self.assertEqual(issues, [8])
+        self.assertEqual(prs, [9])
+
+
+class TestCollectRefs(unittest.TestCase):
+    def test_pr_event_has_commit_issue_and_pr_refs(self):
+        event = {"type": "PullRequestEvent", "repo": {"name": "fworks-tech/agenthood"}, "payload": {}}
+        detail = {
+            "commits": [("c9c3b0a1234567890", "fix: wire captcha")],
+            "issues": {5: "OG broken"},
+            "prs": {},
+            "pr": {"number": 42, "title": "harden eval"},
+        }
+        refs = u.collect_refs(event, detail)
+        self.assertEqual([r["kind"] for r in refs], ["commit", "issue", "pr"])
+        self.assertEqual(refs[0]["sha"], "c9c3b0a")
+        self.assertIn("/commit/c9c3b0a1234567890", refs[0]["url"])
+        self.assertIn("/issues/5", refs[1]["url"])
+        self.assertEqual(refs[2]["number"], "42")
+
+    def test_pr_ref_deduped_when_already_in_prs(self):
+        event = {"type": "PullRequestEvent", "repo": {"name": "fworks-tech/agenthood"}, "payload": {}}
+        detail = {
+            "commits": [],
+            "issues": {},
+            "prs": {42: "harden eval"},
+            "pr": {"number": 42, "title": "harden eval"},
+        }
+        refs = u.collect_refs(event, detail)
+        prs = [r for r in refs if r["kind"] == "pr"]
+        self.assertEqual(len(prs), 1)
+
+    def test_branch_ref_for_create_event(self):
+        event = {"type": "CreateEvent", "repo": {"name": "fworks-tech/agenthood"}, "payload": {}}
+        detail = {"ref_type": "branch", "ref": "chore/auto-update", "commits": [], "issues": {}, "prs": {}}
+        refs = u.collect_refs(event, detail)
+        branch = [r for r in refs if r["kind"] == "branch"]
+        self.assertEqual(len(branch), 1)
+        self.assertIn("/tree/chore/auto-update", branch[0]["url"])
+
+
+class TestChangesAndRelatedLines(unittest.TestCase):
+    def test_changes_line_lists_commits(self):
+        refs = [
+            {"kind": "commit", "sha": "c9c3b0a", "url": "u1", "subject": "fix: wire captcha"},
+            {"kind": "commit", "sha": "cc193f8", "url": "u2", "subject": "feat: add toggle"},
+        ]
+        line = u._changes_line(refs)
+        self.assertTrue(line.startswith("**Changes:** "))
+        self.assertIn("[`c9c3b0a`](u1) fix: wire captcha", line)
+        self.assertIn(" \u00B7 ", line)
+
+    def test_changes_line_many_commits_says_more(self):
+        refs = [
+            {"kind": "commit", "sha": f"{i:07d}", "url": f"u{i}", "subject": f"s{i}"}
+            for i in range(5)
+        ]
+        line = u._changes_line(refs)
+        self.assertIn("and 2 more commits", line)
+
+    def test_changes_line_empty_without_commits(self):
+        self.assertEqual(u._changes_line([{"kind": "issue", "number": "5", "url": "u", "title": "t"}]), "")
+
+    def test_related_line_links_issues_and_prs(self):
+        refs = [
+            {"kind": "issue", "number": "5", "url": "https://github.com/fworks-tech/agenthood/issues/5", "title": "OG broken"},
+            {"kind": "pr", "number": "42", "url": "https://github.com/fworks-tech/agenthood/pull/42", "title": "harden eval"},
+        ]
+        line = u._related_line(refs)
+        self.assertIn("[issue #5](https://github.com/fworks-tech/agenthood/issues/5) — OG broken", line)
+        self.assertIn("[PR #42](https://github.com/fworks-tech/agenthood/pull/42) — harden eval", line)
+
+    def test_related_line_empty_without_issues(self):
+        refs = [{"kind": "pr", "number": "42", "url": "u", "title": "t"}]
+        self.assertEqual(u._related_line(refs), "")
 
 
 class TestRenderPrBody(unittest.TestCase):
     def test_with_activity_has_scribe_sections(self):
-        body = u.render_pr_body(
-            ["agenthood"],
-            {"agenthood": "- \U0001F680 **agenthood**"},
-            [["Real line.", "Second line."]],
-            "Aug 19, 2026",
-        )
+        blocks = "- \U0001F680 **agenthood**\n  **Brief:** Real line.\n  Second line."
+        body = u.render_pr_body(["agenthood"], blocks, "Aug 19, 2026")
         text = "\n".join(body)
         self.assertIn("## What", text)
         self.assertIn("## Why", text)
         self.assertIn("## How to test", text)
         self.assertIn("1 entry: agenthood", text)
-        self.assertIn("- \U0001F680 **agenthood**\n  Real line.\n  Second line.", text)
+        self.assertIn("- \U0001F680 **agenthood**\n  **Brief:** Real line.\n  Second line.", text)
         self.assertIn("Last updated bumped to Aug 19, 2026.", text)
 
     def test_without_activity_is_explicit(self):
-        body = u.render_pr_body([], {}, [], "Aug 19, 2026")
+        body = u.render_pr_body([], "", "Aug 19, 2026")
         text = "\n".join(body)
         self.assertIn("No qualifying public events", text)
         self.assertNotIn("Recent activity", text)
@@ -416,8 +621,8 @@ class TestPolishLines(unittest.TestCase):
         content = json.dumps({"entries": entries})
         return {"choices": [{"message": {"content": content}}]}
 
-    def entry(self, line="- a", summary=("On it", "Really on it.")):
-        return {"line": line, "summary": list(summary)}
+    def entry(self, line="- a", brief=("On it", "Really on it.")):
+        return {"line": line, "brief": list(brief)}
 
     def test_no_key_keeps_input(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
@@ -440,6 +645,14 @@ class TestPolishLines(unittest.TestCase):
             [["\u26A1 Shipped it.", "The builder is live."], ["Second line.", "More detail."]],
         )
 
+    def test_accepts_three_line_brief(self):
+        entries = [self.entry("- A", ("First.", "Second.", "Third."))]
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
+            u, "llm_completions", return_value=self.resp(entries)
+        ):
+            lines, summaries = u.polish_lines([("- a", "ctx")])
+        self.assertEqual(summaries, [["First.", "Second.", "Third."]])
+
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp([self.entry("A")])
@@ -448,7 +661,7 @@ class TestPolishLines(unittest.TestCase):
         self.assertEqual(lines, ["- A"])
 
     def test_bad_entry_shape_degrades_only_that_entry(self):
-        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "", "summary": ["a", "b"]}]})}}]}
+        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "", "brief": ["a", "b"]}]})}}]}
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=bad
         ):
@@ -491,8 +704,9 @@ class TestPolishLines(unittest.TestCase):
 
     def test_system_prompt_grounds_against_invention(self):
         self.assertIn("never invent", u.SYSTEM_PROMPT)
-        self.assertIn("REAL summary", u.SYSTEM_PROMPT)
-        self.assertIn("exactly 2", u.SYSTEM_PROMPT)
+        self.assertIn("REAL brief", u.SYSTEM_PROMPT)
+        self.assertIn("exactly 3", u.SYSTEM_PROMPT)
+        self.assertIn("NAME THE ARTIFACTS", u.SYSTEM_PROMPT)
         self.assertIn("foundation", u.SYSTEM_PROMPT)
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
         self.assertIn("confident", u.SYSTEM_PROMPT)
@@ -500,12 +714,42 @@ class TestPolishLines(unittest.TestCase):
         self.assertIn("zero commits", u.SYSTEM_PROMPT)
         self.assertIn("NO NEGATIVE CLAIMS", u.SYSTEM_PROMPT)
 
-    def test_build_activity_lines_renders_summaries(self):
+    def test_build_activity_lines_renders_brief(self):
         block = u.build_activity_lines(
             {"a": "- a", "b": "- b"},
             [["Line one", "Line two."], None],
         )
-        self.assertIn("- a\n  Line one\n  Line two.\n\n- b\n", block)
+        self.assertIn("- a\n  **Brief:** Line one\n  Line two.\n\n- b\n", block)
+
+    def test_build_activity_lines_appends_changes_and_related(self):
+        refs = [
+            [
+                {"kind": "commit", "sha": "c9c3b0a", "url": "u1", "subject": "fix: wire captcha"},
+                {"kind": "issue", "number": "5", "url": "u2", "title": "OG broken"},
+            ]
+        ]
+        block = u.build_activity_lines({"a": "- a"}, [None], refs)
+        self.assertIn("**Changes:** [`c9c3b0a`](u1) fix: wire captcha", block)
+        self.assertIn("**Related:** [issue #5](u2) — OG broken", block)
+
+
+class TestMainFailureGuard(unittest.TestCase):
+    def test_events_api_error_leaves_readme_untouched(self):
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                mock.patch.object(u, "fetch_events", return_value=None), \
+                mock.patch.object(u, "set_output") as set_output, \
+                mock.patch("builtins.open", side_effect=AssertionError("file touched")) as opened:
+            u.main()
+        set_output.assert_called_once_with(0)
+        opened.assert_not_called()
+
+    def test_missing_token_skips_before_fetch(self):
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": ""}, clear=False), \
+                mock.patch.object(u, "fetch_events") as fetch, \
+                mock.patch.object(u, "set_output") as set_output:
+            u.main()
+        fetch.assert_not_called()
+        set_output.assert_called_once_with(0)
 
 
 if __name__ == "__main__":
