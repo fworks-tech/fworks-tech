@@ -241,6 +241,92 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
         self.assertEqual(len(parsed), u.TOP_N)
 
 
+class TestFetchEvents(unittest.TestCase):
+    def test_returns_none_on_api_failure(self):
+        with mock.patch.object(u, "api_get", return_value=None):
+            self.assertIsNone(u.fetch_events("token"))
+
+    def test_returns_none_on_non_list_response(self):
+        with mock.patch.object(u, "api_get", return_value={"message": "rate limited"}):
+            self.assertIsNone(u.fetch_events("token"))
+
+    def test_returns_empty_list_when_no_activity(self):
+        with mock.patch.object(u, "api_get", return_value=[]):
+            self.assertEqual(u.fetch_events("token"), [])
+
+    def test_distinguishes_error_from_empty(self):
+        with mock.patch.object(u, "api_get", side_effect=[None, []]):
+            self.assertIsNone(u.fetch_events("token"))
+            self.assertEqual(u.fetch_events("token"), [])
+
+
+class TestEnrichEvent(unittest.TestCase):
+    class FakeResp:
+        def __init__(self, data):
+            self._data = json.dumps(data).encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return self._data
+
+    def pr_event(self):
+        return {
+            "type": "PullRequestEvent",
+            "repo": {"name": "fworks-tech/agenthood"},
+            "payload": {
+                "action": "closed",
+                "pull_request": {
+                    "number": 9,
+                    "title": "wire captcha widget",
+                    "body": "Fixes #5",
+                    "merged_at": "t",
+                    "user": {"login": "fabio"},
+                    "head": {"ref": "feat/x"},
+                    "base": {"ref": "main"},
+                },
+            },
+        }
+
+    def respond_by_url(self):
+        def open_url(req, timeout=None):
+            url = req.full_url
+            if "/pulls/9/commits" in url:
+                return self.FakeResp(
+                    [{"sha": "c" * 40, "commit": {"message": "feat: wire captcha (#9)"}}]
+                )
+            if "/issues/5" in url:
+                return self.FakeResp({"number": 5, "title": "caption broken"})
+            if "/issues/9" in url:
+                return self.FakeResp({"number": 9, "title": "captcha widget"})
+            raise AssertionError(f"unexpected url: {url}")
+
+        return open_url
+
+    def test_pr_wires_commits_issues_and_prs(self):
+        with mock.patch("urllib.request.urlopen", side_effect=self.respond_by_url()):
+            detail = u.enrich_event(self.pr_event(), "token")
+        self.assertEqual(detail["commits"], [("c" * 40, "feat: wire captcha (#9)")])
+        self.assertEqual(detail["issues"], {5: "caption broken"})
+        self.assertEqual(detail["prs"], {9: "captcha widget"})
+        self.assertEqual(detail["pr"]["head"], "feat/x")
+
+    def test_no_token_skips_network(self):
+        with mock.patch.object(u, "fetch_pr_commits") as fpc, mock.patch.object(
+            u, "fetch_issue_titles"
+        ) as fit:
+            detail = u.enrich_event(self.pr_event(), None)
+        fpc.assert_not_called()
+        fit.assert_not_called()
+        self.assertEqual(detail["commits"], [])
+        self.assertEqual(detail["issues"], {})
+        self.assertEqual(detail["prs"], {})
+
+
 class TestEventContext(unittest.TestCase):
     def push_event(self):
         return {

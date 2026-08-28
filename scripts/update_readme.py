@@ -72,9 +72,14 @@ def api_get(url, token):
 
 
 def fetch_events(token):
-    """Fetch recent public events for the user."""
+    """Fetch recent public events; None when the API call fails.
+
+    A failure returns None (not []) so callers can distinguish a broken
+    API from genuinely empty activity instead of wiping the section.
+    """
     url = f"https://api.github.com/users/{ORG}/events/public?per_page=100"
-    return api_get(url, token) or []
+    data = api_get(url, token)
+    return data if isinstance(data, list) else None
 
 
 def fetch_pr_commits(repo_full, pr_number, token):
@@ -206,7 +211,7 @@ def enrich_event(event, token=None):
             "merged_at": pr.get("merged_at"),
             "author": pr.get("user", {}).get("login", ""),
         }
-        info["commits"] = fetch_pr_commits(repo_full, pr.get("number"), token)
+        info["commits"] = fetch_pr_commits(repo_full, pr.get("number"), token) if token else []
 
     elif etype == "IssuesEvent":
         issue = payload.get("issue", {})
@@ -739,6 +744,10 @@ def main():
         events = fetch_events(token)
     except Exception as e:
         print(f"Failed to fetch events: {e}")
+        set_output(0)
+        return
+    if events is None:
+        print("Failed to fetch events: API returned an error, leaving README untouched.")
         set_output(0)
         return
 
