@@ -2,11 +2,14 @@
 """Auto-update the Recent Activity section in README.md.
 
 Fetches recent public events from the GitHub Events API (pushes, PRs,
-issues, releases) and regenerates the bullet-point list under the
-``## Recent Activity`` heading. Bullets link to repos, commits, PRs and
-issues, show authors and relative age, and can be reworded via OpenCode
-Go when OPENCODE_API_KEY is set. Always bumps the "Last updated" footer
-so the workflow always has a diff to commit and opens a PR every day.
+issues, releases) and regenerates the activity entries under the
+``## Recent Activity`` heading. Each entry carries a bullet headline
+that links to the repo, PR, commit or issue, a grounded LLM ``Brief``
+(when OPENCODE_API_KEY is set), and deterministic ``Changes`` /
+``Related`` reference lines built from real GitHub API data — commit
+SHAs, PR commit lists and linked-issue titles — so the references stay
+valid even when the LLM is unavailable. Always bumps the "Last updated"
+footer so the workflow always has a diff to commit and opens a PR daily.
 
 Outputs ``changed=1`` via $GITHUB_OUTPUT, or ``changed=0`` if the
 section is missing or the API call fails.
@@ -52,15 +55,83 @@ API_BASE = os.environ.get(
 MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4-flash")
 
 
-def fetch_events(token):
-    """Fetch recent public events for the user."""
-    url = f"https://api.github.com/users/{ORG}/events/public?per_page=100"
+def api_get(url, token):
+    """GET a GitHub API URL, returning decoded JSON or None on failure."""
+    if not token:
+        return None
     req = urllib.request.Request(url)
     req.add_header("Authorization", f"Bearer {token}")
     req.add_header("Accept", "application/vnd.github+json")
     req.add_header("User-Agent", "update-readme-script")
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read())
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return json.loads(resp.read())
+    except Exception as e:
+        print(f"Failed to fetch {url}: {e}")
+        return None
+
+
+def fetch_events(token):
+    """Fetch recent public events for the user."""
+    url = f"https://api.github.com/users/{ORG}/events/public?per_page=100"
+    return api_get(url, token) or []
+
+
+def fetch_pr_commits(repo_full, pr_number, token):
+    """Commit (sha, subject) list for a pull request."""
+    if not token:
+        return []
+    url = f"https://api.github.com/repos/{repo_full}/pulls/{pr_number}/commits"
+    commits = []
+    for c in (api_get(url, token) or [])[:10]:
+        sha = c.get("sha", "")
+        subject = c.get("commit", {}).get("message", "").split("\n")[0][:80]
+        if sha:
+            commits.append((sha, subject))
+    return commits
+
+
+def fetch_push_commits(repo_full, before, head, token):
+    """Commit (sha, subject) list for a push via the compare endpoint."""
+    if not token:
+        return []
+    url = f"https://api.github.com/repos/{repo_full}/compare/{before}...{head}"
+    commits = []
+    for c in (api_get(url, token) or {}).get("commits", [])[:10]:
+        sha = c.get("sha", "")
+        subject = c.get("commit", {}).get("message", "").split("\n")[0][:80]
+        if sha:
+            commits.append((sha, subject))
+    return commits
+
+
+def fetch_issue_titles(repo_full, numbers, token):
+    """Map issue/PR numbers to their titles via the issues endpoint."""
+    titles = {}
+    for number in numbers[:5]:
+        data = api_get(f"https://api.github.com/repos/{repo_full}/issues/{number}", token)
+        if data:
+            titles[number] = data.get("title", "")
+    return titles
+
+
+def linked_refs(body, *subjects):
+    """Split referenced numbers into (issue_numbers, pr_numbers).
+
+    Keyword patterns like 'closes #4' map to issues; the squash-merge
+    suffix '(#42)' maps to the PR the commits came through.
+    """
+    issues, prs = set(), set()
+    text = "\n".join([body or "", *subjects])
+    for m in re.finditer(
+        r"(?:closes?|fix(?:es|ed)?|resolves?|refs?|references?|implements?|see|relates?\s+to)\s+(?:issue\s+)?#\s*(\d+)",
+        text,
+        re.IGNORECASE,
+    ):
+        issues.add(int(m.group(1)))
+    for m in re.finditer(r"\(\s*(?:#|issue\s+#)\s*(\d+)\s*\)", text):
+        prs.add(int(m.group(1)))
+    return sorted(issues), sorted(prs)
 
 
 def format_date(iso_ts):
@@ -94,47 +165,147 @@ def clean_text(text):
     return text.replace("[", "").replace("]", "").replace("`", "")
 
 
-def fetch_push_messages(event, token):
-    """Fetch the real commit subjects for a push that omitted them.
+def enrich_event(event, token=None):
+    """Network-fill event details: PR commits, push commits, linked issues.
 
-    Uses the compare endpoint between the push's before and head SHAs so
-    the LLM sees exactly the commits that were pushed.
+    Returns a plain dict consumed by both ``event_context`` (LLM digest)
+    and ``collect_refs`` (deterministic reference links). Never raises;
+    a missing detail simply degrades that entry.
+    """
+    etype = event.get("type", "")
+    payload = event.get("payload", {})
+    repo_full = event.get("repo", {}).get("name", "")
+    info = {"commits": [], "issues": {}, "prs": {}}
+
+    if etype == "PushEvent":
+        info["ref"] = payload.get("ref", "").split("/")[-1]
+        commits = [
+            (c.get("sha", ""), c.get("message", "").split("\n")[0][:80])
+            for c in payload.get("commits", [])
+            if c.get("sha")
+        ]
+        if (
+            not commits
+            and token
+            and payload.get("before")
+            and payload.get("head")
+        ):
+            commits = fetch_push_commits(
+                repo_full, payload["before"], payload["head"], token
+            )
+        info["commits"] = commits
+
+    elif etype == "PullRequestEvent":
+        pr = payload.get("pull_request", {})
+        info["pr"] = {
+            "number": pr.get("number"),
+            "title": pr.get("title", ""),
+            "body": pr.get("body", ""),
+            "head": pr.get("head", {}).get("ref", ""),
+            "base": pr.get("base", {}).get("ref", ""),
+            "merged_at": pr.get("merged_at"),
+            "author": pr.get("user", {}).get("login", ""),
+        }
+        info["commits"] = fetch_pr_commits(repo_full, pr.get("number"), token)
+
+    elif etype == "IssuesEvent":
+        issue = payload.get("issue", {})
+        info["issue"] = {
+            "number": issue.get("number"),
+            "title": issue.get("title", ""),
+            "body": issue.get("body", ""),
+            "labels": [l.get("name", "") for l in issue.get("labels", [])],
+        }
+
+    elif etype == "PullRequestReviewEvent":
+        pr = payload.get("pull_request", {})
+        info["pr"] = {"number": pr.get("number"), "title": pr.get("title", "")}
+
+    elif etype == "IssueCommentEvent":
+        issue = payload.get("issue", {})
+        info["issue"] = {"number": issue.get("number"), "title": issue.get("title", "")}
+
+    elif etype == "ReleaseEvent":
+        release = payload.get("release", {})
+        info["release"] = {
+            "tag": release.get("tag_name", ""),
+            "name": release.get("name", ""),
+        }
+
+    elif etype in ("CreateEvent", "DeleteEvent"):
+        info["ref_type"] = payload.get("ref_type", "")
+        info["ref"] = payload.get("ref", "")
+
+    subjects = [s for _, s in info["commits"]]
+    issue_nums, pr_nums = linked_refs(
+        info.get("pr", {}).get("body", "")
+        if "pr" in info
+        else info.get("issue", {}).get("body", ""),
+        *subjects,
+    )
+    info["issues"] = fetch_issue_titles(repo_full, issue_nums, token) if token else {}
+    info["prs"] = fetch_issue_titles(repo_full, pr_nums, token) if token else {}
+    return info
+
+
+def _commit_ref(repo_full, sha, subject):
+    return {
+        "kind": "commit",
+        "sha": sha[:7],
+        "url": f"{repo_url(repo_full)}/commit/{sha}",
+        "subject": subject,
+    }
+
+
+def _issue_ref(repo_full, number, title):
+    return {
+        "kind": "issue",
+        "number": str(number),
+        "url": f"{repo_url(repo_full)}/issues/{number}",
+        "title": title,
+    }
+
+
+def _pr_ref(repo_full, number, title):
+    return {
+        "kind": "pr",
+        "number": str(number),
+        "url": f"{repo_url(repo_full)}/pull/{number}",
+        "title": title,
+    }
+
+
+def collect_refs(event, detail):
+    """Deterministic reference links (commits, issues, PRs) for an event.
+
+    Built solely from API data so every URL is valid; the LLM never
+    generates these links.
     """
     repo_full = event.get("repo", {}).get("name", "")
-    payload = event.get("payload", {})
-    before, head = payload.get("before"), payload.get("head")
-    if not (repo_full and before and head):
-        return []
-    url = f"https://api.github.com/repos/{repo_full}/compare/{before}...{head}"
-    req = urllib.request.Request(url)
-    req.add_header("Authorization", f"Bearer {token}")
-    req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("User-Agent", "update-readme-script")
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read())
-    except Exception as e:
-        print(f"Failed to fetch push commits for {repo_full}: {e}")
-        return []
-    return [
-        c.get("commit", {}).get("message", "").split("\n")[0][:80]
-        for c in data.get("commits", [])[:10]
-    ]
-
-
-def push_messages(event, token=None):
-    """Commit subjects for a push: from the payload when present, else fetched."""
-    messages = [
-        c.get("message", "").split("\n")[0][:80]
-        for c in event.get("payload", {}).get("commits", [])
-    ]
-    if messages or not token:
-        return messages
-    return fetch_push_messages(event, token)
+    refs = [_commit_ref(repo_full, sha, subj) for sha, subj in detail.get("commits", [])]
+    refs.extend(
+        _issue_ref(repo_full, n, t) for n, t in detail.get("issues", {}).items()
+    )
+    refs.extend(_pr_ref(repo_full, n, t) for n, t in detail.get("prs", {}).items())
+    pr = detail.get("pr") or {}
+    number = pr.get("number")
+    if number and not any(
+        r["kind"] == "pr" and r["number"] == str(number) for r in refs
+    ):
+        refs.append(_pr_ref(repo_full, number, pr.get("title", "")))
+    if detail.get("ref_type") == "branch" and detail.get("ref"):
+        refs.append(
+            {
+                "kind": "branch",
+                "name": detail["ref"],
+                "url": f"{repo_url(repo_full)}/tree/{detail['ref']}",
+            }
+        )
+    return refs
 
 
 def parse_events(events, token=None):
-    """Extract one (bullet, context) pair per repo from recent events.
+    """Extract one (bullet, context, refs) triple per repo from events.
 
     Deduplicates by repo, keeping only the most recent event for each.
     Skips noise events (WatchEvent, ForkEvent, MemberEvent).
@@ -149,52 +320,83 @@ def parse_events(events, token=None):
             continue
         if repo_short in seen:
             continue
+        detail = enrich_event(event, token)
         seen[repo_short] = (
             describe_event(event, repo_short, repo_full),
-            event_context(event, push_messages(event, token)),
+            event_context(event, detail),
+            collect_refs(event, detail),
         )
         if len(seen) >= TOP_N:
             break
     return seen
 
 
-def event_context(event, push_messages=None):
-    """Structured one-line digest of an event, used for the LLM prompt."""
+def event_context(event, detail=None):
+    """Structured multi-line digest of an event, used for the LLM prompt."""
     etype = event.get("type", "")
     payload = event.get("payload", {})
+    detail = detail or {}
 
     if etype == "PushEvent":
-        commits = payload.get("commits", [])
-        ref = payload.get("ref", "").split("/")[-1]
-        if push_messages:
-            joined = "; ".join(push_messages)[:200]
-            return f"pushed {len(push_messages)} commits to branch {ref}: {joined}"
-        if len(commits) == 1:
-            msg = commits[0].get("message", "").split("\n")[0][:80]
-            return f"pushed 1 commit to branch {ref}: {msg}"
-        if len(commits) > 1:
-            joined = "; ".join(
-                c.get("message", "").split("\n")[0][:80] for c in commits[:10]
+        ref = detail.get("ref") or payload.get("ref", "").split("/")[-1]
+        commits = detail.get("commits", [])
+        if commits:
+            if len(commits) == 1:
+                heads = f": {commits[0][1]}"
+            else:
+                heads = f": {'; '.join(s for _, s in commits[:10])[:300]}"
+            lines = [f"pushed {len(commits)} commit{'s' if len(commits) != 1 else ''} to branch {ref}{heads}"]
+        else:
+            lines = [
+                f"pushed to branch {ref} (GitHub did not include commit details)"
+            ]
+        if detail.get("issues"):
+            lines.append(
+                "linked issues: "
+                + "; ".join(f"#{n} {t}" for n, t in detail["issues"].items())
             )
-            return f"pushed {len(commits)} commits to branch {ref}: {joined}"
-        return f"pushed to branch {ref} (GitHub did not include commit details)"
+        if detail.get("prs"):
+            lines.append(
+                "referenced PRs: "
+                + "; ".join(f"#{n} {t}" for n, t in detail["prs"].items())
+            )
+        return "\n".join(lines)
 
     if etype == "PullRequestEvent":
-        pr = payload.get("pull_request", {})
+        pr = detail.get("pr", {}) or {}
         verb = "merged" if pr.get("merged_at") else payload.get("action", "opened")
-        title = pr.get("title", "")[:80]
-        author = pr.get("user", {}).get("login", "")
-        return f"{verb} PR #{pr.get('number', '')}: {title} by @{author}"
+        title = pr.get("title") or payload.get("pull_request", {}).get("title", "")
+        author = pr.get("author") or payload.get("pull_request", {}).get("user", {}).get("login", "")
+        lines = [f"{verb} PR #{pr.get('number', '')}: {title} by @{author}"]
+        if pr.get("body"):
+            lines.append("PR body excerpt: " + clean_text(pr["body"]).strip()[:500])
+        if pr.get("head"):
+            lines.append(f"head branch: {pr['head']}, base branch: {pr.get('base', '')}")
+        commits = detail.get("commits", [])
+        if commits:
+            lines.append("PR commits: " + "; ".join(s for _, s in commits[:10])[:300])
+        if detail.get("issues"):
+            lines.append(
+                "linked issues: "
+                + "; ".join(f"#{n} {t}" for n, t in detail["issues"].items())
+            )
+        return "\n".join(lines)
 
     if etype == "IssuesEvent":
-        issue = payload.get("issue", {})
-        labels = [label.get("name") for label in issue.get("labels", [])][:2]
+        issue = detail.get("issue", {}) or {}
+        number = issue.get("number") or payload.get("issue", {}).get("number", "")
+        title = issue.get("title") or payload.get("issue", {}).get("title", "")
+        labels = issue.get("labels") or [
+            label.get("name") for label in payload.get("issue", {}).get("labels", [])
+        ][:2]
+        author = payload.get("issue", {}).get("user", {}).get("login", "")
         label_part = f" labels: {', '.join(labels)}" if labels else ""
-        author = issue.get("user", {}).get("login", "")
-        return (
-            f"{payload.get('action', 'opened')} issue #{issue.get('number', '')}: "
-            f"{issue.get('title', '')[:80]} by @{author}{label_part}"
-        )
+        lines = [
+            f"{payload.get('action', 'opened')} issue #{number}: {title} by @{author}{label_part}"
+        ]
+        if issue.get("body"):
+            lines.append("issue body excerpt: " + clean_text(issue["body"]).strip()[:500])
+        return "\n".join(lines)
 
     if etype == "ReleaseEvent":
         release = payload.get("release", {})
@@ -308,13 +510,57 @@ def describe_event(event, repo_short, repo_full):
     return f"- {emoji} [**{repo_short}**]({base}) \u2014 activity{age}"
 
 
-def build_activity_lines(event_map, summaries):
-    """Build the bullet list, each bullet followed by an indented summary."""
+def _changes_line(refs):
+    """Deterministic '**Changes:**' line linking commit SHAs."""
+    commits = [r for r in refs if r["kind"] == "commit"]
+    if not commits:
+        return ""
+    parts = []
+    for r in commits[:3]:
+        label = f"[`{r['sha']}`]({r['url']})"
+        if r.get("subject"):
+            label += " " + clean_text(r["subject"])[:40].rstrip()
+        parts.append(label)
+    if len(commits) > 3:
+        parts.append(f"and {len(commits) - 3} more commits")
+    return "**Changes:** " + " \u00B7 ".join(parts)
+
+
+def _related_line(refs):
+    """Deterministic '**Related:**' line linking issues (and PRs)."""
+    related = [r for r in refs if r["kind"] in ("issue", "pr")][:3]
+    if not any(r["kind"] == "issue" for r in related):
+        return ""
+    pieces = []
+    for r in related:
+        if r["kind"] == "issue":
+            label = f"[issue #{r['number']}]({r['url']})"
+        else:
+            label = f"[PR #{r['number']}]({r['url']})"
+        if r.get("title"):
+            label += " \u2014 " + clean_text(r["title"])[:40]
+        pieces.append(label)
+    return "**Related:** " + " \u00B7 ".join(pieces)
+
+
+def build_activity_lines(event_map, summaries, refs_list=None):
+    """Build entry blocks: bullet headline, brief, and deterministic refs."""
+    summary_list = summaries or []
     blocks = []
     for i, line in enumerate(event_map.values()):
         block = line
-        if summaries and summaries[i]:
-            block += "\n  " + "\n  ".join(summaries[i])
+        summary = summary_list[i] if i < len(summary_list) and summary_list[i] else []
+        if summary:
+            block += "\n  **Brief:** " + summary[0]
+            for extra in summary[1:]:
+                block += "\n  " + extra
+        if refs_list and refs_list[i]:
+            changes = _changes_line(refs_list[i])
+            if changes:
+                block += "\n  " + changes
+            related = _related_line(refs_list[i])
+            if related:
+                block += "\n  " + related
         blocks.append(block)
     return "\n\n".join(blocks) + "\n"
 
@@ -358,35 +604,39 @@ FORBIDDEN_WORDS = [
 SYSTEM_PROMPT = (
     "You polish GitHub activity for a developer's README profile. "
     "For every ITEM keep the repo name, markdown links and the action verb "
-    "exactly as-is. Then write a short summary of exactly 2 lines to place "
-    "under the bullet. STRICT RULES: "
-    "(1) GROUNDING — write a REAL summary. State only facts present in the "
+    "exactly as-is. Then write a BRIEF of exactly 3 short scannable lines "
+    "that explains the change and names its concrete artifacts. "
+    "STRICT RULES: "
+    "(1) GROUNDING — write a REAL brief. State only facts present in the "
     "CONTEXT; never invent features, fixes, motivations or code you cannot "
     "see. A 1-commit push is a small change, not a milestone. Write in "
     "natural, confident, human language — never clinical or robotic — while "
     "staying limited to the stated facts. "
     f"(2) NO BOILERPLATE — never use these words: {', '.join(FORBIDDEN_WORDS)}. "
-    "If a summary could apply to any repo, rewrite it. "
-    "(3) BE SPECIFIC — name the concrete artifact: repo, branch, PR number, "
-    "tag or commit subject. "
+    "If a brief could apply to any repo, rewrite it. "
+    "(3) NAME THE ARTIFACTS — reference the concrete PR number, commit "
+    "SHAs, issue numbers, branch names and tags from the CONTEXT so the "
+    "reader can trace the change. Never use meta-labels like 'Artifacts:', "
+    "'Summary:', 'Overview:' or 'Reference:' — fold the references directly "
+    "into the sentences. "
     "(4) NO NEGATIVE CLAIMS — never assert \"zero commits\", \"no changes\" "
     "or similar absent facts. An empty or missing commits list only means "
     "details were not included; say so if relevant. "
-    "(5) VARY — no two summaries may share their opening words or sentence "
+    "(5) VARY — no two briefs may share their opening words or sentence "
     "structure; rotate the angle (what, why, technical detail). "
     "(6) SHORT — each line must fit one line and be scannable. "
     "Reply with JSON only: "
-    '{"entries": [{"line": "...", "summary": ["...", "..."]}, ...]}, '
+    '{"entries": [{"line": "...", "brief": ["...", "...", "..."]}, ...]}, '
     "one entry per ITEM."
 )
 
 
 def polish_lines(items):
-    """Reword bullets and write a per-item quick summary via OpenCode Go.
+    """Reword bullets and write a per-item brief via OpenCode Go.
 
-    items: list of (bullet_line, context_text). Returns (lines, summaries)
-    where summaries[i] is a list of 1-2 summary lines for lines[i]. Falls
-    back to the original bullets and empty summaries on any failure; a
+    items: list of (bullet_line, context_text). Returns (lines, briefs)
+    where briefs[i] is a list of 1-3 brief lines for lines[i]. Falls
+    back to the original bullets and empty briefs on any failure; a
     single malformed entry degrades only that entry, not the whole list.
     """
     key = os.environ.get("OPENCODE_API_KEY")
@@ -414,27 +664,27 @@ def polish_lines(items):
             i: entry for i, entry in enumerate(entries[: len(items)]) if isinstance(entry, dict)
         }
         lines = []
-        summaries = []
+        briefs = []
         for i, (bullet, _) in enumerate(items):
             entry = entries_by_index.get(i)
             line = str(entry.get("line", "")).strip() if entry else ""
-            summary = entry.get("summary") if entry else None
-            if not line or not isinstance(summary, list) or not 1 <= len(summary) <= 2:
+            brief = entry.get("brief") if entry else None
+            if not line or not isinstance(brief, list) or not 1 <= len(brief) <= 3:
                 lines.append(bullet)
-                summaries.append([])
+                briefs.append([])
                 continue
             lines.append(line if line.lstrip().startswith("-") else f"- {line}")
-            summaries.append([str(s).strip() for s in summary])
-        return lines, summaries
+            briefs.append([str(b).strip() for b in brief])
+        return lines, briefs
     except Exception as e:
         print(f"LLM polish unavailable, keeping fallback text: {e}")
         return [bullet for bullet, _ in items], [None] * len(items)
 
 
-def render_pr_body(repos, event_map, summaries, today):
+def render_pr_body(repos, blocks, today):
     """Build the Scribe-style body for the auto-update pull request."""
     body_lines = ["Auto-generated by update-readme workflow", ""]
-    if event_map:
+    if blocks:
         noun = "entries" if len(repos) != 1 else "entry"
         body_lines.append("## What")
         body_lines.append(
@@ -445,18 +695,16 @@ def render_pr_body(repos, event_map, summaries, today):
         body_lines.append("## Why")
         body_lines.append(
             "Keeps the profile's Recent Activity current so visitors see live "
-            "work at a glance, grounded in real events."
+            "work at a glance, grounded in real events with PR/commit and "
+            "linked-issue references."
         )
         body_lines.append("")
         body_lines.append("## How to test")
-        body_lines.append("1. Diff this PR and confirm the bullet summaries are factual and short.")
+        body_lines.append("1. Diff this PR and confirm the briefs are factual and the refs link correctly.")
         body_lines.append("2. Re-run the Update README workflow to refresh the section tomorrow.")
         body_lines.append("")
         body_lines.append("## Recent activity")
-        for i, line in enumerate(event_map.values()):
-            body_lines.append(line)
-            if summaries[i]:
-                body_lines.extend("  " + s for s in summaries[i])
+        body_lines.extend(blocks.rstrip("\n").split("\n"))
     else:
         body_lines.append("## What")
         body_lines.append(
@@ -496,9 +744,11 @@ def main():
 
     event_map = parse_events(events, token)
     summaries = []
+    refs_list = None
     if event_map:
-        items = list(event_map.values())
-        lines, summaries = polish_lines(items)
+        entries = list(event_map.values())
+        lines, summaries = polish_lines([(b, c) for b, c, _ in entries])
+        refs_list = [r for _, _, r in entries]
         event_map = dict(zip(event_map.keys(), lines))
 
     with open(README_PATH, "r", encoding="utf-8") as f:
@@ -510,7 +760,7 @@ def main():
         set_output(0)
         return
 
-    new_rows = build_activity_lines(event_map, summaries) if event_map else "\n"
+    new_rows = build_activity_lines(event_map, summaries, refs_list) if event_map else "\n"
     old_activity = m.group(1).strip()
     old_date = re.search(r"Last updated: (.+)", content)
     old_date_str = old_date.group(1) if old_date else ""
@@ -533,7 +783,7 @@ def main():
         f.write(new_content)
 
     repos = list(event_map.keys())
-    body_lines = render_pr_body(repos, event_map, summaries, today)
+    body_lines = render_pr_body(repos, new_rows, today)
 
     with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
 
