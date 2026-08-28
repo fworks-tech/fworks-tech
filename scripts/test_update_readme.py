@@ -13,6 +13,22 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_readme as u  # noqa: E402
 
 
+class _FakeResp:
+    """Context-manager HTTP response stub for mocked urlopen."""
+
+    def __init__(self, data):
+        self._data = json.dumps(data).encode()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+    def read(self):
+        return self._data
+
+
 class FrozenNow(datetime):
     @classmethod
     def now(cls, tz=None):
@@ -261,19 +277,6 @@ class TestFetchEvents(unittest.TestCase):
 
 
 class TestEnrichEvent(unittest.TestCase):
-    class FakeResp:
-        def __init__(self, data):
-            self._data = json.dumps(data).encode()
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            return False
-
-        def read(self):
-            return self._data
-
     def pr_event(self):
         return {
             "type": "PullRequestEvent",
@@ -296,13 +299,13 @@ class TestEnrichEvent(unittest.TestCase):
         def open_url(req, timeout=None):
             url = req.full_url
             if "/pulls/9/commits" in url:
-                return self.FakeResp(
+                return _FakeResp(
                     [{"sha": "c" * 40, "commit": {"message": "feat: wire captcha (#9)"}}]
                 )
             if "/issues/5" in url:
-                return self.FakeResp({"number": 5, "title": "caption broken"})
+                return _FakeResp({"number": 5, "title": "caption broken"})
             if "/issues/9" in url:
-                return self.FakeResp({"number": 9, "title": "captcha widget"})
+                return _FakeResp({"number": 9, "title": "captcha widget"})
             raise AssertionError(f"unexpected url: {url}")
 
         return open_url
@@ -450,19 +453,6 @@ class TestEventContext(unittest.TestCase):
 
 
 class TestFetchPushCommits(unittest.TestCase):
-    class FakeResp:
-        def __init__(self, data):
-            self._data = json.dumps(data).encode()
-
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            return False
-
-        def read(self):
-            return self._data
-
     def event(self):
         return {
             "type": "PushEvent",
@@ -485,7 +475,7 @@ class TestFetchPushCommits(unittest.TestCase):
 
     def test_returns_commit_shas_and_subjects(self):
         with mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
         ):
             commits = u.fetch_push_commits(
                 "fworks-tech/agenthood-site", "abc123", "def456", "token"
@@ -503,7 +493,7 @@ class TestFetchPushCommits(unittest.TestCase):
 
     def test_parse_events_feeds_fetched_commits_to_context_and_refs(self):
         with mock.patch(
-            "urllib.request.urlopen", return_value=self.FakeResp(self.resp())
+            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
         ):
             parsed = u.parse_events([self.event()], "token")
         bullet, ctx, refs = parsed["agenthood-site"]
@@ -741,6 +731,25 @@ class TestPolishLines(unittest.TestCase):
         block = u.build_activity_lines({"a": "- a"}, [None], refs)
         self.assertIn("**Changes:** [`c9c3b0a`](u1) fix: wire captcha", block)
         self.assertIn("**Related:** [issue #5](u2) — OG broken", block)
+
+
+class TestMainFailureGuard(unittest.TestCase):
+    def test_events_api_error_leaves_readme_untouched(self):
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                mock.patch.object(u, "fetch_events", return_value=None), \
+                mock.patch.object(u, "set_output") as set_output, \
+                mock.patch("builtins.open", side_effect=AssertionError("file touched")) as opened:
+            u.main()
+        set_output.assert_called_once_with(0)
+        opened.assert_not_called()
+
+    def test_missing_token_skips_before_fetch(self):
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": ""}, clear=False), \
+                mock.patch.object(u, "fetch_events") as fetch, \
+                mock.patch.object(u, "set_output") as set_output:
+            u.main()
+        fetch.assert_not_called()
+        set_output.assert_called_once_with(0)
 
 
 if __name__ == "__main__":
