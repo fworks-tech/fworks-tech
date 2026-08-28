@@ -43,17 +43,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
-  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
-  The branch was deleted from the remote around 10h ago.
-
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
-  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
-  It syncs repository documentation with the M1 shipped status.
-
-- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
-  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
-  That removes the branch named for the issue-479 steward routing refactor.
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `vercel-and-flyio` · 3h ago
+  **Brief:** A single commit on `vercel-and-flyio` carries the message `fix(deploy): make the Docker image boot the daemon`.
+  It changes the Docker image's startup behavior so the daemon is booted as part of the image.
+  The branch `vercel-and-flyio` is the concrete artifact to inspect for this deploy fix.
+  **Changes:** [`e4c9516`](https://github.com/fworks-tech/atlaslink/commit/e4c951601115a9574a89ebafc82b8e782d913289) fix(deploy): make the Docker image boot
 <!-- recent-activity:end -->
 
 ---
@@ -131,4 +125,4 @@
 
 ---
 
-*Last updated: Aug 22, 2026
+*Last updated: Aug 28, 2026
