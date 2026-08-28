@@ -13,7 +13,7 @@
 ## 📊 GitHub Activity
 
 <div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=fworks-tech&theme=react-dark&hide_border=true&area=true" width="100%" alt="fworks-tech GitHub Activity Graph" />
+  <img src="https://raw.githubusercontent.com/fworks-tech/fworks-tech/output/activity-graph.svg" width="100%" alt="fworks-tech GitHub Activity Graph" />
 </div>
 
 ---
