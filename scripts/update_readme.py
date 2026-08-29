@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Auto-update the Recent Activity section in README.md.
 
-Fetches recent public events from the GitHub Events API (pushes, PRs,
-issues, releases) and regenerates the activity entries under the
+Fetches recent public events from the GitHub Events API (pushes, PRs)
+and regenerates the activity entries under the
 ``## Recent Activity`` heading. Each entry carries a bullet headline
 that links to the repo, PR, commit or issue, a grounded LLM ``Brief``
 (when OPENCODE_API_KEY is set), and deterministic ``Changes`` /
@@ -47,7 +47,11 @@ EMOJI = {
     "DeleteEvent": "\U0001F5D1\uFE0F",
 }
 
-SKIP_TYPES = {"WatchEvent", "ForkEvent", "MemberEvent", "GollumEvent"}
+SKIP_TYPES = {
+    "WatchEvent", "ForkEvent", "MemberEvent", "GollumEvent",
+    "DeleteEvent", "CreateEvent",
+    "IssuesEvent", "IssueCommentEvent", "PullRequestReviewEvent",
+}
 
 API_BASE = os.environ.get(
     "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/go/v1"
@@ -313,7 +317,7 @@ def parse_events(events, token=None):
     """Extract one (bullet, context, refs) triple per repo from events.
 
     Deduplicates by repo, keeping only the most recent event for each.
-    Skips noise events (WatchEvent, ForkEvent, MemberEvent).
+    Skips all event types except PushEvent and PullRequestEvent.
     """
     seen = {}
     for event in events:
