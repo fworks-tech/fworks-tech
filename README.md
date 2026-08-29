@@ -41,17 +41,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🗑️ [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — deleted branch fix/e2e-captcha-and-chat-history-tests · 10h ago
-  agenthood-site no longer carries the fix/e2e-captcha-and-chat-history-tests branch.
-  The branch was deleted from the remote around 10h ago.
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `vercel-and-flyio` · yesterday
+  **Brief:** A single commit landed on `vercel-and-flyio` with message `chore(deploy): pin the dashboard framework for Vercel`.
+  The change is scoped to deploy config, pinning the dashboard framework for Vercel.
+  Trace it through the `vercel-and-flyio` branch and that commit message.
+  **Changes:** [`85ecf2f`](https://github.com/fworks-tech/atlaslink/commit/85ecf2f2747e9a69cb4216d2dbe4f5e9a5c5c0e6) chore(deploy): pin the dashboard framewo
 
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `m1-daemon-core-typescript` · 23h ago
-  A single docs commit landed on atlaslink's m1-daemon-core-typescript branch.
-  It syncs repository documentation with the M1 shipped status.
-
-- 🗑️ [**agenthood**](https://github.com/fworks-tech/agenthood) — deleted branch refactor/issue-479-reframe-steward-routing · yesterday
-  The refactor/issue-479-reframe-steward-routing branch was deleted from agenthood.
-  That removes the branch named for the issue-479 steward routing refactor.
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — merged [PR #283](https://github.com/fworks-tech/flabs.tech/pull/283) · 14h ago
+  **Brief:** PR #283 merged `chore/discord-verification` into `main`, bringing in a commit that adds a Discord domain verification file.
+  The merge is small and focused: one commit adding the verification file for Discord.
+  See the PR #283 link for the full diff and merge details.
+  **Changes:** [`565af06`](https://github.com/fworks-tech/flabs.tech/commit/565af06d4c8efcded7ce86e231e306b8d2cce8a8) chore: add discord domain verification f
 <!-- recent-activity:end -->
 
 ---
@@ -129,4 +129,4 @@
 
 ---
 
-*Last updated: Aug 22, 2026
+*Last updated: Aug 29, 2026
