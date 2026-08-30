@@ -41,17 +41,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `vercel-and-flyio` · yesterday
-  **Brief:** A single commit landed on `vercel-and-flyio` with message `chore(deploy): pin the dashboard framework for Vercel`.
-  The change is scoped to deploy config, pinning the dashboard framework for Vercel.
-  Trace it through the `vercel-and-flyio` branch and that commit message.
-  **Changes:** [`85ecf2f`](https://github.com/fworks-tech/atlaslink/commit/85ecf2f2747e9a69cb4216d2dbe4f5e9a5c5c0e6) chore(deploy): pin the dashboard framewo
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `issue-7-dashboard-shell` · 7h ago
+  **Changes:** [`892c1aa`](https://github.com/fworks-tech/atlaslink/commit/892c1aaa8cbc2dd4d6ead110ab4323abcb6648b1) fix(dashboard): address review findings
 
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — merged [PR #283](https://github.com/fworks-tech/flabs.tech/pull/283) · 14h ago
-  **Brief:** PR #283 merged `chore/discord-verification` into `main`, bringing in a commit that adds a Discord domain verification file.
-  The merge is small and focused: one commit adding the verification file for Discord.
-  See the PR #283 link for the full diff and merge details.
-  **Changes:** [`565af06`](https://github.com/fworks-tech/flabs.tech/commit/565af06d4c8efcded7ce86e231e306b8d2cce8a8) chore: add discord domain verification f
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — merged [PR #489](https://github.com/fworks-tech/agenthood/pull/489) · 1h ago
+  **Changes:** [`db45241`](https://github.com/fworks-tech/agenthood/commit/db45241e542d4690e400aa82a5b7476c75a99dc5) test(manifest): add package-manifest par
+
+- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `44-studio-mobile-layout` · 8h ago
+  **Changes:** [`254626f`](https://github.com/fworks-tech/agenthood-site/commit/254626f82765b4bc1d709c3917d08a31d68b2eb5) refactor(footer): prevent version-litera · [`a57b58a`](https://github.com/fworks-tech/agenthood-site/commit/a57b58a22fdbb65115d334bfceedf280a75b84cd) fix(studio): harden CAPTCHA auto-retry a · [`05e6b54`](https://github.com/fworks-tech/agenthood-site/commit/05e6b54a7cac717297710b521dbc855bc5aab769) fix(studio): make left sidebar and backd · and 3 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -129,4 +126,4 @@
 
 ---
 
-*Last updated: Aug 29, 2026
+*Last updated: Aug 30, 2026
