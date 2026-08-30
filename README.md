@@ -6,7 +6,7 @@
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
 
-10+ years across frontend, backend, testing, devops and AI engineering — shipping products for companies in the US, Europe, and Brazil (8+ years on GitHub since 2018). I balance solid architecture with real-world delivery.
+10+ years across frontend, backend, testing, devops and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
 
 ---
 
@@ -33,7 +33,7 @@
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Once UI design system, MDX blog, dynamic OG images, WCAG 2.1 AA, Vitest + Playwright E2E, Storybook 10, Lighthouse CI, live at [flabs.tech](https://flabs.tech) |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Society of 20 AI agents as Markdown skill files — SKILL.md open standard, TypeScript runtime, npm package, VS Code extension, Academy, Published on [npm](https://www.npmjs.com/package/agenthood) |
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood marketing site — landing, Academy, ADR docs, Studio chat playground with SSE streaming and 6-provider routing, runtime dashboard, live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
-| [atlaslink](https://github.com/fworks-tech/atlaslink) | Multi-agent orchestrator — M1/M2 shipped (daemon + Event Bridge live), Agenthood proof-of-concept with gorgeous live diagram flows, M3/M4 on roadmap, live at [atlas.flabs.tech](https://atlas.flabs.tech) |
+| [atlaslink](https://github.com/fworks-tech/atlaslink) | *(new)* Multi-agent task orchestrator, Agenthood proof-of-concept, and modern UI to customize and integrate agents through gorgeous, easy-to-use, live diagram flows. Preview its development at [atlas.flabs.tech](https://atlas.flabs.tech) |
 | [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning Q&A generator — 7-agent pipeline (draft, self-critique, consensus), CRAG architecture (semantic cache + hybrid retrieve + cross-encoder rerank), 8 MCP tools, hot-swappable prompts, structured observability with token/cost tracking, 220+ tests |
 
 ---
