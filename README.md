@@ -41,17 +41,23 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `vercel-and-flyio` · yesterday
-  **Brief:** A single commit landed on `vercel-and-flyio` with message `chore(deploy): pin the dashboard framework for Vercel`.
-  The change is scoped to deploy config, pinning the dashboard framework for Vercel.
-  Trace it through the `vercel-and-flyio` branch and that commit message.
-  **Changes:** [`85ecf2f`](https://github.com/fworks-tech/atlaslink/commit/85ecf2f2747e9a69cb4216d2dbe4f5e9a5c5c0e6) chore(deploy): pin the dashboard framewo
+- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `frontier-hackathon` · 6h ago
+  **Brief:** A single commit landed on `frontier-hackathon` with a workspaces fix.
+  It captures the instruction as the first chat bubble and shows mediator typing.
+  Trace it by the commit message `fix(workspaces): capture instruction as first chat bubble and show mediator typi` on that branch.
+  **Changes:** [`80c3738`](https://github.com/fworks-tech/agenthood-site/commit/80c373812127a1a0414c9730e45747d71ed964ef) fix(workspaces): capture instruction as
 
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — merged [PR #283](https://github.com/fworks-tech/flabs.tech/pull/283) · 14h ago
-  **Brief:** PR #283 merged `chore/discord-verification` into `main`, bringing in a commit that adds a Discord domain verification file.
-  The merge is small and focused: one commit adding the verification file for Discord.
-  See the PR #283 link for the full diff and merge details.
-  **Changes:** [`565af06`](https://github.com/fworks-tech/flabs.tech/commit/565af06d4c8efcded7ce86e231e306b8d2cce8a8) chore: add discord domain verification f
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `main` · 3d ago
+  **Brief:** One commit went to `main` for the m4 fix in the BFF proxy.
+  It strips `content-encoding` in the proxy path.
+  The commit message is `fix(m4): strip content-encoding in the BFF proxy` on branch `main`.
+  **Changes:** [`e3e0457`](https://github.com/fworks-tech/atlaslink/commit/e3e045792e0549c54158ce105073da5d33c85666) fix(m4): strip content-encoding in the B
+
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — opened [PR #491](https://github.com/fworks-tech/agenthood/pull/491) · yesterday
+  **Brief:** PR #491 targets `main` from `fix/issue-490-provider-failover-harden`.
+  It hardens provider failover priority, per-entry keys, and cheap retry in the LLM fix.
+  The branch name points back to issue 490 for the failover context.
+  **Changes:** [`5846ab0`](https://github.com/fworks-tech/agenthood/commit/5846ab0a8078b9a55ddff4954b7ad6d87e17a5fa) fix(llm): harden provider failover prior
 <!-- recent-activity:end -->
 
 ---
@@ -129,4 +135,4 @@
 
 ---
 
-*Last updated: Aug 29, 2026
+*Last updated: Sep 1, 2026
