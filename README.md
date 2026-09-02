@@ -41,22 +41,22 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `frontier-hackathon` · 6h ago
-  **Brief:** A single commit landed on `frontier-hackathon` with a workspaces fix.
-  It captures the instruction as the first chat bubble and shows mediator typing.
-  Trace it by the commit message `fix(workspaces): capture instruction as first chat bubble and show mediator typi` on that branch.
-  **Changes:** [`80c3738`](https://github.com/fworks-tech/agenthood-site/commit/80c373812127a1a0414c9730e45747d71ed964ef) fix(workspaces): capture instruction as
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `header-footer-animated-cherrypick` · 7h ago
+  **Brief:** Six commits landed on `header-footer-animated-cherrypick`, touching header, footer, layout and connection-status.
+  Header background color changes and navigation link updates sit alongside a footer import cleanup and layout alignment tweaks.
+  The unused `ConnectionStatus` component is removed in both the connection-status and layout refactors.
+  **Changes:** [`e88892f`](https://github.com/fworks-tech/atlaslink/commit/e88892f75d74190839371b65d736f359cd059d2f) chore(header): update header bg color · [`813d657`](https://github.com/fworks-tech/atlaslink/commit/813d657a343ef5f6519415c909ed624c04667130) refactor(connection-status): remove unus · [`d0d3422`](https://github.com/fworks-tech/atlaslink/commit/d0d3422f78c2516b8514cf5d16ac8866a36690dd) refactor(layout): remove unused Connecti · and 3 more commits
 
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `main` · 3d ago
-  **Brief:** One commit went to `main` for the m4 fix in the BFF proxy.
-  It strips `content-encoding` in the proxy path.
-  The commit message is `fix(m4): strip content-encoding in the BFF proxy` on branch `main`.
-  **Changes:** [`e3e0457`](https://github.com/fworks-tech/atlaslink/commit/e3e045792e0549c54158ce105073da5d33c85666) fix(m4): strip content-encoding in the B
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — merged [PR #169](https://github.com/fworks-tech/agenthood/pull/169) · 6h ago
+  **Brief:** PR #169 merged `frontier-hackathon` into `main`, bringing the workspaces plan, spec and worklog from the docs commit.
+  Workspace scaffolding lands with TODO markers and a README, plus workspace types and an SSE vocabulary in the feature commits.
+  The studio refactor extracts shared SSE runner and trace helpers, and the turn scheduler commit adds the scheduler itself.
+  **Changes:** [`7268ce2`](https://github.com/fworks-tech/agenthood-site/commit/7268ce28009fdf6a0122ecd5c9c8091a58389df6) docs(hackathon): add plan, spec and work · [`e0414c7`](https://github.com/fworks-tech/agenthood-site/commit/e0414c73173eb39261852dfecff442347ff88063) chore(workspaces): scaffold workspaces w · [`718128c`](https://github.com/fworks-tech/agenthood-site/commit/718128c27b25b0907b16da9ca943f167b8d814d0) refactor(studio): extract shared SSE run · and 7 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — opened [PR #491](https://github.com/fworks-tech/agenthood/pull/491) · yesterday
-  **Brief:** PR #491 targets `main` from `fix/issue-490-provider-failover-harden`.
-  It hardens provider failover priority, per-entry keys, and cheap retry in the LLM fix.
-  The branch name points back to issue 490 for the failover context.
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — merged [PR #491](https://github.com/fworks-tech/agenthood/pull/491) · 8h ago
+  **Brief:** The `fix/issue-490-provider-failover-harden` branch is now in `main` via PR #491.
+  The single LLM fix hardens provider failover priority, per-entry keys and cheap retry.
+  Issue #490 is the target named by the branch, so the merge closes that failover-hardening work.
   **Changes:** [`5846ab0`](https://github.com/fworks-tech/agenthood/commit/5846ab0a8078b9a55ddff4954b7ad6d87e17a5fa) fix(llm): harden provider failover prior
 <!-- recent-activity:end -->
 
@@ -135,4 +135,4 @@
 
 ---
 
-*Last updated: Sep 1, 2026
+*Last updated: Sep 2, 2026
