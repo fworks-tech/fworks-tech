@@ -41,23 +41,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `header-footer-animated-cherrypick` · 7h ago
-  **Brief:** Six commits landed on `header-footer-animated-cherrypick`, touching header, footer, layout and connection-status.
-  Header background color changes and navigation link updates sit alongside a footer import cleanup and layout alignment tweaks.
-  The unused `ConnectionStatus` component is removed in both the connection-status and layout refactors.
-  **Changes:** [`e88892f`](https://github.com/fworks-tech/atlaslink/commit/e88892f75d74190839371b65d736f359cd059d2f) chore(header): update header bg color · [`813d657`](https://github.com/fworks-tech/atlaslink/commit/813d657a343ef5f6519415c909ed624c04667130) refactor(connection-status): remove unus · [`d0d3422`](https://github.com/fworks-tech/atlaslink/commit/d0d3422f78c2516b8514cf5d16ac8866a36690dd) refactor(layout): remove unused Connecti · and 3 more commits
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — opened [PR #80](https://github.com/fworks-tech/atlaslink/pull/80) · just now
+  **Changes:** [`249c929`](https://github.com/fworks-tech/atlaslink/commit/249c9293b132b0d97251b7ef4d5ec30cf675c008) feat(hitl): steer queued sessions and in · [`2cddbd9`](https://github.com/fworks-tech/atlaslink/commit/2cddbd9a5d72fc39d3d2b462f9f1cd097cd56798) fix(test): satisfy prefer-const for sing · [`192bb53`](https://github.com/fworks-tech/atlaslink/commit/192bb53cbb94a95af0aa6cc9e88215a846737c90) docs(tasks): record stage PR stack and a
 
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — merged [PR #169](https://github.com/fworks-tech/agenthood/pull/169) · 6h ago
-  **Brief:** PR #169 merged `frontier-hackathon` into `main`, bringing the workspaces plan, spec and worklog from the docs commit.
-  Workspace scaffolding lands with TODO markers and a README, plus workspace types and an SSE vocabulary in the feature commits.
-  The studio refactor extracts shared SSE runner and trace helpers, and the turn scheduler commit adds the scheduler itself.
-  **Changes:** [`7268ce2`](https://github.com/fworks-tech/agenthood-site/commit/7268ce28009fdf6a0122ecd5c9c8091a58389df6) docs(hackathon): add plan, spec and work · [`e0414c7`](https://github.com/fworks-tech/agenthood-site/commit/e0414c73173eb39261852dfecff442347ff88063) chore(workspaces): scaffold workspaces w · [`718128c`](https://github.com/fworks-tech/agenthood-site/commit/718128c27b25b0907b16da9ca943f167b8d814d0) refactor(studio): extract shared SSE run · and 7 more commits
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — merged [PR #289](https://github.com/fworks-tech/flabs.tech/pull/289) · just now
+  **Changes:** [`0d51adc`](https://github.com/fworks-tech/flabs.tech/commit/0d51adc9d845b123d1eb28502f59212e904d378b) feat: publish mysterious contributor pos
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — merged [PR #491](https://github.com/fworks-tech/agenthood/pull/491) · 8h ago
-  **Brief:** The `fix/issue-490-provider-failover-harden` branch is now in `main` via PR #491.
-  The single LLM fix hardens provider failover priority, per-entry keys and cheap retry.
-  Issue #490 is the target named by the branch, so the merge closes that failover-hardening work.
-  **Changes:** [`5846ab0`](https://github.com/fworks-tech/agenthood/commit/5846ab0a8078b9a55ddff4954b7ad6d87e17a5fa) fix(llm): harden provider failover prior
+- 🚀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — pushed to `main` · yesterday
+  **Changes:** [`817f9de`](https://github.com/fworks-tech/agenthood-site/commit/817f9defb5f261b4426fc6ba3d829fe43c7c87ed) docs(hackathon): add plan, spec and work · [`ace3f7f`](https://github.com/fworks-tech/agenthood-site/commit/ace3f7f3a021431979899047b56a3952d051db45) chore(workspaces): scaffold workspaces w · [`433e656`](https://github.com/fworks-tech/agenthood-site/commit/433e6564ef3af62156f8f77467e3b5b6801ab416) refactor(studio): extract shared SSE run · and 7 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +126,4 @@
 
 ---
 
-*Last updated: Sep 2, 2026
+*Last updated: Sep 3, 2026
