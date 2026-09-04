@@ -41,23 +41,23 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `header-footer-animated-cherrypick` · 7h ago
-  **Brief:** Six commits landed on `header-footer-animated-cherrypick`, touching header, footer, layout and connection-status.
-  Header background color changes and navigation link updates sit alongside a footer import cleanup and layout alignment tweaks.
-  The unused `ConnectionStatus` component is removed in both the connection-status and layout refactors.
-  **Changes:** [`e88892f`](https://github.com/fworks-tech/atlaslink/commit/e88892f75d74190839371b65d736f359cd059d2f) chore(header): update header bg color · [`813d657`](https://github.com/fworks-tech/atlaslink/commit/813d657a343ef5f6519415c909ed624c04667130) refactor(connection-status): remove unus · [`d0d3422`](https://github.com/fworks-tech/atlaslink/commit/d0d3422f78c2516b8514cf5d16ac8866a36690dd) refactor(layout): remove unused Connecti · and 3 more commits
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `main` · 20h ago
+  **Brief:** Two commits landed on main: a feat(hitl) commit proving an approval round-trip through a stubbed runner and closing out the room, plus the merge of PR #83.
+  PR #83 came from the feat/76-hitl-spike branch, so the HITL spike work is now part of the default branch.
+  The artifacts to inspect are the two commits on main and the PR #83 merge from feat/76-hitl-spike.
+  **Changes:** [`f703571`](https://github.com/fworks-tech/atlaslink/commit/f7035711d9cddb7dfbd58c34b45f88d57e21cc1e) feat(hitl): prove approval round-trip th · [`7dbbf32`](https://github.com/fworks-tech/atlaslink/commit/7dbbf326996724ff6dfe417502cdf14a937e0559) Merge pull request #83 from fworks-tech/
 
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — merged [PR #169](https://github.com/fworks-tech/agenthood/pull/169) · 6h ago
-  **Brief:** PR #169 merged `frontier-hackathon` into `main`, bringing the workspaces plan, spec and worklog from the docs commit.
-  Workspace scaffolding lands with TODO markers and a README, plus workspace types and an SSE vocabulary in the feature commits.
-  The studio refactor extracts shared SSE runner and trace helpers, and the turn scheduler commit adds the scheduler itself.
-  **Changes:** [`7268ce2`](https://github.com/fworks-tech/agenthood-site/commit/7268ce28009fdf6a0122ecd5c9c8091a58389df6) docs(hackathon): add plan, spec and work · [`e0414c7`](https://github.com/fworks-tech/agenthood-site/commit/e0414c73173eb39261852dfecff442347ff88063) chore(workspaces): scaffold workspaces w · [`718128c`](https://github.com/fworks-tech/agenthood-site/commit/718128c27b25b0907b16da9ca943f167b8d814d0) refactor(studio): extract shared SSE run · and 7 more commits
+- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-496-ask-human-park-primitive` · 22h ago
+  **Brief:** Seven commits on issue-496-ask-human-park-primitive center on the ask_human park primitive for park-and-resume hosts, introduced in PR #501.
+  PR #500 also lands on the branch, forbidding Co-Authored-By footers in commit standards, alongside a chore release bump to 3.40.0.
+  The remaining commits add a test-gated stub provider for hermetic HITL spikes and align the stub script fixture with the unified ask_human payload.
+  **Changes:** [`27d1404`](https://github.com/fworks-tech/agenthood/commit/27d1404ada750e68704442b0744b8ac07104ae79) docs: forbid Co-Authored-By footers in c · [`fed6d76`](https://github.com/fworks-tech/agenthood/commit/fed6d761fd8b3e554bafdb52e8ef98128ac43610) feat(hitl): add ask_human park primitive · [`cd0d98a`](https://github.com/fworks-tech/agenthood/commit/cd0d98ac0faf74527194330e1ea55c4a077fabc3) chore(release): 3.40.0 · and 4 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — merged [PR #491](https://github.com/fworks-tech/agenthood/pull/491) · 8h ago
-  **Brief:** The `fix/issue-490-provider-failover-harden` branch is now in `main` via PR #491.
-  The single LLM fix hardens provider failover priority, per-entry keys and cheap retry.
-  Issue #490 is the target named by the branch, so the merge closes that failover-hardening work.
-  **Changes:** [`5846ab0`](https://github.com/fworks-tech/agenthood/commit/5846ab0a8078b9a55ddff4954b7ad6d87e17a5fa) fix(llm): harden provider failover prior
+- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `main` · 23h ago
+  **Brief:** A single commit on main implements the transparent header with scroll frost and animated nav from PR #291.
+  PR #291 is referenced by the feat commit on main, so the diff for that PR is the place to see the header and nav changes.
+  The one commit on main and the PR #291 diff are the artifacts to review for the header and nav behavior.
+  **Changes:** [`0971e3d`](https://github.com/fworks-tech/flabs.tech/commit/0971e3d0bfe385454a025b34b55e3126f98bb851) feat: transparent header with scroll fro
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +135,4 @@
 
 ---
 
-*Last updated: Sep 2, 2026
+*Last updated: Sep 4, 2026
