@@ -41,23 +41,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `main` · 20h ago
-  **Brief:** Two commits landed on main: a feat(hitl) commit proving an approval round-trip through a stubbed runner and closing out the room, plus the merge of PR #83.
-  PR #83 came from the feat/76-hitl-spike branch, so the HITL spike work is now part of the default branch.
-  The artifacts to inspect are the two commits on main and the PR #83 merge from feat/76-hitl-spike.
-  **Changes:** [`f703571`](https://github.com/fworks-tech/atlaslink/commit/f7035711d9cddb7dfbd58c34b45f88d57e21cc1e) feat(hitl): prove approval round-trip th · [`7dbbf32`](https://github.com/fworks-tech/atlaslink/commit/7dbbf326996724ff6dfe417502cdf14a937e0559) Merge pull request #83 from fworks-tech/
+- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `main` · 2d ago
+  **Changes:** [`1a62909`](https://github.com/fworks-tech/agenthood/commit/1a629099de7d10f161890f22790d147a26c54308) chore(deps): bump actions/checkout from · [`f727fa1`](https://github.com/fworks-tech/agenthood/commit/f727fa1eafe60525024f6770c851f698150c2db7) Merge pull request #693 from fworks-tech
 
-- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-496-ask-human-park-primitive` · 22h ago
-  **Brief:** Seven commits on issue-496-ask-human-park-primitive center on the ask_human park primitive for park-and-resume hosts, introduced in PR #501.
-  PR #500 also lands on the branch, forbidding Co-Authored-By footers in commit standards, alongside a chore release bump to 3.40.0.
-  The remaining commits add a test-gated stub provider for hermetic HITL spikes and align the stub script fixture with the unified ask_human payload.
-  **Changes:** [`27d1404`](https://github.com/fworks-tech/agenthood/commit/27d1404ada750e68704442b0744b8ac07104ae79) docs: forbid Co-Authored-By footers in c · [`fed6d76`](https://github.com/fworks-tech/agenthood/commit/fed6d761fd8b3e554bafdb52e8ef98128ac43610) feat(hitl): add ask_human park primitive · [`cd0d98a`](https://github.com/fworks-tech/agenthood/commit/cd0d98ac0faf74527194330e1ea55c4a077fabc3) chore(release): 3.40.0 · and 4 more commits
+- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `issue-101-auth-system` · 2d ago
+  **Changes:** [`2d065f3`](https://github.com/fworks-tech/atlaslink/commit/2d065f3d0331c17e58d8e36bf62827d74926ed5e) test(auth): add full coverage for resolv
 
-- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `main` · 23h ago
-  **Brief:** A single commit on main implements the transparent header with scroll frost and animated nav from PR #291.
-  PR #291 is referenced by the feat commit on main, so the diff for that PR is the place to see the header and nav changes.
-  The one commit on main and the PR #291 diff are the artifacts to review for the header and nav behavior.
-  **Changes:** [`0971e3d`](https://github.com/fworks-tech/flabs.tech/commit/0971e3d0bfe385454a025b34b55e3126f98bb851) feat: transparent header with scroll fro
+- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `301-stream-grids` · 2d ago
+  **Changes:** [`23d7c1f`](https://github.com/fworks-tech/flabs.tech/commit/23d7c1fbceaede007f2975a5c5873b703f97d441) refactor: static root layout with client · [`da65d9b`](https://github.com/fworks-tech/flabs.tech/commit/da65d9b8e37fdf1c2ee6d3b3535c218c522aafed) refactor: serve public blog routes from · [`6117132`](https://github.com/fworks-tech/flabs.tech/commit/611713268d9e3efcc1cdbe0db37ab99d380032b7) feat(projects): stream GitHub grids behi · and 1 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +126,4 @@
 
 ---
 
-*Last updated: Sep 4, 2026
+*Last updated: Sep 7, 2026
