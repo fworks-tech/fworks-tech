@@ -5,6 +5,10 @@ on:
     - cron: "0 8 * * *"   # daily at 08:00 UTC
   workflow_dispatch:        # allow manual trigger from the Actions tab
 
+concurrency:
+  group: update-readme
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -25,6 +29,7 @@ jobs:
         run: python3 scripts/update_readme.py
 
       - name: Close stale auto-update PRs
+        if: steps.update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -33,6 +38,7 @@ jobs:
           done
 
       - name: Create PR
+        if: steps.update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -43,7 +49,7 @@ jobs:
           git checkout -b "$BRANCH"
           git add README.md
           git commit -m "chore(readme): auto-update recent activity [skip ci]" -m "Refreshed from the GitHub Events API by the update-readme workflow."
-          git push origin "$BRANCH" --force
+          git push origin "$BRANCH" --force-with-lease
           gh pr create \
             --repo fworks-tech/fworks-tech \
             --base main \
