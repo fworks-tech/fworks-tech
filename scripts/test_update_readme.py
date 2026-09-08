@@ -16,8 +16,9 @@ import update_readme as u  # noqa: E402
 class _FakeResp:
     """Context-manager HTTP response stub for mocked urlopen."""
 
-    def __init__(self, data):
+    def __init__(self, data, headers=None):
         self._data = json.dumps(data).encode()
+        self.headers = headers or {}
 
     def __enter__(self):
         return self
@@ -621,8 +622,8 @@ class TestPolishLines(unittest.TestCase):
         content = json.dumps({"entries": entries})
         return {"choices": [{"message": {"content": content}}]}
 
-    def entry(self, line="- a", brief=("On it", "Really on it.")):
-        return {"line": line, "brief": list(brief)}
+    def entry(self, index=0, line="- a", brief=("On it", "Really on it.")):
+        return {"index": index, "line": line, "brief": list(brief)}
 
     def test_no_key_keeps_input(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
@@ -632,8 +633,8 @@ class TestPolishLines(unittest.TestCase):
 
     def test_valid_response_rewrites(self):
         entries = [
-            self.entry("- A", ("\u26A1 Shipped it.", "The builder is live.")),
-            self.entry("- B", ("Second line.", "More detail.")),
+            self.entry(0, "- A", ("\u26A1 Shipped it.", "The builder is live.")),
+            self.entry(1, "- B", ("Second line.", "More detail.")),
         ]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
@@ -646,7 +647,7 @@ class TestPolishLines(unittest.TestCase):
         )
 
     def test_accepts_three_line_brief(self):
-        entries = [self.entry("- A", ("First.", "Second.", "Third."))]
+        entries = [self.entry(0, "- A", ("First.", "Second.", "Third."))]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
         ):
@@ -655,13 +656,13 @@ class TestPolishLines(unittest.TestCase):
 
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry("A")])
+            u, "llm_completions", return_value=self.resp([self.entry(0, "A")])
         ):
             lines, summaries = u.polish_lines([("- a", "ctx")])
         self.assertEqual(lines, ["- A"])
 
     def test_bad_entry_shape_degrades_only_that_entry(self):
-        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"line": "", "brief": ["a", "b"]}]})}}]}
+        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"index": 0, "line": "", "brief": ["a", "b"]}]})}}]}
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=bad
         ):
@@ -671,14 +672,14 @@ class TestPolishLines(unittest.TestCase):
 
     def test_fewer_entries_degrades_missing(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry("- A", ("On it", "Keep calm."))])
+            u, "llm_completions", return_value=self.resp([self.entry(0, "- A", ("On it", "Keep calm."))])
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
         self.assertEqual(lines, ["- A", "- b"])
         self.assertEqual(summaries, [["On it", "Keep calm."], []])
 
     def test_partial_bad_entry_keeps_good_ones(self):
-        entries = [self.entry("- A", ("Good line.", "Second good.")), {"line": "x"}]
+        entries = [self.entry(0, "- A", ("Good line.", "Second good.")), {"index": 1, "line": "x"}]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
         ):
@@ -705,7 +706,7 @@ class TestPolishLines(unittest.TestCase):
     def test_system_prompt_grounds_against_invention(self):
         self.assertIn("never invent", u.SYSTEM_PROMPT)
         self.assertIn("REAL brief", u.SYSTEM_PROMPT)
-        self.assertIn("exactly 3", u.SYSTEM_PROMPT)
+        self.assertIn("1 to 3", u.SYSTEM_PROMPT)
         self.assertIn("NAME THE ARTIFACTS", u.SYSTEM_PROMPT)
         self.assertIn("foundation", u.SYSTEM_PROMPT)
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
@@ -750,6 +751,137 @@ class TestMainFailureGuard(unittest.TestCase):
             u.main()
         fetch.assert_not_called()
         set_output.assert_called_once_with(0)
+
+
+class TestValidateBriefs(unittest.TestCase):
+    def test_empty_brief_fails(self):
+        items = [("- bullet", "context")]
+        self.assertEqual(u.validate_briefs(items, [[]]), [0])
+
+    def test_forbidden_word_fails(self):
+        items = [("- bullet", "context")]
+        briefs = [["This is a robust change."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [0])
+
+    def test_no_artifact_reference_fails(self):
+        items = [("- bullet", "context")]
+        briefs = [["A change landed.", "It does things.", "Very important."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [0])
+
+    def test_valid_brief_with_pr_number_passes(self):
+        items = [("- bullet", "context")]
+        briefs = [["PR #42 lands the feature.", "See the diff.", "Closes #7."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [])
+
+    def test_valid_brief_with_commit_sha_passes(self):
+        items = [("- bullet", "context")]
+        briefs = [["Commit `a1b2c3d` fixes it.", "One line change.", "Merged to main."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [])
+
+    def test_mixed_pass_and_fail(self):
+        items = [("- b1", "c1"), ("- b2", "c2"), ("- b3", "c3")]
+        briefs = [
+            ["PR #1 does X.", "See it.", "Good."],
+            [],
+            ["This is seamless.", "No artifacts here.", "Skip it."],
+        ]
+        self.assertEqual(u.validate_briefs(items, briefs), [1, 2])
+
+
+class TestPolishLinesRetry(unittest.TestCase):
+    def test_retry_on_failed_validation(self):
+        items = [("- bullet", "context with PR #99")]
+        empty_entry = {"index": 0, "line": "- bullet", "brief": []}
+        valid_entry = {
+            "index": 0,
+            "line": "- bullet",
+            "brief": ["PR #99 lands the change.", "See the diff.", "Closes #7."],
+        }
+        empty_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [empty_entry]})}}]})
+        valid_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [valid_entry]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", side_effect=[
+                    json.loads(empty_response),
+                    json.loads(valid_response),
+                ]):
+            lines, briefs = u.polish_lines(items)
+        self.assertEqual(briefs, [["PR #99 lands the change.", "See the diff.", "Closes #7."]])
+
+    def test_no_retry_when_all_pass(self):
+        items = [("- bullet", "context with PR #99")]
+        valid_entry = {
+            "index": 0,
+            "line": "- bullet",
+            "brief": ["PR #99 lands the change.", "See the diff.", "Closes #7."],
+        }
+        valid_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [valid_entry]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", return_value=json.loads(valid_response)) as mock_llm:
+            lines, briefs = u.polish_lines(items)
+        mock_llm.assert_called_once()
+
+    def test_retry_keeps_original_on_second_failure(self):
+        items = [("- bullet", "context")]
+        bad_entry = {"index": 0, "line": "- bullet", "brief": ["This is seamless filler."]}
+        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [bad_entry]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
+            lines, briefs = u.polish_lines(items)
+        # Both attempts fail validation — keeps the first call's brief
+        self.assertEqual(briefs, [["This is seamless filler."]])
+
+    def test_partial_retry_mixed_results(self):
+        items = [("- b1", "c1"), ("- b2", "c2")]
+        # First call: both fail
+        empty_0 = {"index": 0, "line": "- b1", "brief": []}
+        empty_1 = {"index": 1, "line": "- b2", "brief": []}
+        first = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [empty_0, empty_1]})}}]})
+        # Second call (retry both): first succeeds, second still forbidden
+        good_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
+        bad_1 = {"index": 1, "line": "- b2", "brief": ["Essential change.", "Critical fix."]}
+        second = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [good_0, bad_1]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", side_effect=[json.loads(first), json.loads(second)]):
+            lines, briefs = u.polish_lines(items)
+        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
+        self.assertEqual(briefs[1], [])
+
+    def test_scrambled_entry_order(self):
+        items = [("- b1", "c1"), ("- b2", "c2")]
+        # LLM returns entries in reverse order
+        entry_1 = {"index": 1, "line": "- b2", "brief": ["PR #2 does Y.", "See it."]}
+        entry_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
+        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [entry_1, entry_0]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
+            lines, briefs = u.polish_lines(items)
+        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
+        self.assertEqual(briefs[1], ["PR #2 does Y.", "See it."])
+
+
+class TestValidateBriefsExtras(unittest.TestCase):
+    def test_pr_without_hash_passes(self):
+        items = [("- bullet", "context")]
+        briefs = [["PR 42 lands the feature.", "See the diff."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [])
+
+    def test_gh_prefix_passes(self):
+        items = [("- bullet", "context")]
+        briefs = [["GH-123 resolves it.", "Merged."]]
+        self.assertEqual(u.validate_briefs(items, briefs), [])
+
+
+class TestPolishLinesExcessEntries(unittest.TestCase):
+    def test_llm_returns_more_entries_than_items(self):
+        items = [("- b1", "c1")]
+        entry_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
+        extra = {"index": 1, "line": "- extra", "brief": ["extra."]}
+        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [entry_0, extra]})}}]})
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
+                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
+            lines, briefs = u.polish_lines(items)
+        self.assertEqual(len(briefs), 1)
+        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
 
 
 if __name__ == "__main__":

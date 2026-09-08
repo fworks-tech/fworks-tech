@@ -69,6 +69,9 @@ def api_get(url, token):
     req.add_header("User-Agent", "update-readme-script")
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
+            remaining = resp.headers.get("X-RateLimit-Remaining")
+            if remaining is not None and int(remaining) < 5:
+                print(f"GitHub API rate limit low: {remaining} remaining ({url})")
             return json.loads(resp.read())
     except Exception as e:
         print(f"Failed to fetch {url}: {e}")
@@ -133,7 +136,7 @@ def linked_refs(body, *subjects):
     issues, prs = set(), set()
     text = "\n".join([body or "", *subjects])
     for m in re.finditer(
-        r"(?:closes?|fix(?:es|ed)?|resolves?|refs?|references?|implements?|see|relates?\s+to)\s+(?:issue\s+)?#\s*(\d+)",
+        r"(?:closes?|fix(?:es|ed)?|resolves?|refs?|references?|implements?|see|relates?\s+to|tracking|addresses?|tackles?)\s+(?:issue\s+)?#\s*(\d+)",
         text,
         re.IGNORECASE,
     ):
@@ -613,7 +616,7 @@ FORBIDDEN_WORDS = [
 SYSTEM_PROMPT = (
     "You polish GitHub activity for a developer's README profile. "
     "For every ITEM keep the repo name, markdown links and the action verb "
-    "exactly as-is. Then write a BRIEF of exactly 3 short scannable lines "
+    "exactly as-is. Then write a BRIEF of 1 to 3 short scannable lines "
     "that explains the change and names its concrete artifacts. "
     "STRICT RULES: "
     "(1) GROUNDING — write a REAL brief. State only facts present in the "
@@ -635,9 +638,78 @@ SYSTEM_PROMPT = (
     "structure; rotate the angle (what, why, technical detail). "
     "(6) SHORT — each line must fit one line and be scannable. "
     "Reply with JSON only: "
-    '{"entries": [{"line": "...", "brief": ["...", "...", "..."]}, ...]}, '
-    "one entry per ITEM."
+    '{"entries": [{"index": 0, "line": "...", "brief": ["...", "..."]}, ...]}, '
+    "one entry per ITEM. The 'index' field MUST match the ITEM number minus 1 "
+    "(ITEM 1 → index 0) so entries can be matched positionally."
 )
+
+
+ARTIFACT_RE = re.compile(
+    r"#\d+|`[a-f0-9]{7}`|issue \d+|branch [\w/-]+|tag [\w.-]+|PR \d+|pull/\d+|GH-\d+",
+    re.IGNORECASE,
+)
+
+
+def validate_briefs(items, briefs):
+    """Return indices of briefs that fail quality checks.
+
+    A brief fails when it is empty, contains forbidden words, or lacks any
+    concrete artifact reference (PR number, commit SHA, issue number, branch
+    name, or tag) drawn from its context.
+    """
+    failed = []
+    for i, ((bullet, context), brief) in enumerate(zip(items, briefs)):
+        if not brief:
+            failed.append(i)
+            continue
+        full_text = " ".join(brief)
+        if any(word in full_text.lower() for word in FORBIDDEN_WORDS):
+            failed.append(i)
+            continue
+        if not ARTIFACT_RE.search(full_text):
+            failed.append(i)
+    return failed
+
+
+def _polish_once(items, extra_instruction=""):
+    """Single LLM pass: returns (lines, briefs) for the given items."""
+    numbered = "\n".join(
+        f"ITEM {i + 1}: {bullet}\nCONTEXT {i + 1}: {context}"
+        for i, (bullet, context) in enumerate(items)
+    )
+    if extra_instruction:
+        numbered = extra_instruction + "\n\n" + numbered
+    payload = {
+        "model": MODEL,
+        "temperature": 0.5,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": numbered},
+        ],
+        "response_format": {"type": "json_object"},
+    }
+    data = llm_completions(payload)
+    entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
+    if not isinstance(entries, list):
+        raise ValueError("entries not a list")
+    entries_by_index = {
+        entry["index"]: entry
+        for entry in entries[: len(items)]
+        if isinstance(entry, dict) and isinstance(entry.get("index"), int)
+    }
+    lines = []
+    briefs = []
+    for i, (bullet, _) in enumerate(items):
+        entry = entries_by_index.get(i)
+        line = str(entry.get("line", "")).strip() if entry else ""
+        brief = entry.get("brief") if entry else None
+        if not line or not isinstance(brief, list) or not 1 <= len(brief) <= 3:
+            lines.append(bullet)
+            briefs.append([])
+            continue
+        lines.append(line if line.lstrip().startswith("-") else f"- {line}")
+        briefs.append([str(b).strip() for b in brief])
+    return lines, briefs
 
 
 def polish_lines(items):
@@ -647,43 +719,31 @@ def polish_lines(items):
     where briefs[i] is a list of 1-3 brief lines for lines[i]. Falls
     back to the original bullets and empty briefs on any failure; a
     single malformed entry degrades only that entry, not the whole list.
+
+    After generation, briefs are validated: any entry that is empty,
+    contains forbidden words, or lacks a concrete artifact reference is
+    retried once with a reinforcement instruction. Retry results are
+    re-validated — a failed retry keeps the original empty brief.
     """
     key = os.environ.get("OPENCODE_API_KEY")
     if not key:
         return [bullet for bullet, _ in items], [None] * len(items)
     try:
-        numbered = "\n".join(
-            f"ITEM {i + 1}: {bullet}\nCONTEXT {i + 1}: {context}"
-            for i, (bullet, context) in enumerate(items)
-        )
-        payload = {
-            "model": MODEL,
-            "temperature": 0.5,
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": numbered},
-            ],
-            "response_format": {"type": "json_object"},
-        }
-        data = llm_completions(payload)
-        entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
-        if not isinstance(entries, list):
-            raise ValueError("entries not a list")
-        entries_by_index = {
-            i: entry for i, entry in enumerate(entries[: len(items)]) if isinstance(entry, dict)
-        }
-        lines = []
-        briefs = []
-        for i, (bullet, _) in enumerate(items):
-            entry = entries_by_index.get(i)
-            line = str(entry.get("line", "")).strip() if entry else ""
-            brief = entry.get("brief") if entry else None
-            if not line or not isinstance(brief, list) or not 1 <= len(brief) <= 3:
-                lines.append(bullet)
-                briefs.append([])
-                continue
-            lines.append(line if line.lstrip().startswith("-") else f"- {line}")
-            briefs.append([str(b).strip() for b in brief])
+        lines, briefs = _polish_once(items)
+        failed = validate_briefs(items, briefs)
+        if failed:
+            retry_items = [items[i] for i in failed]
+            retry_instruction = (
+                "Your previous briefs were missing or low quality. "
+                "Write 1 to 3 scannable lines per entry, each referencing a "
+                "concrete artifact (PR number, commit SHA, issue number, branch name, or tag) "
+                "from the context. Do not use filler words."
+            )
+            _, retry_briefs = _polish_once(retry_items, retry_instruction)
+            retry_failed = validate_briefs(retry_items, retry_briefs)
+            for j, idx in enumerate(failed):
+                if j not in retry_failed and j < len(retry_briefs) and retry_briefs[j]:
+                    briefs[idx] = retry_briefs[j]
         return lines, briefs
     except Exception as e:
         print(f"LLM polish unavailable, keeping fallback text: {e}")
