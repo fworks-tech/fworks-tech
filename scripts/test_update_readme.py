@@ -886,5 +886,38 @@ class TestPolishLinesExcessEntries(unittest.TestCase):
         self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
 
 
+class TestMainFiltersEmptyBriefs(unittest.TestCase):
+    def test_all_none_briefs_skips_update(self):
+        """When LLM returns None briefs for all entries, skip update entirely."""
+        readme_content = (
+            "# Test\n\n"
+            "## Recent Activity\n\n"
+            "<!-- recent-activity:start -->\n"
+            "- old entry\n"
+            "<!-- recent-activity:end -->\n\n"
+            "---\n\n"
+            "*Last updated: Sep 1, 2026\n"
+        )
+        fake_events = [
+            {
+                "type": "PushEvent",
+                "repo": {"name": "fworks-tech/test"},
+                "created_at": "2026-09-08T00:00:00Z",
+                "payload": {
+                    "ref": "refs/heads/main",
+                    "commits": [{"sha": "a" * 40, "message": "test: change"}],
+                },
+            }
+        ]
+
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                mock.patch.object(u, "fetch_events", return_value=fake_events), \
+                mock.patch.object(u, "polish_lines", return_value=(["- 🚀 **test**"], [None])), \
+                mock.patch("builtins.open", side_effect=AssertionError("file touched")), \
+                mock.patch.object(u, "set_output") as set_output:
+            u.main()
+        set_output.assert_called_once_with(0)
+
+
 if __name__ == "__main__":
     unittest.main()

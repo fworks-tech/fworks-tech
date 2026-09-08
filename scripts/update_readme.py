@@ -598,7 +598,10 @@ def llm_completions(payload):
     )
     if proc.returncode != 0:
         raise RuntimeError(f"curl failed: {proc.stderr.strip()}")
-    return json.loads(proc.stdout)
+    data = json.loads(proc.stdout)
+    if "choices" not in data:
+        raise RuntimeError(f"LLM response missing 'choices': {proc.stdout[:300]}")
+    return data
 
 
 FORBIDDEN_WORDS = [
@@ -830,6 +833,22 @@ def main():
         lines, summaries = polish_lines([(b, c) for b, c, _ in entries])
         refs_list = [r for _, _, r in entries]
         event_map = dict(zip(event_map.keys(), lines))
+        # Filter out entries without briefs — render only quality content
+        kept = [
+            key
+            for key, summary in zip(event_map.keys(), summaries)
+            if summary
+        ]
+        if len(kept) != len(event_map):
+            removed = set(event_map.keys()) - set(kept)
+            print(f"Skipping entries without briefs: {', '.join(removed)}")
+            event_map = {k: event_map[k] for k in kept}
+            refs_list = [r for r, s in zip(refs_list, summaries) if s]
+            summaries = [s for s in summaries if s]
+        if not event_map:
+            print("No entries with briefs after filtering, leaving README untouched.")
+            set_output(0)
+            return
 
     with open(README_PATH, "r", encoding="utf-8") as f:
         content = f.read()
