@@ -1,4 +1,4 @@
-# Fábio R. Borges
+# Fábio Borges
 **Full-Stack & AI Engineer · Joinville, Brazil** · [flabs.tech](https://flabs.tech)
 
 [![GitHub followers](https://img.shields.io/github/followers/fworks-tech?style=flat-square&logo=github)](https://github.com/fworks-tech)
