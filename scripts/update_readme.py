@@ -57,6 +57,7 @@ API_BASE = os.environ.get(
     "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/go/v1"
 )
 MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4-flash")
+MAX_RETRIES = 1
 
 
 def api_get(url, token):
@@ -644,6 +645,14 @@ SYSTEM_PROMPT = (
 )
 
 
+RETRY_INSTRUCTION = (
+    "Your previous briefs were missing or low quality. "
+    "Write 1 to 3 scannable lines per entry, each referencing a "
+    "concrete artifact (PR number, commit SHA, issue number, branch name, or tag) "
+    "from the context. Do not use filler words."
+)
+
+
 ARTIFACT_RE = re.compile(
     r"#\d+|`[a-f0-9]{7}`|issue \d+|branch [\w/-]+|tag [\w.-]+|PR \d+|pull/\d+|GH-\d+",
     re.IGNORECASE,
@@ -692,11 +701,13 @@ def _polish_once(items, extra_instruction=""):
     entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
     if not isinstance(entries, list):
         raise ValueError("entries not a list")
-    entries_by_index = {
-        entry["index"]: entry
-        for entry in entries[: len(items)]
+    raw_entries = [
+        entry for entry in entries[: len(items)]
         if isinstance(entry, dict) and isinstance(entry.get("index"), int)
-    }
+    ]
+    if len(raw_entries) != len(set(e["index"] for e in raw_entries)):
+        print(f"Warning: LLM returned duplicate indices in entries")
+    entries_by_index = {entry["index"]: entry for entry in raw_entries}
     lines = []
     briefs = []
     for i, (bullet, _) in enumerate(items):
@@ -733,17 +744,13 @@ def polish_lines(items):
         failed = validate_briefs(items, briefs)
         if failed:
             retry_items = [items[i] for i in failed]
-            retry_instruction = (
-                "Your previous briefs were missing or low quality. "
-                "Write 1 to 3 scannable lines per entry, each referencing a "
-                "concrete artifact (PR number, commit SHA, issue number, branch name, or tag) "
-                "from the context. Do not use filler words."
-            )
-            _, retry_briefs = _polish_once(retry_items, retry_instruction)
+            _, retry_briefs = _polish_once(retry_items, RETRY_INSTRUCTION)
             retry_failed = validate_briefs(retry_items, retry_briefs)
             for j, idx in enumerate(failed):
                 if j not in retry_failed and j < len(retry_briefs) and retry_briefs[j]:
                     briefs[idx] = retry_briefs[j]
+                elif j in retry_failed:
+                    briefs[idx] = []
         return lines, briefs
     except Exception as e:
         print(f"LLM polish unavailable, keeping fallback text: {e}")

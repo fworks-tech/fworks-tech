@@ -633,8 +633,8 @@ class TestPolishLines(unittest.TestCase):
 
     def test_valid_response_rewrites(self):
         entries = [
-            self.entry(0, "- A", ("\u26A1 Shipped it.", "The builder is live.")),
-            self.entry(1, "- B", ("Second line.", "More detail.")),
+            self.entry(0, "- A", ("\u26A1 Shipped it PR #1.", "The builder is live.")),
+            self.entry(1, "- B", ("Second line.", "More detail `a1b2c3d`.")),
         ]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
@@ -643,16 +643,16 @@ class TestPolishLines(unittest.TestCase):
         self.assertEqual(lines, ["- A", "- B"])
         self.assertEqual(
             summaries,
-            [["\u26A1 Shipped it.", "The builder is live."], ["Second line.", "More detail."]],
+            [["\u26A1 Shipped it PR #1.", "The builder is live."], ["Second line.", "More detail `a1b2c3d`."]],
         )
 
     def test_accepts_three_line_brief(self):
-        entries = [self.entry(0, "- A", ("First.", "Second.", "Third."))]
+        entries = [self.entry(0, "- A", ("First PR #1.", "Second.", "Third."))]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
         ):
             lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(summaries, [["First.", "Second.", "Third."]])
+        self.assertEqual(summaries, [["First PR #1.", "Second.", "Third."]])
 
     def test_missing_dash_prefix_readded(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
@@ -670,22 +670,24 @@ class TestPolishLines(unittest.TestCase):
         self.assertEqual(lines, ["- x"])
         self.assertEqual(summaries, [[]])
 
-    def test_fewer_entries_degrades_missing(self):
+    def test_fewer_entries_retries_missing(self):
+        # LLM returns 1 entry for 2 items — retry fills the missing one
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry(0, "- A", ("On it", "Keep calm."))])
+            u, "llm_completions", return_value=self.resp([self.entry(0, "- A", ("On it PR #1", "Keep calm."))])
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
         self.assertEqual(lines, ["- A", "- b"])
-        self.assertEqual(summaries, [["On it", "Keep calm."], []])
+        self.assertEqual(summaries, [["On it PR #1", "Keep calm."], ["On it PR #1", "Keep calm."]])
 
-    def test_partial_bad_entry_keeps_good_ones(self):
-        entries = [self.entry(0, "- A", ("Good line.", "Second good.")), {"index": 1, "line": "x"}]
+    def test_partial_bad_entry_retries_bad_one(self):
+        # Entry 1 has bad shape (no brief) — retry fills it
+        entries = [self.entry(0, "- A", ("Good line PR #1.", "Second good.")), {"index": 1, "line": "x"}]
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
             u, "llm_completions", return_value=self.resp(entries)
         ):
             lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
         self.assertEqual(lines, ["- A", "- b"])
-        self.assertEqual(summaries, [["Good line.", "Second good."], []])
+        self.assertEqual(summaries, [["Good line PR #1.", "Second good."], ["Good line PR #1.", "Second good."]])
 
     def test_http_error_falls_back(self):
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
@@ -820,15 +822,15 @@ class TestPolishLinesRetry(unittest.TestCase):
             lines, briefs = u.polish_lines(items)
         mock_llm.assert_called_once()
 
-    def test_retry_keeps_original_on_second_failure(self):
+    def test_retry_degrades_to_empty_on_second_failure(self):
         items = [("- bullet", "context")]
         bad_entry = {"index": 0, "line": "- bullet", "brief": ["This is seamless filler."]}
         response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [bad_entry]})}}]})
         with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
                 mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
             lines, briefs = u.polish_lines(items)
-        # Both attempts fail validation — keeps the first call's brief
-        self.assertEqual(briefs, [["This is seamless filler."]])
+        # Both attempts fail validation — degrades to empty brief
+        self.assertEqual(briefs, [[]])
 
     def test_partial_retry_mixed_results(self):
         items = [("- b1", "c1"), ("- b2", "c2")]
