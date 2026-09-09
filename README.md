@@ -41,23 +41,23 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🚀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — pushed to `main` · 20h ago
-  **Brief:** Two commits landed on main: a feat(hitl) commit proving an approval round-trip through a stubbed runner and closing out the room, plus the merge of PR #83.
-  PR #83 came from the feat/76-hitl-spike branch, so the HITL spike work is now part of the default branch.
-  The artifacts to inspect are the two commits on main and the PR #83 merge from feat/76-hitl-spike.
-  **Changes:** [`f703571`](https://github.com/fworks-tech/atlaslink/commit/f7035711d9cddb7dfbd58c34b45f88d57e21cc1e) feat(hitl): prove approval round-trip th · [`7dbbf32`](https://github.com/fworks-tech/atlaslink/commit/7dbbf326996724ff6dfe417502cdf14a937e0559) Merge pull request #83 from fworks-tech/
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · just now
+  **Brief:** We added `agenthood optimize` (PR #779, commit 4ebc083) — an LLM generate/score loop that maximizes trigger F1 for member descriptions, closing #584.
+  Blind A/B eval mode landed in PR #778 (commit 44ecaf8): paired t-test and Cohen d compare two members, per issue #558; also patched js-yaml via npm override.
+  PR #774 (commit c6f250e) adds optional `output_format` regex and strict/lenient mode to SKILL.md frontmatter, with MemberRunner validating output after runs.
+  **Changes:** [`4ebc083`](https://github.com/fworks-tech/agenthood/commit/4ebc08336fc7a8754b54f9ad420eea0ed04f3ed3) feat(evals): add description optimizatio · [`8cb2a31`](https://github.com/fworks-tech/agenthood/commit/8cb2a3142c535c9246c88463a19720fa30ada5bf) test(commands): add optimize to expected · [`5ffd0ae`](https://github.com/fworks-tech/agenthood/commit/5ffd0ae1ad39ae2942aa7ebdbcb803f017e79e26) test(commands): add tests for optimize c · and 6 more commits
 
-- 🚀 [**agenthood**](https://github.com/fworks-tech/agenthood) — pushed to `issue-496-ask-human-park-primitive` · 22h ago
-  **Brief:** Seven commits on issue-496-ask-human-park-primitive center on the ask_human park primitive for park-and-resume hosts, introduced in PR #501.
-  PR #500 also lands on the branch, forbidding Co-Authored-By footers in commit standards, alongside a chore release bump to 3.40.0.
-  The remaining commits add a test-gated stub provider for hermetic HITL spikes and align the stub script fixture with the unified ask_human payload.
-  **Changes:** [`27d1404`](https://github.com/fworks-tech/agenthood/commit/27d1404ada750e68704442b0744b8ac07104ae79) docs: forbid Co-Authored-By footers in c · [`fed6d76`](https://github.com/fworks-tech/agenthood/commit/fed6d761fd8b3e554bafdb52e8ef98128ac43610) feat(hitl): add ask_human park primitive · [`cd0d98a`](https://github.com/fworks-tech/agenthood/commit/cd0d98ac0faf74527194330e1ea55c4a077fabc3) chore(release): 3.40.0 · and 4 more commits
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · just now
+  **Brief:** We bumped dependabot/fetch-metadata from v2 to v3 in PR #216 (commit 14bba69), which now requires Node 24 as the Actions runtime.
+  PR #215 (commit 2ea1912) rewrote the README as a visitor-facing landing page and added LICENSE, CONTRIBUTING.md, SECURITY.md, issue/PR templates, package.json metadata, and sitemap routes.
+  PR #212 (commit e2cd0d1) added @next/bundle-analyzer via `npm run analyze` to measure the studio bundle, per issue #51.
+  **Changes:** [`14bba69`](https://github.com/fworks-tech/agenthood-site/commit/14bba6955399aba7e6039f2caf84afddcfa3e368) chore(deps): bump dependabot/fetch-metad · [`2ea1912`](https://github.com/fworks-tech/agenthood-site/commit/2ea19126c32b07db35e210f78e0c22d1c42dd8fd) docs: rewrite README, add community heal · [`e2cd0d1`](https://github.com/fworks-tech/agenthood-site/commit/e2cd0d1022e7cb5a001f2271edc9ad525a384461) perf: add bundle analyzer for studio bun
 
-- 🚀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — pushed to `main` · 23h ago
-  **Brief:** A single commit on main implements the transparent header with scroll frost and animated nav from PR #291.
-  PR #291 is referenced by the feat commit on main, so the diff for that PR is the place to see the header and nav changes.
-  The one commit on main and the PR #291 diff are the artifacts to review for the header and nav behavior.
-  **Changes:** [`0971e3d`](https://github.com/fworks-tech/flabs.tech/commit/0971e3d0bfe385454a025b34b55e3126f98bb851) feat: transparent header with scroll fro
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · just now
+  **Brief:** We moved the database to a local Postgres container on Oracle Free Tier (PR #239, commit 50031f0, issue #54), with Caddy/Let's Encrypt TLS at api.atlas.flabs.tech and deploy.sh generating ATLASLINK_DATABASE_URL.
+  PR #238 (commit 1d33f74) rewrote the README into a scannable landing page with CI/Conventional Commits/PRs Welcome badges and a 3-step quick start.
+  PR #237 (commit eb72967) makes NodeConfigPanel reject non-integer maxTokens with a 'must be a whole number' error, matching isAgentConfig's Number.isInteger check.
+  **Changes:** [`50031f0`](https://github.com/fworks-tech/atlaslink/commit/50031f02de6137e1d2377a937e7882943cc613e7) infra(deploy): add local Postgres + TLS · [`1d33f74`](https://github.com/fworks-tech/atlaslink/commit/1d33f744ab824ec0dae75b2775136de3a8604ef8) docs: rewrite README for clarity, scanab · [`eb72967`](https://github.com/fworks-tech/atlaslink/commit/eb729678922f4834410c98b5671d4f0b0a68d680) fix(config): reject non-integer maxToken
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +135,4 @@
 
 ---
 
-*Last updated: Sep 4, 2026
+*Last updated: Sep 9, 2026
