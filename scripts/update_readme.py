@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 """Auto-update the Recent Activity section in README.md.
 
-Fetches recent public events from the GitHub Events API (pushes, PRs)
-and regenerates the activity entries under the
-``## Recent Activity`` heading. Each entry carries a bullet headline
-that links to the repo, PR, commit or issue, a grounded LLM ``Brief``
-(when OPENCODE_API_KEY is set), and deterministic ``Changes`` /
-``Related`` reference lines built from real GitHub API data — commit
-SHAs, PR commit lists and linked-issue titles — so the references stay
-valid even when the LLM is unavailable. Always bumps the "Last updated"
-footer so the workflow always has a diff to commit and opens a PR daily.
+Discovers active repos from the org's public events, fetches the last
+3 PRs merged into main for each, and drafts an LLM ``Brief`` covering
+those PRs. Each entry carries a bullet headline linking to the repo,
+the grounded brief (when OPENCODE_API_KEY is set), and deterministic
+``Changes`` / ``Related`` reference lines built from real GitHub API
+data — commit SHAs and PR references — so the links stay valid even
+when the LLM is unavailable. Always bumps the "Last updated" footer.
 
 Outputs ``changed=1`` via $GITHUB_OUTPUT, or ``changed=0`` if the
-section is missing or the API call fails.
+section is missing, the API call fails, or no quality briefs remain.
 """
 
 import json
@@ -89,6 +87,94 @@ def fetch_events(token):
     url = f"https://api.github.com/users/{ORG}/events/public?per_page=100"
     data = api_get(url, token)
     return data if isinstance(data, list) else None
+
+
+PRS_PER_REPO = 3
+
+
+def fetch_recent_merged_prs(repo_full, token, limit=PRS_PER_REPO):
+    """Fetch the last N PRs merged into main for a repo.
+
+    Returns a list of PR dicts with number, title, body, merged_at,
+    user, head, base. Empty list when no merged PRs or on failure.
+    """
+    if not token:
+        return []
+    url = (
+        f"https://api.github.com/repos/{repo_full}/pulls"
+        f"?state=closed&base=main&sort=updated&direction=desc&per_page={limit}"
+    )
+    data = api_get(url, token)
+    if not isinstance(data, list):
+        return []
+    merged = []
+    for pr in data:
+        if not pr.get("merged_at"):
+            continue
+        merged.append({
+            "number": pr.get("number"),
+            "title": pr.get("title", ""),
+            "body": pr.get("body", "") or "",
+            "merged_at": pr.get("merged_at", ""),
+            "user": pr.get("user", {}).get("login", ""),
+            "head": pr.get("head", {}).get("ref", ""),
+            "base": pr.get("base", {}).get("ref", ""),
+        })
+    return merged
+
+
+def format_prs_context(repo_full, prs, token):
+    """Build LLM context from a list of merged PRs."""
+    lines = []
+    for pr in prs:
+        lines.append(
+            f"PR #{pr['number']} merged {pr['merged_at'][:10]}: "
+            f"{pr['title']} by @{pr['user']}"
+        )
+        if pr.get("body"):
+            body = clean_text(pr["body"]).strip()
+            if body:
+                lines.append("  " + body[:500])
+        commits = fetch_pr_commits(repo_full, pr["number"], token)
+        if commits:
+            lines.append(
+                "  commits: "
+                + "; ".join(f"{sha[:7]} {subj}" for sha, subj in commits[:10])[:300]
+            )
+    return "\n".join(lines)
+
+
+def collect_prs_refs(repo_full, prs, token):
+    """Build reference links from a list of merged PRs."""
+    refs = []
+    seen_prs = set()
+    for pr in prs:
+        if pr["number"] not in seen_prs:
+            refs.append(_pr_ref(repo_full, pr["number"], pr["title"]))
+            seen_prs.add(pr["number"])
+        commits = fetch_pr_commits(repo_full, pr["number"], token)
+        for sha, subj in commits[:3]:
+            refs.append(_commit_ref(repo_full, sha, subj))
+    return refs
+
+
+def describe_prs(repo_short, repo_full, prs):
+    """Build bullet line for a repo's recent merged PRs."""
+    base = repo_url(repo_full)
+    count = len(prs)
+    latest = prs[0] if prs else None
+    age = f" \u00B7 {relative_time(latest['merged_at'])}" if latest else ""
+    if count == 1:
+        title = clean_text(latest["title"])[:50]
+        return (
+            f"- \U0001F500 [**{repo_short}**]({base}) \u2014 merged "
+            f"[PR #{latest['number']}]({base}/pull/{latest['number']})"
+            f"{': ' + title if title else ''}{age}"
+        )
+    return (
+        f"- \U0001F500 [**{repo_short}**]({base}) \u2014 "
+        f"{count} PRs merged into main{age}"
+    )
 
 
 def fetch_pr_commits(repo_full, pr_number, token):
@@ -319,30 +405,42 @@ def collect_refs(event, detail):
 
 
 def parse_events(events, token=None):
-    """Extract one (bullet, context, refs) triple per repo from events.
+    """Discover repos from events, build entries from last 3 merged PRs.
 
-    Deduplicates by repo, keeping only the most recent event for each.
-    Skips all event types except PushEvent and PullRequestEvent.
+    Steps:
+    1. Scan events to find active repos (deduped, most recent first).
+    2. For each repo, fetch the last 3 PRs merged into main.
+    3. Build (bullet, context, refs) from those PRs.
+
+    Repos with no merged PRs are skipped.
     """
-    seen = {}
+    # Discover repos from events (deduped, preserving most-recent order)
+    discovered = []
+    seen_repos = set()
     for event in events:
         repo_full = event.get("repo", {}).get("name", "")
         repo_short = repo_full.split("/")[-1]
         if not repo_short or repo_short == ORG:
             continue
-        if event.get("type") in SKIP_TYPES:
+        if repo_short in seen_repos:
             continue
-        if repo_short in seen:
-            continue
-        detail = enrich_event(event, token)
-        seen[repo_short] = (
-            describe_event(event, repo_short, repo_full),
-            event_context(event, detail),
-            collect_refs(event, detail),
-        )
-        if len(seen) >= TOP_N:
+        seen_repos.add(repo_short)
+        discovered.append((repo_short, repo_full))
+        if len(discovered) >= TOP_N:
             break
-    return seen
+
+    # Build entries from merged PRs
+    result = {}
+    for repo_short, repo_full in discovered:
+        prs = fetch_recent_merged_prs(repo_full, token)
+        if not prs:
+            continue
+        result[repo_short] = (
+            describe_prs(repo_short, repo_full, prs),
+            format_prs_context(repo_full, prs, token),
+            collect_prs_refs(repo_full, prs, token),
+        )
+    return result
 
 
 def event_context(event, detail=None):
@@ -620,27 +718,27 @@ FORBIDDEN_WORDS = [
 ]
 
 SYSTEM_PROMPT = (
-    "You polish GitHub activity for a developer's README profile. "
-    "For every ITEM keep the repo name, markdown links and the action verb "
-    "exactly as-is. Then write a BRIEF of 1 to 3 short scannable lines "
-    "that explains the change and names its concrete artifacts. "
+    "You summarize recent pull request activity for a developer's README. "
+    "Each ITEM covers the last 3 PRs merged into main for one repo. "
+    "For every ITEM keep the repo name and markdown links exactly as-is. "
+    "Then write a BRIEF of 1 to 3 short scannable lines that covers the "
+    "key changes across those PRs and names concrete artifacts. "
     "Voice: first-person plural and approachable (\"We merged…\", \"Adds…\"), "
     "never hypey. Confident but measured — no exclamation marks, no "
     "\"game-changing\" marketing. Prefer concrete details over vague praise. "
     "STRICT RULES: "
     "(1) GROUNDING — write a REAL brief. State only facts present in the "
     "CONTEXT; never invent features, fixes, motivations or code you cannot "
-    "see. A 1-commit push is a small change, not a milestone. "
+    "see. "
     f"(2) NO BOILERPLATE — never use these words: {', '.join(FORBIDDEN_WORDS)}. "
     "If a brief could apply to any repo, rewrite it. "
-    "(3) NAME THE ARTIFACTS — reference the concrete PR number, commit "
-    "SHAs, issue numbers, branch names and tags from the CONTEXT so the "
-    "reader can trace the change. Never use meta-labels like 'Artifacts:', "
-    "'Summary:', 'Overview:' or 'Reference:' — fold the references directly "
-    "into the sentences. "
-    "(4) NO NEGATIVE CLAIMS — never assert \"zero commits\", \"no changes\" "
-    "or similar absent facts. An empty or missing commits list only means "
-    "details were not included; say so if relevant. "
+    "(3) NAME THE ARTIFACTS — reference the concrete PR numbers, commit "
+    "SHAs and issue numbers from the CONTEXT so the reader can trace the "
+    "changes. Never use meta-labels like 'Artifacts:', 'Summary:', "
+    "'Overview:' or 'Reference:' — fold the references directly into the "
+    "sentences. "
+    "(4) COVER THE PRS — mention what the PRs accomplished, not just that "
+    "they merged. Group related changes; call out standout items. "
     "(5) VARY — no two briefs may share their opening words or sentence "
     "structure; rotate the angle (what, why, technical detail). "
     "(6) SHORT — each line must fit one line and be scannable. "
