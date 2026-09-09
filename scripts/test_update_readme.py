@@ -237,14 +237,22 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
             self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
             self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T09:00:00Z"),
         ]
-        parsed = u.parse_events(events)
+        prs = [{"number": 1, "title": "fix", "merged_at": "2026-08-19T09:00:00Z", "user": "x", "body": "", "head": "h", "base": "main"}]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs):
+            parsed = u.parse_events(events)
         self.assertEqual(len(parsed), 1)
-        self.assertIn("2h ago", parsed["agenthood"][0])
+        self.assertIn("agenthood", parsed)
+        self.assertIn("PR #1", parsed["agenthood"][0])
 
-    def test_skips_noise_and_org_repo(self):
+    def test_skips_repos_without_merged_prs(self):
         events = [
-            self.event("WatchEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
-            self.event("ForkEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
+            self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
+        ]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=[]):
+            self.assertEqual(u.parse_events(events), {})
+
+    def test_skips_org_repo(self):
+        events = [
             self.event("PushEvent", "fworks-tech/fworks-tech", "2026-08-19T08:00:00Z"),
         ]
         self.assertEqual(u.parse_events(events), {})
@@ -254,7 +262,9 @@ class TestParseEvents(_FrozenClock, unittest.TestCase):
             self.event("PushEvent", f"fworks-tech/repo{i}", "2026-08-19T08:00:00Z")
             for i in range(6)
         ]
-        parsed = u.parse_events(events)
+        prs = [{"number": 1, "title": "fix", "merged_at": "2026-08-19T08:00:00Z", "user": "x", "body": "", "head": "h", "base": "main"}]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs):
+            parsed = u.parse_events(events)
         self.assertEqual(len(parsed), u.TOP_N)
 
 
@@ -492,20 +502,29 @@ class TestFetchPushCommits(unittest.TestCase):
     def test_no_token_returns_empty(self):
         self.assertEqual(u.fetch_push_commits("r/o", "a", "b", None), [])
 
-    def test_parse_events_feeds_fetched_commits_to_context_and_refs(self):
-        with mock.patch(
-            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
-        ):
-            parsed = u.parse_events([self.event()], "token")
+
+class TestParseEventsIntegration(unittest.TestCase):
+    def test_parse_events_builds_pr_based_context_and_refs(self):
+        prs = [
+            {"number": 42, "title": "fix: wire captcha", "merged_at": "2026-08-19T08:00:00Z",
+             "user": "alice", "body": "Closes #10", "head": "fix", "base": "main"},
+            {"number": 43, "title": "feat: add toggle", "merged_at": "2026-08-19T07:00:00Z",
+             "user": "bob", "body": "", "head": "feat", "base": "main"},
+        ]
+        event = {
+            "type": "PullRequestEvent",
+            "repo": {"name": "fworks-tech/agenthood-site"},
+            "created_at": "2026-08-19T08:00:00Z",
+            "payload": {"action": "closed", "pull_request": {"number": 42}},
+        }
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
+                mock.patch.object(u, "fetch_pr_commits", return_value=[("a" * 40, "fix: wire captcha")]):
+            parsed = u.parse_events([event], "token")
         bullet, ctx, refs = parsed["agenthood-site"]
-        self.assertIn(
-            "pushed 2 commits to branch 89-studio-captcha-widget-visibility: "
-            "fix: wire captcha; feat: add toggle",
-            ctx,
-        )
-        commit_refs = [r for r in refs if r["kind"] == "commit"]
-        self.assertGreaterEqual(len(commit_refs), 2)
-        self.assertTrue(commit_refs[0]["url"].startswith("https://github.com/"))
+        self.assertIn("PR #42", ctx)
+        self.assertIn("PR #43", ctx)
+        pr_refs = [r for r in refs if r["kind"] == "pr"]
+        self.assertGreaterEqual(len(pr_refs), 2)
 
 
 class TestLinkedRefs(unittest.TestCase):
@@ -707,15 +726,13 @@ class TestPolishLines(unittest.TestCase):
 
     def test_system_prompt_grounds_against_invention(self):
         self.assertIn("never invent", u.SYSTEM_PROMPT)
-        self.assertIn("REAL brief", u.SYSTEM_PROMPT)
         self.assertIn("1 to 3", u.SYSTEM_PROMPT)
         self.assertIn("NAME THE ARTIFACTS", u.SYSTEM_PROMPT)
         self.assertIn("foundation", u.SYSTEM_PROMPT)
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
         self.assertIn("Confident but measured", u.SYSTEM_PROMPT)
         self.assertIn("never hypey", u.SYSTEM_PROMPT)
-        self.assertIn("zero commits", u.SYSTEM_PROMPT)
-        self.assertIn("NO NEGATIVE CLAIMS", u.SYSTEM_PROMPT)
+        self.assertIn("COVER THE PRS", u.SYSTEM_PROMPT)
 
     def test_build_activity_lines_renders_brief(self):
         block = u.build_activity_lines(
@@ -910,13 +927,57 @@ class TestMainFiltersEmptyBriefs(unittest.TestCase):
             }
         ]
 
+        prs = [{"number": 1, "title": "t", "merged_at": "2026-09-08T00:00:00Z",
+                 "user": "x", "body": "", "head": "h", "base": "main"}]
         with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
                 mock.patch.object(u, "fetch_events", return_value=fake_events), \
-                mock.patch.object(u, "polish_lines", return_value=(["- 🚀 **test**"], [None])), \
+                mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
+                mock.patch.object(u, "polish_lines", return_value=(["- 🔀 **test**"], [None])), \
                 mock.patch("builtins.open", side_effect=AssertionError("file touched")), \
                 mock.patch.object(u, "set_output") as set_output:
             u.main()
         set_output.assert_called_once_with(0)
+
+
+class TestFetchRecentMergedPrs(unittest.TestCase):
+    def test_returns_only_merged_prs(self):
+        api_response = [
+            {"number": 1, "title": "merged", "merged_at": "2026-08-19T08:00:00Z",
+             "user": {"login": "x"}, "head": {"ref": "h"}, "base": {"ref": "main"},
+             "body": "done"},
+            {"number": 2, "title": "closed not merged", "merged_at": None,
+             "user": {"login": "y"}, "head": {"ref": "h"}, "base": {"ref": "main"},
+             "body": ""},
+        ]
+        with mock.patch.object(u, "api_get", return_value=api_response):
+            prs = u.fetch_recent_merged_prs("fworks-tech/agenthood", "token")
+        self.assertEqual(len(prs), 1)
+        self.assertEqual(prs[0]["number"], 1)
+
+    def test_no_token_returns_empty(self):
+        self.assertEqual(u.fetch_recent_merged_prs("fworks-tech/agenthood", None), [])
+
+    def test_non_list_response_returns_empty(self):
+        with mock.patch.object(u, "api_get", return_value={"error": "rate limited"}):
+            self.assertEqual(u.fetch_recent_merged_prs("fworks-tech/agenthood", "token"), [])
+
+
+class TestDescribePrs(unittest.TestCase):
+    def test_single_pr(self):
+        prs = [{"number": 5, "title": "fix: bug", "merged_at": "2026-08-19T08:00:00Z",
+                "user": "x", "body": "", "head": "h", "base": "main"}]
+        line = u.describe_prs("agenthood", "fworks-tech/agenthood", prs)
+        self.assertIn("PR #5", line)
+        self.assertIn("fix: bug", line)
+
+    def test_multiple_prs(self):
+        prs = [
+            {"number": i, "title": f"PR {i}", "merged_at": "2026-08-19T08:00:00Z",
+             "user": "x", "body": "", "head": "h", "base": "main"}
+            for i in range(3)
+        ]
+        line = u.describe_prs("agenthood", "fworks-tech/agenthood", prs)
+        self.assertIn("3 PRs merged into main", line)
 
 
 if __name__ == "__main__":
