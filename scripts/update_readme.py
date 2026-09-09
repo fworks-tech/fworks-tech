@@ -685,7 +685,7 @@ def llm_completions(payload):
     """
     proc = subprocess.run(
         [
-            "curl", "-sS", "-m", "30", "-X", "POST",
+            "curl", "-sS", "-m", "120", "-X", "POST",
             f"{API_BASE}/chat/completions",
             "-H", f"Authorization: Bearer {os.environ['OPENCODE_API_KEY']}",
             "-H", "Content-Type: application/json",
@@ -694,7 +694,7 @@ def llm_completions(payload):
         ],
         capture_output=True,
         text=True,
-        timeout=35,
+        timeout=130,
     )
     if proc.returncode != 0:
         raise RuntimeError(f"curl failed: {proc.stderr.strip()}")
