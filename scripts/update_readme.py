@@ -57,6 +57,7 @@ API_BASE = os.environ.get(
     "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/go/v1"
 )
 MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4-flash")
+SESSION_ID = os.environ.get("OPENCODE_SESSION_ID", "agenthood-readme-briefs")
 MAX_RETRIES = 1
 
 
@@ -590,6 +591,7 @@ def llm_completions(payload):
             f"{API_BASE}/chat/completions",
             "-H", f"Authorization: Bearer {os.environ['OPENCODE_API_KEY']}",
             "-H", "Content-Type: application/json",
+            "-H", f"x-opencode-session: {SESSION_ID}",
             "-d", json.dumps(payload),
         ],
         capture_output=True,
@@ -622,12 +624,13 @@ SYSTEM_PROMPT = (
     "For every ITEM keep the repo name, markdown links and the action verb "
     "exactly as-is. Then write a BRIEF of 1 to 3 short scannable lines "
     "that explains the change and names its concrete artifacts. "
+    "Voice: first-person plural and approachable (\"We merged…\", \"Adds…\"), "
+    "never hypey. Confident but measured — no exclamation marks, no "
+    "\"game-changing\" marketing. Prefer concrete details over vague praise. "
     "STRICT RULES: "
     "(1) GROUNDING — write a REAL brief. State only facts present in the "
     "CONTEXT; never invent features, fixes, motivations or code you cannot "
-    "see. A 1-commit push is a small change, not a milestone. Write in "
-    "natural, confident, human language — never clinical or robotic — while "
-    "staying limited to the stated facts. "
+    "see. A 1-commit push is a small change, not a milestone. "
     f"(2) NO BOILERPLATE — never use these words: {', '.join(FORBIDDEN_WORDS)}. "
     "If a brief could apply to any repo, rewrite it. "
     "(3) NAME THE ARTIFACTS — reference the concrete PR number, commit "
@@ -648,12 +651,7 @@ SYSTEM_PROMPT = (
 )
 
 
-RETRY_INSTRUCTION = (
-    "Your previous briefs were missing or low quality. "
-    "Write 1 to 3 scannable lines per entry, each referencing a "
-    "concrete artifact (PR number, commit SHA, issue number, branch name, or tag) "
-    "from the context. Do not use filler words."
-)
+
 
 
 ARTIFACT_RE = re.compile(
@@ -683,21 +681,23 @@ def validate_briefs(items, briefs):
     return failed
 
 
-def _polish_once(items, extra_instruction=""):
+def _polish_once(items, feedback=""):
     """Single LLM pass: returns (lines, briefs) for the given items."""
     numbered = "\n".join(
         f"ITEM {i + 1}: {bullet}\nCONTEXT {i + 1}: {context}"
         for i, (bullet, context) in enumerate(items)
     )
-    if extra_instruction:
-        numbered = extra_instruction + "\n\n" + numbered
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": numbered},
+    ]
+    if feedback:
+        messages.append({"role": "user", "content": feedback})
     payload = {
         "model": MODEL,
-        "temperature": 0.5,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": numbered},
-        ],
+        "max_tokens": 16384,
+        "temperature": 0.3,
+        "messages": messages,
         "response_format": {"type": "json_object"},
     }
     data = llm_completions(payload)
@@ -726,6 +726,30 @@ def _polish_once(items, extra_instruction=""):
     return lines, briefs
 
 
+def _retry_feedback(items, briefs, failed):
+    """Build specific retry feedback from validation failures."""
+    reasons = []
+    for i, ((bullet, _), brief) in enumerate(zip(items, briefs)):
+        if i not in failed:
+            continue
+        if not brief:
+            reasons.append(f"Entry {i + 1}: brief was empty.")
+        else:
+            full_text = " ".join(brief)
+            bad_words = [w for w in FORBIDDEN_WORDS if w in full_text.lower()]
+            if bad_words:
+                reasons.append(f"Entry {i + 1}: forbidden words: {', '.join(bad_words)}.")
+            if not ARTIFACT_RE.search(full_text):
+                reasons.append(f"Entry {i + 1}: no concrete artifact reference.")
+    return (
+        "Your previous briefs were rejected for:\n"
+        + "\n".join(f"- {r}" for r in reasons)
+        + "\n\nWrite 1 to 3 scannable lines per entry. Reference a concrete "
+        "artifact (PR number, commit SHA, issue number, branch name, or tag) "
+        "from the context. Do not use filler words."
+    )
+
+
 def polish_lines(items):
     """Reword bullets and write a per-item brief via OpenCode Go.
 
@@ -747,7 +771,8 @@ def polish_lines(items):
         failed = validate_briefs(items, briefs)
         if failed:
             retry_items = [items[i] for i in failed]
-            _, retry_briefs = _polish_once(retry_items, RETRY_INSTRUCTION)
+            feedback = _retry_feedback(items, briefs, failed)
+            _, retry_briefs = _polish_once(retry_items, feedback)
             retry_failed = validate_briefs(retry_items, retry_briefs)
             for j, idx in enumerate(failed):
                 if j not in retry_failed and j < len(retry_briefs) and retry_briefs[j]:

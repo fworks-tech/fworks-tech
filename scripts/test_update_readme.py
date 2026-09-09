@@ -712,8 +712,8 @@ class TestPolishLines(unittest.TestCase):
         self.assertIn("NAME THE ARTIFACTS", u.SYSTEM_PROMPT)
         self.assertIn("foundation", u.SYSTEM_PROMPT)
         self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
-        self.assertIn("confident", u.SYSTEM_PROMPT)
-        self.assertIn("never clinical or robotic", u.SYSTEM_PROMPT)
+        self.assertIn("Confident but measured", u.SYSTEM_PROMPT)
+        self.assertIn("never hypey", u.SYSTEM_PROMPT)
         self.assertIn("zero commits", u.SYSTEM_PROMPT)
         self.assertIn("NO NEGATIVE CLAIMS", u.SYSTEM_PROMPT)
 
