@@ -4,6 +4,7 @@
 import json
 import os
 import sys
+import tempfile
 import unittest
 import urllib.request
 from datetime import datetime, timezone
@@ -754,14 +755,33 @@ class TestPolishLines(unittest.TestCase):
 
 
 class TestMainFailureGuard(unittest.TestCase):
-    def test_events_api_error_leaves_readme_untouched(self):
-        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
-                mock.patch.object(u, "fetch_events", return_value=None), \
-                mock.patch.object(u, "set_output") as set_output, \
-                mock.patch("builtins.open", side_effect=AssertionError("file touched")) as opened:
-            u.main()
-        set_output.assert_called_once_with(0)
-        opened.assert_not_called()
+    def test_events_api_error_bumps_footer(self):
+        """When the events API fails, the footer is still bumped so a PR can be created."""
+        readme_content = (
+            "# Test\n\n"
+            "## Recent Activity\n\n"
+            "<!-- recent-activity:start -->\n"
+            "- old entry\n"
+            "<!-- recent-activity:end -->\n\n"
+            "---\n\n"
+            "*Last updated: Sep 1, 2026\n"
+        )
+        with tempfile.TemporaryDirectory() as d:
+            readme = os.path.join(d, "README.md")
+            summary = os.path.join(d, "update_summary.txt")
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(readme_content)
+            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                    mock.patch.object(u, "fetch_events", return_value=None), \
+                    mock.patch.object(u, "README_PATH", readme), \
+                    mock.patch.object(u, "SUMMARY_PATH", summary), \
+                    mock.patch.object(u, "set_output") as set_output:
+                u.main()
+            set_output.assert_called_once_with(1)
+            with open(readme, encoding="utf-8") as f:
+                result = f.read()
+        self.assertIn("- old entry", result)
+        self.assertNotIn("Sep 1, 2026", result)
 
     def test_missing_token_skips_before_fetch(self):
         with mock.patch.dict(os.environ, {"GITHUB_TOKEN": ""}, clear=False), \
@@ -904,8 +924,8 @@ class TestPolishLinesExcessEntries(unittest.TestCase):
 
 
 class TestMainFiltersEmptyBriefs(unittest.TestCase):
-    def test_all_none_briefs_skips_update(self):
-        """When LLM returns None briefs for all entries, skip update entirely."""
+    def test_all_none_briefs_bumps_footer(self):
+        """When the LLM returns None briefs for all entries, the footer is still bumped."""
         readme_content = (
             "# Test\n\n"
             "## Recent Activity\n\n"
@@ -926,17 +946,25 @@ class TestMainFiltersEmptyBriefs(unittest.TestCase):
                 },
             }
         ]
-
-        prs = [{"number": 1, "title": "t", "merged_at": "2026-09-08T00:00:00Z",
-                 "user": "x", "body": "", "head": "h", "base": "main"}]
-        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
-                mock.patch.object(u, "fetch_events", return_value=fake_events), \
-                mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
-                mock.patch.object(u, "polish_lines", return_value=(["- 🔀 **test**"], [None])), \
-                mock.patch("builtins.open", side_effect=AssertionError("file touched")), \
-                mock.patch.object(u, "set_output") as set_output:
-            u.main()
-        set_output.assert_called_once_with(0)
+        with tempfile.TemporaryDirectory() as d:
+            readme = os.path.join(d, "README.md")
+            summary = os.path.join(d, "update_summary.txt")
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(readme_content)
+            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                    mock.patch.object(u, "fetch_events", return_value=fake_events), \
+                    mock.patch.object(u, "parse_events", return_value={
+                        "test": ("- 🔀 **test**", "context", ["a1b2c3d"])}), \
+                    mock.patch.object(u, "polish_lines", return_value=(["- 🔀 **test**"], [None])), \
+                    mock.patch.object(u, "README_PATH", readme), \
+                    mock.patch.object(u, "SUMMARY_PATH", summary), \
+                    mock.patch.object(u, "set_output") as set_output:
+                u.main()
+            set_output.assert_called_once_with(1)
+            with open(readme, encoding="utf-8") as f:
+                result = f.read()
+        self.assertIn("- old entry", result)
+        self.assertNotIn("Sep 1, 2026", result)
 
 
 class TestFetchRecentMergedPrs(unittest.TestCase):

@@ -937,41 +937,37 @@ def main():
         set_output(0)
         return
 
+    event_map = {}
+    summaries = []
+    refs_list = None
     try:
         events = fetch_events(token)
     except Exception as e:
         print(f"Failed to fetch events: {e}")
-        set_output(0)
-        return
+        events = None
     if events is None:
-        print("Failed to fetch events: API returned an error, leaving README untouched.")
-        set_output(0)
-        return
-
-    event_map = parse_events(events, token)
-    summaries = []
-    refs_list = None
-    if event_map:
-        entries = list(event_map.values())
-        lines, summaries = polish_lines([(b, c) for b, c, _ in entries])
-        refs_list = [r for _, _, r in entries]
-        event_map = dict(zip(event_map.keys(), lines))
-        # Filter out entries without briefs — render only quality content
-        kept = [
-            key
-            for key, summary in zip(event_map.keys(), summaries)
-            if summary
-        ]
-        if len(kept) != len(event_map):
-            removed = set(event_map.keys()) - set(kept)
-            print(f"Skipping entries without briefs: {', '.join(removed)}")
-            event_map = {k: event_map[k] for k in kept}
-            refs_list = [r for r, s in zip(refs_list, summaries) if s]
-            summaries = [s for s in summaries if s]
-        if not event_map:
-            print("No entries with briefs after filtering, leaving README untouched.")
-            set_output(0)
-            return
+        print("Events unavailable — bumping Last updated footer only.")
+    else:
+        event_map = parse_events(events, token)
+        if event_map:
+            entries = list(event_map.values())
+            lines, summaries = polish_lines([(b, c) for b, c, _ in entries])
+            refs_list = [r for _, _, r in entries]
+            event_map = dict(zip(event_map.keys(), lines))
+            # Filter out entries without briefs — render only quality content
+            kept = [
+                key
+                for key, summary in zip(event_map.keys(), summaries)
+                if summary
+            ]
+            if len(kept) != len(event_map):
+                removed = set(event_map.keys()) - set(kept)
+                print(f"Skipping entries without briefs: {', '.join(removed)}")
+                event_map = {k: event_map[k] for k in kept}
+                refs_list = [r for r, s in zip(refs_list, summaries) if s]
+                summaries = [s for s in summaries if s]
+            if not event_map:
+                print("No entries with briefs — bumping Last updated footer only.")
 
     with open(README_PATH, "r", encoding="utf-8") as f:
         content = f.read()
@@ -982,8 +978,13 @@ def main():
         set_output(0)
         return
 
-    new_rows = build_activity_lines(event_map, summaries, refs_list) if event_map else "\n"
-    old_activity = m.group(1).strip()
+    old_activity_block = m.group(1)
+    new_rows = (
+        build_activity_lines(event_map, summaries, refs_list)
+        if event_map
+        else old_activity_block
+    )
+    old_activity = old_activity_block.strip()
     old_date = re.search(r"Last updated: (.+)", content)
     old_date_str = old_date.group(1) if old_date else ""
 
