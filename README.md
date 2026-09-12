@@ -42,22 +42,16 @@
 
 <!-- recent-activity:start -->
 - 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · just now
-  **Brief:** We added `agenthood optimize` (PR #779, commit 4ebc083) — an LLM generate/score loop that maximizes trigger F1 for member descriptions, closing #584.
-  Blind A/B eval mode landed in PR #778 (commit 44ecaf8): paired t-test and Cohen d compare two members, per issue #558; also patched js-yaml via npm override.
-  PR #774 (commit c6f250e) adds optional `output_format` regex and strict/lenient mode to SKILL.md frontmatter, with MemberRunner validating output after runs.
-  **Changes:** [`4ebc083`](https://github.com/fworks-tech/agenthood/commit/4ebc08336fc7a8754b54f9ad420eea0ed04f3ed3) feat(evals): add description optimizatio · [`8cb2a31`](https://github.com/fworks-tech/agenthood/commit/8cb2a3142c535c9246c88463a19720fa30ada5bf) test(commands): add optimize to expected · [`5ffd0ae`](https://github.com/fworks-tech/agenthood/commit/5ffd0ae1ad39ae2942aa7ebdbcb803f017e79e26) test(commands): add tests for optimize c · and 6 more commits
-
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · just now
-  **Brief:** We bumped dependabot/fetch-metadata from v2 to v3 in PR #216 (commit 14bba69), which now requires Node 24 as the Actions runtime.
-  PR #215 (commit 2ea1912) rewrote the README as a visitor-facing landing page and added LICENSE, CONTRIBUTING.md, SECURITY.md, issue/PR templates, package.json metadata, and sitemap routes.
-  PR #212 (commit e2cd0d1) added @next/bundle-analyzer via `npm run analyze` to measure the studio bundle, per issue #51.
-  **Changes:** [`14bba69`](https://github.com/fworks-tech/agenthood-site/commit/14bba6955399aba7e6039f2caf84afddcfa3e368) chore(deps): bump dependabot/fetch-metad · [`2ea1912`](https://github.com/fworks-tech/agenthood-site/commit/2ea19126c32b07db35e210f78e0c22d1c42dd8fd) docs: rewrite README, add community heal · [`e2cd0d1`](https://github.com/fworks-tech/agenthood-site/commit/e2cd0d1022e7cb5a001f2271edc9ad525a384461) perf: add bundle analyzer for studio bun
+  **Brief:** We merged #829 to chain six swallowed errors via Error(msg, { cause }) and align @eslint/js to 10.0.1 with eslint 10.10.0 (0620117, 359b7a9), keeping the lint gate green under v10 recommended rules.
+  #827 bumps vitest to 4.1.11 for GHSA-82fw-gwwq-j7x9 and dedupes @commitlint/types to v21 (5f6d16e, 7ba2092), clearing the only npm advisory.
+  #825 releases v3.63.2 with the #824 fix dropping removed marked options for v15/v18 compat (e16f762).
+  **Changes:** [`0620117`](https://github.com/fworks-tech/agenthood/commit/06201178443390fdd9c7f574b18e3a0cb93a7151) refactor(lint): chain error causes and d · [`359b7a9`](https://github.com/fworks-tech/agenthood/commit/359b7a905a2c9487a36acb21b59832af95aa285a) chore(deps-dev): align @eslint/js to v10 · [`9cf7c69`](https://github.com/fworks-tech/agenthood/commit/9cf7c69a2688cbdd4c9e128aeee895eee97bafbe) docs(contributing): note the error cause · and 3 more commits
 
 - 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · just now
-  **Brief:** We moved the database to a local Postgres container on Oracle Free Tier (PR #239, commit 50031f0, issue #54), with Caddy/Let's Encrypt TLS at api.atlas.flabs.tech and deploy.sh generating ATLASLINK_DATABASE_URL.
-  PR #238 (commit 1d33f74) rewrote the README into a scannable landing page with CI/Conventional Commits/PRs Welcome badges and a 3-step quick start.
-  PR #237 (commit eb72967) makes NodeConfigPanel reject non-integer maxTokens with a 'must be a whole number' error, matching isAgentConfig's Number.isInteger check.
-  **Changes:** [`50031f0`](https://github.com/fworks-tech/atlaslink/commit/50031f02de6137e1d2377a937e7882943cc613e7) infra(deploy): add local Postgres + TLS · [`1d33f74`](https://github.com/fworks-tech/atlaslink/commit/1d33f744ab824ec0dae75b2775136de3a8604ef8) docs: rewrite README for clarity, scanab · [`eb72967`](https://github.com/fworks-tech/atlaslink/commit/eb729678922f4834410c98b5671d4f0b0a68d680) fix(config): reject non-integer maxToken
+  **Brief:** Our latest atlaslink batch adds daily spend history: #257 persists reasoning mirrors into daily_cost_buckets (migration 6) with backfill and serves GET /v1/cost/history (9acc748, 212d63e), plus a stacked per-agent chart on /cost (99e0938).
+  #256 brings session lifecycle controls — Resume, Dismiss, gone-banner link — and a tenant-wide GET /v1/cost rollup derived from member.event mirrors (998f97e, 6204064, 00a2595).
+  #255 fills the dashboard info gaps: real durations with wall-clock fallback, live elapsed seconds, per-session error/output lines, and thread timestamps (c484d6c).
+  **Changes:** [`9acc748`](https://github.com/fworks-tech/atlaslink/commit/9acc748bbeb2488d607404cd21e10feef9d56fac) feat(api): persist daily cost buckets wi · [`212d63e`](https://github.com/fworks-tech/atlaslink/commit/212d63e889fe8f46dde5defb46c823eb978c37dd) feat(api): serve daily cost history from · [`99e0938`](https://github.com/fworks-tech/atlaslink/commit/99e09382545873e7317e1265eca6f9b57e45a901) feat(dashboard): stacked daily spend cha · and 4 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +129,4 @@
 
 ---
 
-*Last updated: Sep 9, 2026
+*Last updated: Sep 12, 2026
