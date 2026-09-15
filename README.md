@@ -41,23 +41,22 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- agenthood 3.63.3: #830 narrows the verify placeholder scan to marker form, and #829 aligns the ESLint dev tree.
-  **Brief:** We merged #830 (aa42b57), restricting verify's placeholder patterns to marker form (TODO/FIXME/TBD plus a structural character) and skipping fenced/inline code, with regression tests in 1b2d24e.
-  That clears the false failures in the-doorman, the-warden, code-smell-detection and validation-and-enforcement (closes #816, #753); the release commit is ec580b8.
-  #829 (0620117, 359b7a9) chains six swallowed errors through Error(msg, { cause }) and moves @eslint/js to 10.0.1 to match eslint 10.10.0, noted in CONTRIBUTING.
-  **Changes:** [`ec580b8`](https://github.com/fworks-tech/agenthood/commit/ec580b85ba91891f6b14f6301b90e9ae3ee9c1f2) chore(release): v3.63.3 · [`1bf3b55`](https://github.com/fworks-tech/agenthood/commit/1bf3b55ba6a7cc76c726c581739e5b4b66bf5bd2) fix(verify): narrow placeholder scan to · [`1b2d24e`](https://github.com/fworks-tech/agenthood/commit/1b2d24ee270f6e7c2de7079319e18f4d7ea5b0c7) test(verify): regression tests for place · and 4 more commits
-
-- atlaslink's phone pass: #260 reworks the session room, #259 drops a dead mobile header and reworks the cost chart, #258 polls costs every 5s.
-  **Brief:** Session room on mobile landed in #260 (5e44aca): reply and steer forms stack, inputs render at 16px, Send/Steer/Interrupt/Resume/Ask Atlas hit 44px targets, and palette agents become tappable buttons feeding drafts the same way as drag-and-drop.
-  #259 removes the duplicate header bar on the home route (6205413), makes the cost badge live and mobile-visible (aeff2fd), and caps the cost legend at the top 7 agents with daily, weekly and monthly views (6492b47).
-  Polling every 5s while the tab is visible arrives in #258 (47559b0) through useCost and useCostHistory, holding the last good data when a poll fails.
+- atlaslink — mobile session room, header/cost polish, and 5s cost polling
+  **Brief:** We merged #260 (5e44aca), stacking the reply and steer forms on narrow viewports, rendering room inputs at 16px, and sizing Send, Steer, Interrupt, Resume, and Ask Atlas to 44px touch targets.
+  #259 (6205413, aeff2fd, 6492b47) removes the duplicate home-route header, polls the global cost badge on mobile, and caps the cost legend at 7 agents with daily, weekly, and monthly views.
+  #258 (47559b0) makes useCost and useCostHistory poll every 5s while the tab is visible, keeping the last good data when a poll fails.
   **Changes:** [`5e44aca`](https://github.com/fworks-tech/atlaslink/commit/5e44aca25d7d11f31035c777d33d60133f703fc7) feat(room): make the session room usable · [`6205413`](https://github.com/fworks-tech/atlaslink/commit/6205413e04e8fc01f1f517b64cdaca25a6002b94) fix(mobile): remove the dead second head · [`aeff2fd`](https://github.com/fworks-tech/atlaslink/commit/aeff2fd0ed1214fe31ea3b5ebe35f9f4f6f45cea) feat(header): poll the cost badge from t · and 2 more commits
 
-- agenthood-site: #228 reworks playground chat, #227 cycles 12 terminal examples, #226 adds the 2026-09-13 digest.
-  **Brief:** Playground chat now renders three conversational starters per member for all 20 members from agentStarters.ts, replacing the SKILL.md "When to Use" bullets users never would have typed (#228, c43be24).
-  The same PR composes member system prompts with style, roster and orchestration (c53dc0e, 2b258cd), while #227 loops 12 examples across 11 members plus agenthood list in TypingTerminal.tsx with a GITHUB_TOKEN build fix (69f9db6, 1093f31).
-  #226 (6f9666b) publishes the automated 2026-09-13 news digest.
-  **Changes:** [`c43be24`](https://github.com/fworks-tech/agenthood-site/commit/c43be24fecab0a25521c93be67597c6c6ca45068) feat(studio): show curated conversationa · [`c53dc0e`](https://github.com/fworks-tech/agenthood-site/commit/c53dc0e8d7e079a8c08af94b46e10fbae245495d) feat(studio): compose member system prom · [`2b258cd`](https://github.com/fworks-tech/agenthood-site/commit/2b258cdb36b33fd4ff10b0ebf23e7df1c6f80ccb) refactor(studio): address review finding · and 3 more commits
+- agenthood-site — studio starters, refreshed terminal, and dependency bumps
+  **Brief:** Studio playground chat now shows curated conversational starters for all 20 members and composes member system prompts from style, roster, and orchestration (#228, c43be24, c53dc0e, 2b258cd).
+  The homepage TypingTerminal cycles 12 examples spanning 11 members plus agenthood list (#227, 69f9db6), with GITHUB_TOKEN passed to the build so the prebuild sync avoids rate limits (1093f31).
+  Dependabot bumped 8 patch dependencies, taking the Mantine packages to 9.6.1 (#229, c4bb6ac).
+  **Changes:** [`c4bb6ac`](https://github.com/fworks-tech/agenthood-site/commit/c4bb6acbc1bfd63856e272733d8d801245e4a20c) chore(deps): bump the patch-dependencies · [`c43be24`](https://github.com/fworks-tech/agenthood-site/commit/c43be24fecab0a25521c93be67597c6c6ca45068) feat(studio): show curated conversationa · [`c53dc0e`](https://github.com/fworks-tech/agenthood-site/commit/c53dc0e8d7e079a8c08af94b46e10fbae245495d) feat(studio): compose member system prom · and 3 more commits
+
+- agenthood v3.63.3 — verify scan narrowed, lint aligned to ESLint 10
+  **Brief:** v3.63.3 released (#831, ec580b8), headlined by #830 (aa42b57): verify now restricts placeholder patterns to marker form and strips inline and fenced code, with three regression tests, clearing false positives in the-doorman, the-warden, code-smell-detection, and validation-and-enforcement (closes #816, #753).
+  #829 (0620117, 359b7a9) chains six swallowed errors through Error(msg, { cause }), drops two dead initializers, and moves @eslint/js to 10.0.1 to match eslint 10.10.0, a convention noted in CONTRIBUTING (9cf7c69, f73d8dd).
+  **Changes:** [`ec580b8`](https://github.com/fworks-tech/agenthood/commit/ec580b85ba91891f6b14f6301b90e9ae3ee9c1f2) chore(release): v3.63.3 · [`1bf3b55`](https://github.com/fworks-tech/agenthood/commit/1bf3b55ba6a7cc76c726c581739e5b4b66bf5bd2) fix(verify): narrow placeholder scan to · [`1b2d24e`](https://github.com/fworks-tech/agenthood/commit/1b2d24ee270f6e7c2de7079319e18f4d7ea5b0c7) test(verify): regression tests for place · and 4 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -135,4 +134,4 @@
 
 ---
 
-*Last updated: Sep 14, 2026
+*Last updated: Sep 15, 2026
