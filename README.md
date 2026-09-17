@@ -41,21 +41,20 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- The composer gains a provider picker fed by a new GET /v1/providers roster, with POST /tasks returning 400 on unknown tweaks.provider or malformed tweaks.member.model (#266, 421a4ec).
-  **Brief:** The composer gains a provider picker fed by a new GET /v1/providers roster, with POST /tasks returning 400 on unknown tweaks.provider or malformed tweaks.member.model (#266, 421a4ec).
-  Room adds ephemeral typing frames via publishEphemeral plus per-turn delivery receipts tracking sending→sent→delivered→failed (#265, e53fc75).
-  New lib/uiPrefs.ts stores your last session and diagram mode, so bare / restores it while share links and ?node= win (#264, 628d232, closes #137).
-  **Changes:** [`421a4ec`](https://github.com/fworks-tech/atlaslink/commit/421a4ec60d28d085579f93e80499753ca9b65b0e) feat(tasks): add provider picker with pe · [`e53fc75`](https://github.com/fworks-tech/atlaslink/commit/e53fc7595b72812c1a31f2256eb22eb630148226) feat(room): add typing indicators and pe · [`628d232`](https://github.com/fworks-tech/atlaslink/commit/628d232c016de32e6c37071beb8c2643c7c4c339) feat(room): persist selected session and
+- Docs cleanup across agenthood: changelog, skills licensing, and Discussions routing
+  **Brief:** Consolidated all shipped vscode-extension/CHANGELOG.md content under one dated 0.1.0 - 2026-09-16 section (#841, e48fd6f), closing #149 so the marketplace listing stops rendering a placeholder.
+  Added `license: MIT` frontmatter to 16 skills/*/SKILL.md files and a SkillsMP badge in README (#840, 490565b) for schema compliance, and moved usage questions and member pitches to Discussions (#839, ca1a1a2) with a bilingual welcome post #835.
+  **Changes:** [`e48fd6f`](https://github.com/fworks-tech/agenthood/commit/e48fd6f8b0a6ee0282be0dbcefe7561053697147) docs(vscode): consolidate 0.1.0 changelo · [`490565b`](https://github.com/fworks-tech/agenthood/commit/490565bc1df959122a3d39845eba1e09444a53d3) chore(skills): add MIT license frontmatt · [`4784b9c`](https://github.com/fworks-tech/agenthood/commit/4784b9c5158e81c5fb09badb4e37f99eff88cbc1) docs: add SkillsMP registry badge to REA · and 1 more commits
 
-- Colibri's LICENSE appendix now reads Copyright 2026 Vincenzo Fornaro instead of the Apache template placeholder (#1540, 78689b2).
-  **Brief:** Colibri's LICENSE appendix now reads Copyright 2026 Vincenzo Fornaro instead of the Apache template placeholder (#1540, 78689b2).
-  A new NOTICE file carries the product and copyright line and points to THIRD_PARTY_NOTICES.md, with the license section updated across the en, it, zh-CN and zh-TW READMEs.
-  **Changes:** [`78689b2`](https://github.com/JustVugg/colibri/commit/78689b2208ec31b863041b5d23cf0cdf6b8e51c8) license: name the copyright holder (Vinc
+- Dependency bumps land across the site and the extension
+  **Brief:** Bumped next, @next/bundle-analyzer and eslint-config-next to 16.3.5 (#233, f4c6118), the last patch flagged by `npm run check:deps` so local and CI installs stay lockfile-consistent.
+  Dependabot groups moved alongside: six minor updates (#230, 67f76de) led by @sentry/nextjs 10.74.0 and react/react-dom 19.3.0, plus eight patch updates (#229, c4bb6ac) carrying the @mantine packages from 9.6.0 to 9.6.1.
+  **Changes:** [`f4c6118`](https://github.com/fworks-tech/agenthood-site/commit/f4c6118ae282834cae26b4b41424f5561d573aeb) chore(deps): bump next family to 16.3.5 · [`67f76de`](https://github.com/fworks-tech/agenthood-site/commit/67f76de0d1ffeef95023891a2e9b8fd529601b30) chore(deps): bump the minor-dependencies · [`b43c271`](https://github.com/fworks-tech/agenthood-site/commit/b43c271bab484d26709af8e44d76055de7591f45) Merge remote-tracking branch 'origin/mai · and 1 more commits
 
-- Release v3.63.3 (#831) ships a verify fix that narrows placeholder scanning to marker form and strips fenced and inline code (#830, 1bf3b55, 1b2d24e, closes #816 and #753).
-  **Brief:** Release v3.63.3 (#831) ships a verify fix that narrows placeholder scanning to marker form and strips fenced and inline code (#830, 1bf3b55, 1b2d24e, closes #816 and #753).
-  Dev tooling aligns @eslint/js to v10.0.1 with the installed eslint 10.10.0 and chains six swallowed errors through Error(msg, { cause }) (#829, 0620117, 359b7a9).
-  **Changes:** [`ec580b8`](https://github.com/fworks-tech/agenthood/commit/ec580b85ba91891f6b14f6301b90e9ae3ee9c1f2) chore(release): v3.63.3 · [`1bf3b55`](https://github.com/fworks-tech/agenthood/commit/1bf3b55ba6a7cc76c726c581739e5b4b66bf5bd2) fix(verify): narrow placeholder scan to · [`1b2d24e`](https://github.com/fworks-tech/agenthood/commit/1b2d24ee270f6e7c2de7079319e18f4d7ea5b0c7) test(verify): regression tests for place · and 4 more commits
+- Delta-encoded checkpoints arrive, then get hardened and tested
+  **Brief:** Delta channels for runner checkpoints shipped in src/session/deltaChannel.ts (#270, c7e3c62) with planWrite, reconstructRows and migration 7 for Postgres and SQLite, re-anchoring a full snapshot every 10 writes via ATLASLINK_CHECKPOINT_SNAPSHOT_EVERY.
+  Review hardening in #271 (f43959b) adds baseCount to delta rows and returns null from loadCheckpoint on failed replay in all three backends; #269 (9f4a8f0) pins SessionThread to its 50-turn TURN_WINDOW for a 1000-turn session, closing #117.
+  **Changes:** [`f43959b`](https://github.com/fworks-tech/atlaslink/commit/f43959bee9575a4bf2ad3115fa9d858bf1841141) fix(session): harden delta channels per · [`c7e3c62`](https://github.com/fworks-tech/atlaslink/commit/c7e3c6271b6faa8ae2fa554c435f4bb80de48eef) feat(session): delta channels for checkp · [`9f4a8f0`](https://github.com/fworks-tech/atlaslink/commit/9f4a8f042325e86c1f64ee116e0436a83454ff42) test(dashboard): prove thread render cap
 <!-- recent-activity:end -->
 
 ---
@@ -133,4 +132,4 @@
 
 ---
 
-*Last updated: Sep 16, 2026
+*Last updated: Sep 17, 2026
