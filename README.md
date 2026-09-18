@@ -41,20 +41,22 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- Docs cleanup across agenthood: changelog, skills licensing, and Discussions routing
-  **Brief:** Consolidated all shipped vscode-extension/CHANGELOG.md content under one dated 0.1.0 - 2026-09-16 section (#841, e48fd6f), closing #149 so the marketplace listing stops rendering a placeholder.
-  Added `license: MIT` frontmatter to 16 skills/*/SKILL.md files and a SkillsMP badge in README (#840, 490565b) for schema compliance, and moved usage questions and member pitches to Discussions (#839, ca1a1a2) with a bilingual welcome post #835.
-  **Changes:** [`e48fd6f`](https://github.com/fworks-tech/agenthood/commit/e48fd6f8b0a6ee0282be0dbcefe7561053697147) docs(vscode): consolidate 0.1.0 changelo · [`490565b`](https://github.com/fworks-tech/agenthood/commit/490565bc1df959122a3d39845eba1e09444a53d3) chore(skills): add MIT license frontmatt · [`4784b9c`](https://github.com/fworks-tech/agenthood/commit/4784b9c5158e81c5fb09badb4e37f99eff88cbc1) docs: add SkillsMP registry badge to REA · and 1 more commits
+- Agenthood v3.65.2 wraps tools for OpenAI-compatible providers; v3.65.1 polls npm in release verify.
+  **Brief:** We shipped v3.65.2 (#861, bde8acc) wrapping ToolSchema as {type:'function', function:{...}} in validateTools, fixing Groq 400s on tools.0.type missing (#860, e034c1d).
+  v3.65.1 (#858, b4a30bd) swaps the fixed sleep in release verify for an npm registry poll (#857, closes #856).
+  **Changes:** [`b20fdb4`](https://github.com/fworks-tech/agenthood/commit/b20fdb4481797befdd828917361e6faadc88c763) chore(release): v3.65.2 · [`e034c1d`](https://github.com/fworks-tech/agenthood/commit/e034c1d0d91614fc559abea54ec44d2c3c836cdf) fix(llm): wrap tools in OpenAI function · [`a187e89`](https://github.com/fworks-tech/agenthood/commit/a187e89bc0ff4b71a08299a5d6098ef56fa60203) chore(release): v3.65.1
 
-- Dependency bumps land across the site and the extension
-  **Brief:** Bumped next, @next/bundle-analyzer and eslint-config-next to 16.3.5 (#233, f4c6118), the last patch flagged by `npm run check:deps` so local and CI installs stay lockfile-consistent.
-  Dependabot groups moved alongside: six minor updates (#230, 67f76de) led by @sentry/nextjs 10.74.0 and react/react-dom 19.3.0, plus eight patch updates (#229, c4bb6ac) carrying the @mantine packages from 9.6.0 to 9.6.1.
-  **Changes:** [`f4c6118`](https://github.com/fworks-tech/agenthood-site/commit/f4c6118ae282834cae26b4b41424f5561d573aeb) chore(deps): bump next family to 16.3.5 · [`67f76de`](https://github.com/fworks-tech/agenthood-site/commit/67f76de0d1ffeef95023891a2e9b8fd529601b30) chore(deps): bump the minor-dependencies · [`b43c271`](https://github.com/fworks-tech/agenthood-site/commit/b43c271bab484d26709af8e44d76055de7591f45) Merge remote-tracking branch 'origin/mai · and 1 more commits
+- Atlaslink fixes provider key env mapping, swaps Groq fallback model, bumps agenthood, and adds room follow-ups.
+  **Brief:** Provider key resolution got fixed in #284 (ffb884b) by reading agenthood's canonical PROVIDER_KEYS registry, so opencode-go no longer reports unconfigured despite OPENCODE_API_KEY being set.
+  The same PR replaces the dead Groq fallback mixtral-8x7b-32768 with openai/gpt-oss-120b (be8047b), and #283 (a23cb84) bumps agenthood to 3.65.2 for the tool-wrapping fix.
+  Room work in #282 (661a632) adds lifecycle SSE status patching via useSessions.patchSessionStatus and a POST /tasks/:id/followup route for terminal-session questions.
+  **Changes:** [`ffb884b`](https://github.com/fworks-tech/atlaslink/commit/ffb884be56cdad46a8b028c523102e31ba5211a3) fix(dashboard): resolve provider key env · [`be8047b`](https://github.com/fworks-tech/atlaslink/commit/be8047b6d66a558f08df6376f81a0a6ab1bac0cc) chore(config): point groq fallback at op · [`a23cb84`](https://github.com/fworks-tech/atlaslink/commit/a23cb84bf82cd1af8ad3854a1b25697a8661ff0d) chore(deps): bump agenthood to 3.65.2 fo · and 1 more commits
 
-- Delta-encoded checkpoints arrive, then get hardened and tested
-  **Brief:** Delta channels for runner checkpoints shipped in src/session/deltaChannel.ts (#270, c7e3c62) with planWrite, reconstructRows and migration 7 for Postgres and SQLite, re-anchoring a full snapshot every 10 writes via ATLASLINK_CHECKPOINT_SNAPSHOT_EVERY.
-  Review hardening in #271 (f43959b) adds baseCount to delta rows and returns null from loadCheckpoint on failed replay in all three backends; #269 (9f4a8f0) pins SessionThread to its 50-turn TURN_WINDOW for a 1000-turn session, closing #117.
-  **Changes:** [`f43959b`](https://github.com/fworks-tech/atlaslink/commit/f43959bee9575a4bf2ad3115fa9d858bf1841141) fix(session): harden delta channels per · [`c7e3c62`](https://github.com/fworks-tech/atlaslink/commit/c7e3c6271b6faa8ae2fa554c435f4bb80de48eef) feat(session): delta channels for checkp · [`9f4a8f0`](https://github.com/fworks-tech/atlaslink/commit/9f4a8f042325e86c1f64ee116e0436a83454ff42) test(dashboard): prove thread render cap
+- Flabs.tech brings blog drafts into compliance, syncs repo docs, and fixes MDX SSG with a client component.
+  **Brief:** Four blog drafts came into pattern compliance in #315 (e678c8a), adding subtitle/shareText, extending the mantine summary to 200 chars, fixing the mailman 6-to-4 platform count, and rewriting the firehose Tailwind premise to the Mantine migration.
+  Our repo-wide spec audit in #314 (e593d3a) syncs README, AGENTS.md, env example and specs, fixing stale model ids/test counts and documenting admin area, cross-posting, OTLP logging, TBT/FCP budgets, mobile-chrome, gitleaks job, and missing env vars.
+  CustomLink moved into its own 'use client' component in #313 (f083839) to fix SSG prerendering for blog posts with internal markdown links.
+  **Changes:** [`e678c8a`](https://github.com/fworks-tech/flabs.tech/commit/e678c8a0eda7bdc748411e067c00574199b66323) docs(blog): bring 4 drafts into pattern · [`e593d3a`](https://github.com/fworks-tech/flabs.tech/commit/e593d3a24d47bbf1ea9a5d78c99ade539dc13417) docs: sync README, AGENTS.md, env exampl · [`f083839`](https://github.com/fworks-tech/flabs.tech/commit/f083839427b123d7d2c00d7ce9c953d1e4639a93) fix(mdx): extract CustomLink to 'use cli
 <!-- recent-activity:end -->
 
 ---
@@ -132,4 +134,4 @@
 
 ---
 
-*Last updated: Sep 17, 2026
+*Last updated: Sep 18, 2026
