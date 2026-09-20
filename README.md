@@ -42,22 +42,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
-  **Brief:** We fixed provider key resolution to read agenthood's canonical PROVIDER_KEYS registry (PR #284, ffb884b), so opencode-go stops reporting unconfigured when OPENCODE_API_KEY is set.
-  Groq fallback moves from decommissioned mixtral-8x7b-32768 to openai/gpt-oss-120b (be8047b), and agenthood bumps to 3.65.2 (PR #283, a23cb84, agenthood#860) so tools wrap in OpenAI function shape instead of 400ing.
-  Room sessions get live status patching from lifecycle SSE frames and a new POST /tasks/:id/followup route (PR #282, 661a632) for terminal-session follow-ups.
-  **Changes:** [`ffb884b`](https://github.com/fworks-tech/atlaslink/commit/ffb884be56cdad46a8b028c523102e31ba5211a3) fix(dashboard): resolve provider key env · [`be8047b`](https://github.com/fworks-tech/atlaslink/commit/be8047b6d66a558f08df6376f81a0a6ab1bac0cc) chore(config): point groq fallback at op · [`a23cb84`](https://github.com/fworks-tech/atlaslink/commit/a23cb84bf82cd1af8ad3854a1b25697a8661ff0d) chore(deps): bump agenthood to 3.65.2 fo · and 1 more commits
-
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · yesterday
-  **Brief:** Agenthood 3.65.2 (PR #861, b20fdb4) wraps internal ToolSchemas as {type:'function', function:{...}} for chat-completions providers (PR #860, e034c1d), fixing Groq's 400 tools.0.type missing.
-  The Groq provider test now asserts the wrapped wire shape, and 3.65.1 (PR #858, a187e89) makes release verification poll npm instead of sleeping (b4a30bd, closes #856).
-  **Changes:** [`b20fdb4`](https://github.com/fworks-tech/agenthood/commit/b20fdb4481797befdd828917361e6faadc88c763) chore(release): v3.65.2 · [`e034c1d`](https://github.com/fworks-tech/agenthood/commit/e034c1d0d91614fc559abea54ec44d2c3c836cdf) fix(llm): wrap tools in OpenAI function · [`a187e89`](https://github.com/fworks-tech/agenthood/commit/a187e89bc0ff4b71a08299a5d6098ef56fa60203) chore(release): v3.65.1
-
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · yesterday
-  **Brief:** Docs got a repo-wide sync (PR #314, e593d3a) — README, AGENTS.md, env example and specs now match the codebase, with CONTRIBUTING.md added and stale model/test counts fixed.
-  Four blog drafts were brought into pattern compliance (PR #315, e678c8a): missing subtitle/shareText added, Mantine summary extended to 200 chars, firehose premise rewritten around the Mantine migration.
-  CustomLink moved into its own 'use client' component (PR #313, f083839) so internal markdown links no longer break SSG prerendering.
-  **Changes:** [`e678c8a`](https://github.com/fworks-tech/flabs.tech/commit/e678c8a0eda7bdc748411e067c00574199b66323) docs(blog): bring 4 drafts into pattern · [`e593d3a`](https://github.com/fworks-tech/flabs.tech/commit/e593d3a24d47bbf1ea9a5d78c99ade539dc13417) docs: sync README, AGENTS.md, env exampl · [`f083839`](https://github.com/fworks-tech/flabs.tech/commit/f083839427b123d7d2c00d7ce9c953d1e4639a93) fix(mdx): extract CustomLink to 'use cli
+- Sandbox cleanup, Docker isolation detection, and doc fixes landed in agenthood.
+  **Brief:** We merged #898 (6b3025e) to strip over-engineering from sandbox and json modules: removed isJsonMode, logOutput, conditional transport, and base:undefined from jsonLogger, plus resetDockerCache from MemberRunner, deleting the jsonLogger test and 16 net lines.
+  PR #896 (d8e992a) adds Docker container isolation detection to applySandboxProfile via docker info, setting security.dockerIsolation=true when available and falling back to the phase-1 local profile with a visible notice otherwise.
+  PR #897 (fa44cda) fixes docs to match runtime: removes the nonexistent the-developer member, corrects tool names to file.read/file.write/code.write/file.search, and drops the unimplemented MCP config schema and --temperature flag.
+  **Changes:** [`6b3025e`](https://github.com/fworks-tech/agenthood/commit/6b3025e3e0f35167f56de88ee184d04169885314) refactor: cut over-engineering from sand · [`d8e992a`](https://github.com/fworks-tech/agenthood/commit/d8e992a03fc21e45c05d2f6477b3524e4c43fddf) feat(sandbox): add Docker container isol · [`fa44cda`](https://github.com/fworks-tech/agenthood/commit/fa44cda4ded6785969fc569a2e1a0c3da6e22958) fix(docs): correct non-existent member r
 <!-- recent-activity:end -->
 
 ---
@@ -144,4 +133,4 @@
 
 ---
 
-*Last updated: Sep 19, 2026
+*Last updated: Sep 20, 2026
