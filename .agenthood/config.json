@@ -24,7 +24,7 @@
   ],
   "providers": [
     {
-      "name": "opencode-go",
+      "name": "opencode",
       "model": "deepseek-v4-flash",
       "priority": 1
     },
