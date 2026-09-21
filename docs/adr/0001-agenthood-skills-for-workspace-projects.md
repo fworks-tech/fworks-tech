@@ -21,9 +21,9 @@ Adopt Agenthood as the standard skill + runtime + CI-review layer for fworks-tec
 
 **Provider and credential choices (verified during adoption):**
 
-- LLM: OpenCode Go (`https://opencode.ai/zen/go/v1/chat/completions`, model `deepseek-v4-flash`). API keys are per-consumer: an `OPENCODE_API_KEY` valid for one project returns `401 Invalid API key` in another, so each repo/consumer needs its own Go subscription key from https://opencode.ai/auth.
+- LLM: OpenCode Zen (`https://opencode.ai/zen/v1/chat/completions`, model `deepseek-v4-flash`). API keys are per-consumer: an `OPENCODE_API_KEY` valid for Zen; see https://opencode.ai/auth.
 - Transport: the gateway sits behind Cloudflare and rejects `urllib`'s TLS fingerprint (HTTP 1010); the update script calls it via `curl` and the runtime handles the same via its SDK stack. Future HTTP clients must replicate that behavior or they 1010-block.
-- Fallbacks: `.agenthood/config.json` orders `opencode-go` first, then `groq` (`llama-3.3-70b-versatile` per AGENTS.md), with runtime failover across providers.
+- Fallbacks: `.agenthood/config.json` orders `opencode` (Zen) first, then `groq` (`llama-3.3-70b-versatile` per AGENTS.md), with runtime failover across providers.
 - Grounding (learned on fworks-tech): LLM-generated content must (a) state only facts present in the source events — never assert "zero commits"/"no changes" when the events API simply omitted commit details; (b) fetch missing push commits via the compare API so the model sees real work; (c) admit when data is absent instead of inventing it.
 
 ## Alternatives Considered

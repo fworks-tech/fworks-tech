@@ -52,7 +52,7 @@ SKIP_TYPES = {
 }
 
 API_BASE = os.environ.get(
-    "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/go/v1"
+    "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/v1"
 )
 MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4-flash")
 SESSION_ID = os.environ.get("OPENCODE_SESSION_ID", "agenthood-readme-briefs")
