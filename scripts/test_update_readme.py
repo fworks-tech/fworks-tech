@@ -6,7 +6,6 @@ import os
 import sys
 import tempfile
 import unittest
-import urllib.request
 from datetime import datetime, timezone
 from unittest import mock
 
@@ -14,39 +13,28 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_readme as u  # noqa: E402
 
 
-class _FakeResp:
-    """Context-manager HTTP response stub for mocked urlopen."""
-
-    def __init__(self, data, headers=None):
-        self._data = json.dumps(data).encode()
-        self.headers = headers or {}
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        return False
-
-    def read(self):
-        return self._data
-
-
-class FrozenNow(datetime):
+class _MockedClock(datetime):
     @classmethod
     def now(cls, tz=None):
         return datetime(2026, 8, 19, 10, 0, tzinfo=timezone.utc)
 
+    @classmethod
+    def _patch(cls):
+        _orig = u.datetime
+        u.datetime = cls
+        return _orig
 
-class _FrozenClock:
+    @classmethod
+    def _unpatch(cls, orig):
+        u.datetime = orig
+
+
+class TestRelativeTime(unittest.TestCase):
     def setUp(self):
-        self._real = u.datetime
-        u.datetime = FrozenNow
+        self._clock = _MockedClock._patch()
 
     def tearDown(self):
-        u.datetime = self._real
-
-
-class TestRelativeTime(_FrozenClock, unittest.TestCase):
+        _MockedClock._unpatch(self._clock)
 
     def test_hours_ago(self):
         self.assertEqual(u.relative_time("2026-08-19T09:00:00Z"), "1h ago")
@@ -69,7 +57,13 @@ class TestCleanText(unittest.TestCase):
         self.assertEqual(u.clean_text("fix [x] `y`"), "fix x y")
 
 
-class TestDescribeEvent(_FrozenClock, unittest.TestCase):
+class TestDescribeEvent(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
     def event(self, etype, payload, created="2026-08-19T09:00:00Z"):
         return {
             "type": etype,
@@ -224,7 +218,13 @@ class TestDescribeEvent(_FrozenClock, unittest.TestCase):
         self.assertIn("\u2014 activity", line)
 
 
-class TestParseEvents(_FrozenClock, unittest.TestCase):
+class TestParseEvents(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
     def event(self, etype, repo, created):
         return {
             "type": etype,
@@ -307,23 +307,16 @@ class TestEnrichEvent(unittest.TestCase):
             },
         }
 
-    def respond_by_url(self):
-        def open_url(req, timeout=None):
-            url = req.full_url
-            if "/pulls/9/commits" in url:
-                return _FakeResp(
-                    [{"sha": "c" * 40, "commit": {"message": "feat: wire captcha (#9)"}}]
-                )
-            if "/issues/5" in url:
-                return _FakeResp({"number": 5, "title": "caption broken"})
-            if "/issues/9" in url:
-                return _FakeResp({"number": 9, "title": "captcha widget"})
-            raise AssertionError(f"unexpected url: {url}")
-
-        return open_url
-
     def test_pr_wires_commits_issues_and_prs(self):
-        with mock.patch("urllib.request.urlopen", side_effect=self.respond_by_url()):
+        def api_get_side(url, token):
+            if "/pulls/9/commits" in url:
+                return [{"sha": "c" * 40, "commit": {"message": "feat: wire captcha (#9)"}}]
+            if "/issues/5" in url:
+                return {"title": "caption broken"}
+            if "/issues/9" in url:
+                return {"title": "captcha widget"}
+            raise AssertionError(f"unexpected url: {url}")
+        with mock.patch.object(u, "api_get", side_effect=api_get_side):
             detail = u.enrich_event(self.pr_event(), "token")
         self.assertEqual(detail["commits"], [("c" * 40, "feat: wire captcha (#9)")])
         self.assertEqual(detail["issues"], {5: "caption broken"})
@@ -486,9 +479,14 @@ class TestFetchPushCommits(unittest.TestCase):
         }
 
     def test_returns_commit_shas_and_subjects(self):
-        with mock.patch(
-            "urllib.request.urlopen", return_value=_FakeResp(self.resp())
-        ):
+        def api_get_side(url, token):
+            if "/compare/abc123...def456" in url:
+                return {"commits": [
+                    {"sha": "a" * 40, "commit": {"message": "fix: wire captcha\nbody"}},
+                    {"sha": "b" * 40, "commit": {"message": "feat: add toggle"}},
+                ]}
+            raise AssertionError(f"unexpected url: {url}")
+        with mock.patch.object(u, "api_get", side_effect=api_get_side):
             commits = u.fetch_push_commits(
                 "fworks-tech/agenthood-site", "abc123", "def456", "token"
             )
@@ -635,6 +633,14 @@ class TestRenderPrBody(unittest.TestCase):
         text = "\n".join(body)
         self.assertIn("No qualifying public events", text)
         self.assertNotIn("Recent activity", text)
+
+    def test_empty_repos_with_content_shows_no_summaries(self):
+        blocks = "- \U0001F500 **agenthood**\n  **Brief:** Some text."
+        body = u.render_pr_body([], blocks, "Aug 19, 2026")
+        text = "\n".join(body)
+        self.assertIn("No qualifying activity summaries", text)
+        self.assertNotIn("0 entries", text)
+        self.assertIn("## Recent activity", text)
 
 
 class TestPolishLines(unittest.TestCase):
@@ -925,7 +931,9 @@ class TestPolishLinesExcessEntries(unittest.TestCase):
 
 class TestMainFiltersEmptyBriefs(unittest.TestCase):
     def test_all_none_briefs_bumps_footer(self):
-        """When the LLM returns None briefs for all entries, the footer is still bumped."""
+        """When the LLM returns None briefs for all entries, the entries
+        are kept with their bullet lines (no briefs) and the footer is
+        still bumped so the PR is created."""
         readme_content = (
             "# Test\n\n"
             "## Recent Activity\n\n"
@@ -954,7 +962,9 @@ class TestMainFiltersEmptyBriefs(unittest.TestCase):
             with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
                     mock.patch.object(u, "fetch_events", return_value=fake_events), \
                     mock.patch.object(u, "parse_events", return_value={
-                        "test": ("- 🔀 **test**", "context", ["a1b2c3d"])}), \
+                        "test": ("- 🔀 **test**", "context",
+                                 [{"kind": "commit", "sha": "a1b2c3d",
+                                   "url": "u", "subject": "test"}])}), \
                     mock.patch.object(u, "polish_lines", return_value=(["- 🔀 **test**"], [None])), \
                     mock.patch.object(u, "README_PATH", readme), \
                     mock.patch.object(u, "SUMMARY_PATH", summary), \
@@ -963,7 +973,7 @@ class TestMainFiltersEmptyBriefs(unittest.TestCase):
             set_output.assert_called_once_with(1)
             with open(readme, encoding="utf-8") as f:
                 result = f.read()
-        self.assertIn("- old entry", result)
+        self.assertIn("🔀 **test**", result)
         self.assertNotIn("Sep 1, 2026", result)
 
 
