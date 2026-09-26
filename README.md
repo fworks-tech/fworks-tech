@@ -42,11 +42,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- Sandbox cleanup, Docker isolation detection, and doc fixes landed in agenthood.
-  **Brief:** We merged #898 (6b3025e) to strip over-engineering from sandbox and json modules: removed isJsonMode, logOutput, conditional transport, and base:undefined from jsonLogger, plus resetDockerCache from MemberRunner, deleting the jsonLogger test and 16 net lines.
-  PR #896 (d8e992a) adds Docker container isolation detection to applySandboxProfile via docker info, setting security.dockerIsolation=true when available and falling back to the phase-1 local profile with a visible notice otherwise.
-  PR #897 (fa44cda) fixes docs to match runtime: removes the nonexistent the-developer member, corrects tool names to file.read/file.write/code.write/file.search, and drops the unimplemented MCP config schema and --temperature flag.
-  **Changes:** [`6b3025e`](https://github.com/fworks-tech/agenthood/commit/6b3025e3e0f35167f56de88ee184d04169885314) refactor: cut over-engineering from sand · [`d8e992a`](https://github.com/fworks-tech/agenthood/commit/d8e992a03fc21e45c05d2f6477b3524e4c43fddf) feat(sandbox): add Docker container isol · [`fa44cda`](https://github.com/fworks-tech/agenthood/commit/fa44cda4ded6785969fc569a2e1a0c3da6e22958) fix(docs): correct non-existent member r
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 2 PRs merged into main · 15h ago
+  **Changes:** [`19323ea`](https://github.com/fworks-tech/agenthood/commit/19323ea956a72a96f5963639ebf1e6695aa84204) chore(release): v3.68.1 · [`8e5b190`](https://github.com/fworks-tech/agenthood/commit/8e5b190376189940ee075a225222188626a46cff) fix(deps-dev): bump vitest to 5 with the
+
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · just now
+  **Changes:** [`b9ae7e7`](https://github.com/fworks-tech/agenthood-site/commit/b9ae7e70878bc5c981ca29a8ed20d9cf5187e042) feat(news): add AI trends September 2026 · [`3d87e28`](https://github.com/fworks-tech/agenthood-site/commit/3d87e286afccd823e5aa44f8736387f264545d00) feat(infra): add staging branch pipeline · [`8630f76`](https://github.com/fworks-tech/agenthood-site/commit/8630f7667a9459e095b1f0123c5130307cbb64de) content(news): digest for 2026-09-26
+
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 2 PRs merged into main · 5d ago
+  **Changes:** [`10e234d`](https://github.com/fworks-tech/flabs.tech/commit/10e234d42039d5e4a594c1752325734f50ddde92) feat(ai): trap focus and separate modal · [`c3cb65f`](https://github.com/fworks-tech/flabs.tech/commit/c3cb65ff66e04dbfa34879a0334afe390e3dc3a2) refactor(chat): switch ai assistant endp · [`e678c8a`](https://github.com/fworks-tech/flabs.tech/commit/e678c8a0eda7bdc748411e067c00574199b66323) docs(blog): bring 4 drafts into pattern
 <!-- recent-activity:end -->
 
 ---
@@ -133,4 +136,4 @@
 
 ---
 
-*Last updated: Sep 20, 2026
+*Last updated: Sep 26, 2026
