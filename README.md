@@ -42,21 +42,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — merged [PR #936](https://github.com/fworks-tech/agenthood/pull/936): fix(skills): adapt the frontmatter parser to js-ya · just now
-  **Brief:** We merged #936 (commits 2efb572, 3a351e0) to bump js-yaml 4.3.2→5.4.2 and adapt SkillParser to the v5 API, superseding #930.
-  Because the v5 TypeScript rewrite drops the default export, the frontmatter parser's fail-closed YAML path from #515 needed rework; both breakages were verified against 5.4.2.
-  **Changes:** [`2efb572`](https://github.com/fworks-tech/agenthood/commit/2efb57286277de3313f6588058b4736a3b4940f7) chore(deps): bump js-yaml from 4.3.2 to · [`3a351e0`](https://github.com/fworks-tech/agenthood/commit/3a351e0d79f2a385b659aee64806ac8557c4c0ad) fix(skills): adapt the frontmatter parse
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 4h ago
+  **Changes:** [`2f13bcd`](https://github.com/fworks-tech/agenthood/commit/2f13bcd8aa0b8d4011a75e265d402872b71b8c1c) feat(routing): validate the confidence-g · [`00a8a44`](https://github.com/fworks-tech/agenthood/commit/00a8a44f8589e37aeef3fb792c33fb369e4e4132) chore(release): v3.68.3 · [`0e6cfb3`](https://github.com/fworks-tech/agenthood/commit/0e6cfb331e2cc47a71b81a5dea0528e6a9d21c00) fix(herald): dedupe trailing ref pile in
 
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · just now
-  **Brief:** From a local agenthood v3.68.1 build, #247 regenerated Studio data and added mediator sections (Scoring Confidence, Parallel Evaluation, Type-Safe Decision Record, Cascade Rules) plus steward sections (Complexity Scoring, Model Tier Routing) to agents.generated.ts.
-  The September 2026 AI trends roundup landed in #246 (closes #45), covering frontier model releases, policy shifts, and market signals on the news page.
-  Staging gets CI/E2E gates in #234 (closes #47), with the promotion flow documented in README and the branch force-pushed to match main (-d409b9d).
-  **Changes:** [`9650a96`](https://github.com/fworks-tech/agenthood-site/commit/9650a9699d998ce66413c9448eac3749a7e38299) feat(studio): add Jev-inspired confidenc · [`b9ae7e7`](https://github.com/fworks-tech/agenthood-site/commit/b9ae7e70878bc5c981ca29a8ed20d9cf5187e042) feat(news): add AI trends September 2026 · [`3d87e28`](https://github.com/fworks-tech/agenthood-site/commit/3d87e286afccd823e5aa44f8736387f264545d00) feat(infra): add staging branch pipeline
-
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 2 PRs merged into main · just now
-  **Brief:** We fixed four analytics defects in #318 (commits bb7d48b, 6dcef33): a shared getConsent() !== 'declined' gate for Vercel/PostHog/self-hosted emitters, CTA label plumbing through PendingEvent → TrackedEvent, IP scrubbing, and engagement dashboards.
-  The chat endpoint moved from OpenCode Go to Zen in #316 at src/app/api/chat/route.ts:43, with Playwright mocks updated and a chat-modal-overlay added in AiAssistant.tsx (aria-modal, centralized handleClose).
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 2 PRs merged into main · 9h ago
   **Changes:** [`bb7d48b`](https://github.com/fworks-tech/flabs.tech/commit/bb7d48bd5f806a65ae968903631455d9956d00a9) fix(analytics): consent gate, label plum · [`6dcef33`](https://github.com/fworks-tech/flabs.tech/commit/6dcef33068f9056747c14e26cb31ab9631eeba59) refactor: share BROWSER_KEYS + ScrollDep · [`10e234d`](https://github.com/fworks-tech/flabs.tech/commit/10e234d42039d5e4a594c1752325734f50ddde92) feat(ai): trap focus and separate modal · and 1 more commits
+
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 3h ago
+  **Changes:** [`9650a96`](https://github.com/fworks-tech/agenthood-site/commit/9650a9699d998ce66413c9448eac3749a7e38299) feat(studio): add Jev-inspired confidenc · [`22e131c`](https://github.com/fworks-tech/agenthood-site/commit/22e131c70dee15580292514c734a618c491bb2aa) feat(studio): pin the demo to one provid · [`3bdb6db`](https://github.com/fworks-tech/agenthood-site/commit/3bdb6db1720f857d6acd987d9a79e9f2b442ceca) fix(studio): address reviewer findings f · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -143,4 +136,4 @@
 
 ---
 
-*Last updated: Sep 26, 2026
+*Last updated: Sep 27, 2026
