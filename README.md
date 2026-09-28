@@ -42,14 +42,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 6h ago
+  **Changes:** [`3b510bd`](https://github.com/fworks-tech/agenthood-site/commit/3b510bdf233bf5370f56aaf59daa393fec0fdfde) refactor(studio): extract the tool loop · [`e4ac241`](https://github.com/fworks-tech/agenthood-site/commit/e4ac241718727c301ac5458efd7c24fe7606f1f2) test(studio): opt-in live smoke test so · [`3dfecd2`](https://github.com/fworks-tech/agenthood-site/commit/3dfecd28d44f1ae3b97227335178f34e9e065029) refactor(studio): delete the model catal
+
 - 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 4h ago
-  **Changes:** [`2f13bcd`](https://github.com/fworks-tech/agenthood/commit/2f13bcd8aa0b8d4011a75e265d402872b71b8c1c) feat(routing): validate the confidence-g · [`00a8a44`](https://github.com/fworks-tech/agenthood/commit/00a8a44f8589e37aeef3fb792c33fb369e4e4132) chore(release): v3.68.3 · [`0e6cfb3`](https://github.com/fworks-tech/agenthood/commit/0e6cfb331e2cc47a71b81a5dea0528e6a9d21c00) fix(herald): dedupe trailing ref pile in
+  **Changes:** [`0fd7182`](https://github.com/fworks-tech/agenthood/commit/0fd718234333a984b7b148d371eebc00e7c13084) chore(release): v3.70.2 · [`6e2a75e`](https://github.com/fworks-tech/agenthood/commit/6e2a75ee4ae4fd1546b56571fdeed5ce12eced44) fix(tests): restore spy mocks and vitest · [`ad85324`](https://github.com/fworks-tech/agenthood/commit/ad85324678eba4dfcc5b0fdc85bf8b932d230ae3) fix(society): re-lock the-steward after · and 2 more commits
 
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 2 PRs merged into main · 9h ago
-  **Changes:** [`bb7d48b`](https://github.com/fworks-tech/flabs.tech/commit/bb7d48bd5f806a65ae968903631455d9956d00a9) fix(analytics): consent gate, label plum · [`6dcef33`](https://github.com/fworks-tech/flabs.tech/commit/6dcef33068f9056747c14e26cb31ab9631eeba59) refactor: share BROWSER_KEYS + ScrollDep · [`10e234d`](https://github.com/fworks-tech/flabs.tech/commit/10e234d42039d5e4a594c1752325734f50ddde92) feat(ai): trap focus and separate modal · and 1 more commits
-
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 3h ago
-  **Changes:** [`9650a96`](https://github.com/fworks-tech/agenthood-site/commit/9650a9699d998ce66413c9448eac3749a7e38299) feat(studio): add Jev-inspired confidenc · [`22e131c`](https://github.com/fworks-tech/agenthood-site/commit/22e131c70dee15580292514c734a618c491bb2aa) feat(studio): pin the demo to one provid · [`3bdb6db`](https://github.com/fworks-tech/agenthood-site/commit/3bdb6db1720f857d6acd987d9a79e9f2b442ceca) fix(studio): address reviewer findings f · and 2 more commits
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · 12h ago
+  **Changes:** [`1c27210`](https://github.com/fworks-tech/flabs.tech/commit/1c27210c138382aca91bf77cf5e71ea326d62573) fix: restore original package-lock.json · [`4b06ed9`](https://github.com/fworks-tech/flabs.tech/commit/4b06ed9b3fd1cde7c22487b4c13a1a7b670e4d09) fix: allow build scripts for native deps · [`105aa9a`](https://github.com/fworks-tech/flabs.tech/commit/105aa9aca42a02778407028d1f429a843a9d48ea) feat(ai): use jev-1.13 model for assista · and 1 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -136,4 +136,4 @@
 
 ---
 
-*Last updated: Sep 27, 2026
+*Last updated: Sep 28, 2026
