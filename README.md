@@ -42,14 +42,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 6h ago
-  **Changes:** [`3b510bd`](https://github.com/fworks-tech/agenthood-site/commit/3b510bdf233bf5370f56aaf59daa393fec0fdfde) refactor(studio): extract the tool loop · [`e4ac241`](https://github.com/fworks-tech/agenthood-site/commit/e4ac241718727c301ac5458efd7c24fe7606f1f2) test(studio): opt-in live smoke test so · [`3dfecd2`](https://github.com/fworks-tech/agenthood-site/commit/3dfecd28d44f1ae3b97227335178f34e9e065029) refactor(studio): delete the model catal
+- [**agenthood**](https://github.com/fworks-tech/agenthood) v3.71.0: goal command, queue arbitration, trace persistence
+  **Brief:** We merged #989 (5e3d5da) for v3.71.0: goal command via GoalChain (#987), queue arbitration, and one-step trajectory persistence (#985).
+  PR #988 collapsed single-use wrappers: traceSummary into status.ts, CostEstimator/TokenCounter into estimateCost()/countTokens() in modelPricing, ritual frontmatter to js-yaml, and the clean-herald-notes wrapper (3c53662, ece5704, 3843749, d6066f4).
+  PR #986 finished ConcurrencyQueue: submit() returns a promise, displacement rejects, and the starvation timer is unref'd; runMemberTask prioritizes by source (cli/playground/api=USER, automated=SCHEDULED) and run() accepts a source override (70431ce).
+  **Changes:** [`5e3d5da`](https://github.com/fworks-tech/agenthood/commit/5e3d5daafe226d10b6499b43c6eb3a7717d6bd24) chore(release): v3.71.0 · [`3c53662`](https://github.com/fworks-tech/agenthood/commit/3c536624dd2cd7da0ff5221fb513502a95148b93) refactor(status): fold traceSummary into · [`ece5704`](https://github.com/fworks-tech/agenthood/commit/ece5704b837a5b73063459e05e9c10193e22c0ee) refactor(cost): collapse CostEstimator c · and 4 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 4h ago
-  **Changes:** [`0fd7182`](https://github.com/fworks-tech/agenthood/commit/0fd718234333a984b7b148d371eebc00e7c13084) chore(release): v3.70.2 · [`6e2a75e`](https://github.com/fworks-tech/agenthood/commit/6e2a75ee4ae4fd1546b56571fdeed5ce12eced44) fix(tests): restore spy mocks and vitest · [`ad85324`](https://github.com/fworks-tech/agenthood/commit/ad85324678eba4dfcc5b0fdc85bf8b932d230ae3) fix(society): re-lock the-steward after · and 2 more commits
-
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · 12h ago
-  **Changes:** [`1c27210`](https://github.com/fworks-tech/flabs.tech/commit/1c27210c138382aca91bf77cf5e71ea326d62573) fix: restore original package-lock.json · [`4b06ed9`](https://github.com/fworks-tech/flabs.tech/commit/4b06ed9b3fd1cde7c22487b4c13a1a7b670e4d09) fix: allow build scripts for native deps · [`105aa9a`](https://github.com/fworks-tech/flabs.tech/commit/105aa9aca42a02778407028d1f429a843a9d48ea) feat(ai): use jev-1.13 model for assista · and 1 more commits
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) pre-push hook docs, @types/node patch, eslint 10 ignore
+  **Brief:** We replaced the unverified '1 run in 16' flake claim in .githooks/pre-push with the measured cause, naming the four affected tests and the timeout-vs-assertion distinction (8e20645, c95789e, 7a23070).
+  PR #282 bumped @types/node from 26.6.2 to 26.6.3 in the patch-dependencies group (525140c).
+  PR #281 added an eslint >=10 ignore to .github/dependabot.yml until eslint-plugin-react supports ESLint 10, since the config fails with a react/display-name TypeError; it also warms route module graphs once per run (9b50727, b2e95bd, referencing #274).
+  **Changes:** [`8e20645`](https://github.com/fworks-tech/agenthood-site/commit/8e20645091f4ffbb31a20e6c35a995afca4d8d07) docs(hooks): replace the unverified flak · [`c95789e`](https://github.com/fworks-tech/agenthood-site/commit/c95789ee4514db69d2acda571031c47517c8f9ce) docs(hooks): the cold cache comes from d · [`7a23070`](https://github.com/fworks-tech/agenthood-site/commit/7a23070b9eba0f7ae34f95a7ba57214c999c2ac3) docs(hooks): a pull that brings in sourc · and 3 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -136,4 +139,4 @@
 
 ---
 
-*Last updated: Sep 28, 2026
+*Last updated: Sep 29, 2026
