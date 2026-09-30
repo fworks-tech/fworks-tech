@@ -42,17 +42,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**agenthood**](https://github.com/fworks-tech/agenthood) v3.71.0: goal command, queue arbitration, trace persistence
-  **Brief:** We merged #989 (5e3d5da) for v3.71.0: goal command via GoalChain (#987), queue arbitration, and one-step trajectory persistence (#985).
-  PR #988 collapsed single-use wrappers: traceSummary into status.ts, CostEstimator/TokenCounter into estimateCost()/countTokens() in modelPricing, ritual frontmatter to js-yaml, and the clean-herald-notes wrapper (3c53662, ece5704, 3843749, d6066f4).
-  PR #986 finished ConcurrencyQueue: submit() returns a promise, displacement rejects, and the starvation timer is unref'd; runMemberTask prioritizes by source (cli/playground/api=USER, automated=SCHEDULED) and run() accepts a source override (70431ce).
-  **Changes:** [`5e3d5da`](https://github.com/fworks-tech/agenthood/commit/5e3d5daafe226d10b6499b43c6eb3a7717d6bd24) chore(release): v3.71.0 · [`3c53662`](https://github.com/fworks-tech/agenthood/commit/3c536624dd2cd7da0ff5221fb513502a95148b93) refactor(status): fold traceSummary into · [`ece5704`](https://github.com/fworks-tech/agenthood/commit/ece5704b837a5b73063459e05e9c10193e22c0ee) refactor(cost): collapse CostEstimator c · and 4 more commits
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 7h ago
+  **Changes:** [`b6dedeb`](https://github.com/fworks-tech/agenthood-site/commit/b6dedeb10699b7d159c2556a4cf15468aed5b27b) chore(deps): bump agenthood from 3.67.0 · [`7870622`](https://github.com/fworks-tech/agenthood-site/commit/7870622741d928dab1aca5a41c56d0af70810eda) content(news): digest for 2026-09-29 · [`8e20645`](https://github.com/fworks-tech/agenthood-site/commit/8e20645091f4ffbb31a20e6c35a995afca4d8d07) docs(hooks): replace the unverified flak · and 2 more commits
 
-- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) pre-push hook docs, @types/node patch, eslint 10 ignore
-  **Brief:** We replaced the unverified '1 run in 16' flake claim in .githooks/pre-push with the measured cause, naming the four affected tests and the timeout-vs-assertion distinction (8e20645, c95789e, 7a23070).
-  PR #282 bumped @types/node from 26.6.2 to 26.6.3 in the patch-dependencies group (525140c).
-  PR #281 added an eslint >=10 ignore to .github/dependabot.yml until eslint-plugin-react supports ESLint 10, since the config fails with a react/display-name TypeError; it also warms route module graphs once per run (9b50727, b2e95bd, referencing #274).
-  **Changes:** [`8e20645`](https://github.com/fworks-tech/agenthood-site/commit/8e20645091f4ffbb31a20e6c35a995afca4d8d07) docs(hooks): replace the unverified flak · [`c95789e`](https://github.com/fworks-tech/agenthood-site/commit/c95789ee4514db69d2acda571031c47517c8f9ce) docs(hooks): the cold cache comes from d · [`7a23070`](https://github.com/fworks-tech/agenthood-site/commit/7a23070b9eba0f7ae34f95a7ba57214c999c2ac3) docs(hooks): a pull that brings in sourc · and 3 more commits
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
+  **Changes:** [`2fae988`](https://github.com/fworks-tech/agenthood/commit/2fae9883db16bbdc2a59c3ae84e124493f0e0563) chore(release): v3.71.1 · [`86441a4`](https://github.com/fworks-tech/agenthood/commit/86441a420be7191e6ae028f905504c33182a692e) fix(opencode): support bare plugin speci · [`5e3d5da`](https://github.com/fworks-tech/agenthood/commit/5e3d5daafe226d10b6499b43c6eb3a7717d6bd24) chore(release): v3.71.0
 <!-- recent-activity:end -->
 
 ---
@@ -139,4 +133,4 @@
 
 ---
 
-*Last updated: Sep 29, 2026
+*Last updated: Sep 30, 2026
