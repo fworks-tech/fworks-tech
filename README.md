@@ -42,15 +42,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- We merged two automated news digests (#286, #283) and a dependency bump (#285).
-  **Brief:** PR #285 bumps agenthood 3.67.0 → 3.71.1 and regenerates studio artifacts via sync-skills (package.json, package-lock.json, agents.generated.ts, commit b6dedeb), picking up confidence-gated routing, GoalChain, ConcurrencyQueue, and one-step trajectory persistence.
-  PRs #286 and #283 add LLM-generated news digests for 2026-09-30 and 2026-09-29 (commits e124731, 7870622), flagged for human review before publishing.
-  **Changes:** [`e124731`](https://github.com/fworks-tech/agenthood-site/commit/e124731413fd5ee4625194de240bf879fd9f6e4d) content(news): digest for 2026-09-30 · [`b6dedeb`](https://github.com/fworks-tech/agenthood-site/commit/b6dedeb10699b7d159c2556a4cf15468aed5b27b) chore(deps): bump agenthood from 3.67.0 · [`7870622`](https://github.com/fworks-tech/agenthood-site/commit/7870622741d928dab1aca5a41c56d0af70810eda) content(news): digest for 2026-09-29
-
-- Three Dependabot bumps went into agenthood yesterday.
-  **Brief:** We updated fast-uri to 3.1.8 via PR #994 (commit 9f46971), which resolves medium-severity advisory GHSA-hrr3-gc8f-f4qj.
-  We also moved brace-expansion to 5.0.12 in PR #995 and in the vscode-extension directory via PR #993 (commits 10f288a, 4e43b1b).
-  **Changes:** [`9f46971`](https://github.com/fworks-tech/agenthood/commit/9f46971a6a197306c3b7a29c0bdad4f653a0bde8) chore(deps): bump fast-uri from 3.1.7 to · [`10f288a`](https://github.com/fworks-tech/agenthood/commit/10f288acc21be5fa401e219b6bfae7f5417dc607) chore(deps): bump brace-expansion from 5 · [`4e43b1b`](https://github.com/fworks-tech/agenthood/commit/4e43b1b2426011f38998f18936d20c03b8604af5) chore(deps): bump the npm_and_yarn group
+- We merged PR #318 and PR #316, adding the insights and task subgraphs to atlaslink.
+  **Brief:** PR #318 (commits a4684bb, adc4899) serves the read-only insights report over traces, folding the NDJSON store through buildInsightsReport into totals, groups, rankings, percentiles, and cost trend; readTraceEnvelopes in bridge/insights.ts shares trace parsing with the CLI.
+  PR #316 (commits f3b4e99, 2df07ab) adds the task subgraph with task(id)/tasks, createTask, and saveDiagram, reusing validateCreateEdge so REST and graph reject the same payloads; e269ab7 covers the status filter positive/negative paths.
+  Both are stage 3 of M5 (#295), with CLI behavior unchanged and the shared parsing/validation paths keeping the graph consistent with existing surfaces.
+  **Changes:** [`a4684bb`](https://github.com/fworks-tech/atlaslink/commit/a4684bb1bb85fd81ac1f4f03ac4f42a010bb315a) refactor(insights): share trace-store pa · [`adc4899`](https://github.com/fworks-tech/atlaslink/commit/adc489974cbf269c88e3df6f9eccf487b2eaa764) feat(insights): serve the read-only insi · [`02e6ec9`](https://github.com/fworks-tech/atlaslink/commit/02e6ec9622785123f9cba6f2a0f9ae914b963bb0) docs(m5): note the insights global read · and 3 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -137,4 +133,4 @@
 
 ---
 
-*Last updated: Oct 2, 2026
+*Last updated: Oct 3, 2026
