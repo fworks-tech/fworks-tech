@@ -42,15 +42,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- We merged two automated news digests (#286, #283) and a dependency bump (#285).
-  **Brief:** PR #285 bumps agenthood 3.67.0 → 3.71.1 and regenerates studio artifacts via sync-skills (package.json, package-lock.json, agents.generated.ts, commit b6dedeb), picking up confidence-gated routing, GoalChain, ConcurrencyQueue, and one-step trajectory persistence.
-  PRs #286 and #283 add LLM-generated news digests for 2026-09-30 and 2026-09-29 (commits e124731, 7870622), flagged for human review before publishing.
-  **Changes:** [`e124731`](https://github.com/fworks-tech/agenthood-site/commit/e124731413fd5ee4625194de240bf879fd9f6e4d) content(news): digest for 2026-09-30 · [`b6dedeb`](https://github.com/fworks-tech/agenthood-site/commit/b6dedeb10699b7d159c2556a4cf15468aed5b27b) chore(deps): bump agenthood from 3.67.0 · [`7870622`](https://github.com/fworks-tech/agenthood-site/commit/7870622741d928dab1aca5a41c56d0af70810eda) content(news): digest for 2026-09-29
-
-- Three Dependabot bumps went into agenthood yesterday.
-  **Brief:** We updated fast-uri to 3.1.8 via PR #994 (commit 9f46971), which resolves medium-severity advisory GHSA-hrr3-gc8f-f4qj.
-  We also moved brace-expansion to 5.0.12 in PR #995 and in the vscode-extension directory via PR #993 (commits 10f288a, 4e43b1b).
-  **Changes:** [`9f46971`](https://github.com/fworks-tech/agenthood/commit/9f46971a6a197306c3b7a29c0bdad4f653a0bde8) chore(deps): bump fast-uri from 3.1.7 to · [`10f288a`](https://github.com/fworks-tech/agenthood/commit/10f288acc21be5fa401e219b6bfae7f5417dc607) chore(deps): bump brace-expansion from 5 · [`4e43b1b`](https://github.com/fworks-tech/agenthood/commit/4e43b1b2426011f38998f18936d20c03b8604af5) chore(deps): bump the npm_and_yarn group
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 2 PRs merged into main · 12h ago
+  **Brief:** We merged PR #326 (commits ee7d759, 66f95db, 1ee58e4) to close #324: graphql-codegen now derives one graphql.ts per subgraph from the checked-in SDL, so the four resolver maps use generated Resolvers instead of inline arg/return types, and npm run codegen output is committed for hermetic typecheck.
+  PR #323 (commits 0f11451, 4cdd5d2, 384a002) addresses #320 by adding the Cosmo Router edge: npm run router composes the execution config, downloads the binary once, and serves the supergraph on localhost:3002/graphql, with npm run router:smoke proving all four subgraphs plus the task→session entity hop resolve end-to-end.
+  ATLASLINK_DATA_DIR enables isolated router runs on a temp data dir, and docs/runbooks/router.md captures the operator health gate and troubleshooting.
+  **Changes:** [`ee7d759`](https://github.com/fworks-tech/atlaslink/commit/ee7d75920d9ffb5b7063cedde504e9dbb8bed76d) feat(codegen): generate resolver typings · [`66f95db`](https://github.com/fworks-tech/atlaslink/commit/66f95dbc3e50a9a0fa755dd9853e8ffbddc60299) refactor(subgraphs): type resolver maps · [`1ee58e4`](https://github.com/fworks-tech/atlaslink/commit/1ee58e47cf1998220a97d817b3151e3d8bbe1864) docs(spec): record the codegen conventio · and 3 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -137,4 +133,4 @@
 
 ---
 
-*Last updated: Oct 2, 2026
+*Last updated: Oct 4, 2026
