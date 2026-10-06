@@ -42,8 +42,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 2 PRs merged into main · yesterday
-  **Changes:** [`ee7d759`](https://github.com/fworks-tech/atlaslink/commit/ee7d75920d9ffb5b7063cedde504e9dbb8bed76d) feat(codegen): generate resolver typings · [`66f95db`](https://github.com/fworks-tech/atlaslink/commit/66f95dbc3e50a9a0fa755dd9853e8ffbddc60299) refactor(subgraphs): type resolver maps · [`1ee58e4`](https://github.com/fworks-tech/atlaslink/commit/1ee58e47cf1998220a97d817b3151e3d8bbe1864) docs(spec): record the codegen conventio · and 3 more commits
+- We merged three PRs into [**atlaslink**](https://github.com/fworks-tech/atlaslink): dev-dependency bumps, an agenthood gitignore entry, and architecture docs.
+  **Brief:** We bumped 10 dev dependencies in PR #325 (a1822f6), including better-sqlite3 to 13.0.3 and graphql to 17.0.2.
+  PR #335 (8fdea88) adds .agenthood/costs.jsonl to the .agenthood/* ignore block, closing #332.
+  PR #334 (10d8982, bebc092) adds the five-minute architecture walkthrough with federation and deployment planes (#331).
+  **Changes:** [`a1822f6`](https://github.com/fworks-tech/atlaslink/commit/a1822f644b398972ea6e0d2f5994c4a5ed75bd16) chore(deps): bump the dev-dependencies g · [`8fdea88`](https://github.com/fworks-tech/atlaslink/commit/8fdea884ef8d9a62cd83569d542683be7f6c0524) chore: ignore the agenthood session cost · [`10d8982`](https://github.com/fworks-tech/atlaslink/commit/10d8982d250f861185a60b98f55d6dcb396c7549) docs(architecture): add the five-minute · and 1 more commits
+
+- Three PRs landed in [**flabs.tech**](https://github.com/fworks-tech/flabs.tech): a chat model swap, a package-lock restore, and a Vercel CI fix.
+  **Brief:** The chat widget model switched to qwen3.8-flash in PR #326 (708afb9) after deepseek-v4-flash hit a 404 inference_failed at the OpenCode gateway (#325).
+  PR #324 (1c27210) restores the original package-lock.json, fixing the 25479-line lockfile corruption from squash merges of #322 and #323.
+  PR #323 (4b06ed9) adds top-level onlyBuiltDependencies to package.json so native postinstall scripts for esbuild, core-js, and tree-sitter can run on Vercel CI.
+  **Changes:** [`708afb9`](https://github.com/fworks-tech/flabs.tech/commit/708afb994410f140c811e3421817c33dd80dbd95) feat(ai): switch chat model to qwen3.8-f · [`1c27210`](https://github.com/fworks-tech/flabs.tech/commit/1c27210c138382aca91bf77cf5e71ea326d62573) fix: restore original package-lock.json · [`4b06ed9`](https://github.com/fworks-tech/flabs.tech/commit/4b06ed9b3fd1cde7c22487b4c13a1a7b670e4d09) fix: allow build scripts for native deps
 <!-- recent-activity:end -->
 
 ---
@@ -130,4 +139,4 @@
 
 ---
 
-*Last updated: Oct 5, 2026
+*Last updated: Oct 6, 2026
