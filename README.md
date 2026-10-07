@@ -42,17 +42,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- We merged three PRs into [**atlaslink**](https://github.com/fworks-tech/atlaslink): dev-dependency bumps, an agenthood gitignore entry, and architecture docs.
-  **Brief:** We bumped 10 dev dependencies in PR #325 (a1822f6), including better-sqlite3 to 13.0.3 and graphql to 17.0.2.
-  PR #335 (8fdea88) adds .agenthood/costs.jsonl to the .agenthood/* ignore block, closing #332.
-  PR #334 (10d8982, bebc092) adds the five-minute architecture walkthrough with federation and deployment planes (#331).
-  **Changes:** [`a1822f6`](https://github.com/fworks-tech/atlaslink/commit/a1822f644b398972ea6e0d2f5994c4a5ed75bd16) chore(deps): bump the dev-dependencies g · [`8fdea88`](https://github.com/fworks-tech/atlaslink/commit/8fdea884ef8d9a62cd83569d542683be7f6c0524) chore: ignore the agenthood session cost · [`10d8982`](https://github.com/fworks-tech/atlaslink/commit/10d8982d250f861185a60b98f55d6dcb396c7549) docs(architecture): add the five-minute · and 1 more commits
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 1h ago
+  **Changes:** [`a2b66b8`](https://github.com/fworks-tech/agenthood-site/commit/a2b66b8b13f430e854f9880f074a99906255115d) fix(workspace): pause chain on a member' · [`7dc77d2`](https://github.com/fworks-tech/agenthood-site/commit/7dc77d2e407b55b973b388e0671ee2dd948030b0) feat(workspace): keep member replies sho · [`8101039`](https://github.com/fworks-tech/agenthood-site/commit/81010391b6978dd1d26dd62ddeb127d45ec44955) fix(workspace): harden user-question det · and 3 more commits
 
-- Three PRs landed in [**flabs.tech**](https://github.com/fworks-tech/flabs.tech): a chat model swap, a package-lock restore, and a Vercel CI fix.
-  **Brief:** The chat widget model switched to qwen3.8-flash in PR #326 (708afb9) after deepseek-v4-flash hit a 404 inference_failed at the OpenCode gateway (#325).
-  PR #324 (1c27210) restores the original package-lock.json, fixing the 25479-line lockfile corruption from squash merges of #322 and #323.
-  PR #323 (4b06ed9) adds top-level onlyBuiltDependencies to package.json so native postinstall scripts for esbuild, core-js, and tree-sitter can run on Vercel CI.
-  **Changes:** [`708afb9`](https://github.com/fworks-tech/flabs.tech/commit/708afb994410f140c811e3421817c33dd80dbd95) feat(ai): switch chat model to qwen3.8-f · [`1c27210`](https://github.com/fworks-tech/flabs.tech/commit/1c27210c138382aca91bf77cf5e71ea326d62573) fix: restore original package-lock.json · [`4b06ed9`](https://github.com/fworks-tech/flabs.tech/commit/4b06ed9b3fd1cde7c22487b4c13a1a7b670e4d09) fix: allow build scripts for native deps
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3h ago
+  **Changes:** [`868ad67`](https://github.com/fworks-tech/agenthood/commit/868ad6750e423e8b8bdbdece776019c8782e8caa) chore(deps): bump the minor-patch group · [`1451b1d`](https://github.com/fworks-tech/agenthood/commit/1451b1dc19d6a74f2d1036d11ee6845880679427) Merge branch 'main' into dependabot/npm_ · [`1940974`](https://github.com/fworks-tech/agenthood/commit/194097486d4ecdbc6666dbc77de70f0add8ccca6) chore(release): v3.73.0 · and 1 more commits
+
+- 🔀 [**byewalls**](https://github.com/fworks-tech/byewalls) — 3 PRs merged into main · 6h ago
+  **Changes:** [`8ec7141`](https://github.com/fworks-tech/byewalls/commit/8ec7141f3d62cc7766cd4fbf1e8959ba679769ff) feat(ai): add AI summarization with prov · [`8b04e38`](https://github.com/fworks-tech/byewalls/commit/8b04e38d56cae3fd9de61829bc7796e079040bc4) docs: track AI summarization progress in · [`14e7b9e`](https://github.com/fworks-tech/byewalls/commit/14e7b9e41f2c1acfd50dedde598d7ee9efc482a9) test(ai): exercise provider abort timeou · and 3 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -139,4 +136,4 @@
 
 ---
 
-*Last updated: Oct 6, 2026
+*Last updated: Oct 7, 2026
