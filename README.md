@@ -42,13 +42,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 6h ago
+  **Changes:** [`a42822d`](https://github.com/fworks-tech/agenthood/commit/a42822d3072f3c382d86f4c5462149444d2d4b34) chore(release): v3.74.0 · [`c01061f`](https://github.com/fworks-tech/agenthood/commit/c01061fbcebeeef19c8e857eed66d5cb12d24eec) feat(llm): add OpenCode client session b · [`7bddfc6`](https://github.com/fworks-tech/agenthood/commit/7bddfc6365c1ccaea1b00dbc8e1ee2aa5ed270e0) feat(vscode): update version to 1.0.0 in · and 3 more commits
+
 - 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 1h ago
-  **Changes:** [`a2b66b8`](https://github.com/fworks-tech/agenthood-site/commit/a2b66b8b13f430e854f9880f074a99906255115d) fix(workspace): pause chain on a member' · [`7dc77d2`](https://github.com/fworks-tech/agenthood-site/commit/7dc77d2e407b55b973b388e0671ee2dd948030b0) feat(workspace): keep member replies sho · [`8101039`](https://github.com/fworks-tech/agenthood-site/commit/81010391b6978dd1d26dd62ddeb127d45ec44955) fix(workspace): harden user-question det · and 3 more commits
+  **Changes:** [`24b4d3e`](https://github.com/fworks-tech/agenthood-site/commit/24b4d3e3d9bdafee93a5d0155a5e832f3613c4c7) fix(workspace): add hasUserMention to fi · [`51c03f2`](https://github.com/fworks-tech/agenthood-site/commit/51c03f270669e4b1b484c7993c5004567a90cf43) fix(workspace): exclude @user-route/emai · [`68c49c8`](https://github.com/fworks-tech/agenthood-site/commit/68c49c8d9ab78843caf2cdbe140c658514c8462e) fix(docs): guard sync-skills against unp · and 4 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3h ago
-  **Changes:** [`868ad67`](https://github.com/fworks-tech/agenthood/commit/868ad6750e423e8b8bdbdece776019c8782e8caa) chore(deps): bump the minor-patch group · [`1451b1d`](https://github.com/fworks-tech/agenthood/commit/1451b1dc19d6a74f2d1036d11ee6845880679427) Merge branch 'main' into dependabot/npm_ · [`1940974`](https://github.com/fworks-tech/agenthood/commit/194097486d4ecdbc6666dbc77de70f0add8ccca6) chore(release): v3.73.0 · and 1 more commits
-
-- 🔀 [**byewalls**](https://github.com/fworks-tech/byewalls) — 3 PRs merged into main · 6h ago
+- 🔀 [**byewalls**](https://github.com/fworks-tech/byewalls) — 3 PRs merged into main · yesterday
   **Changes:** [`8ec7141`](https://github.com/fworks-tech/byewalls/commit/8ec7141f3d62cc7766cd4fbf1e8959ba679769ff) feat(ai): add AI summarization with prov · [`8b04e38`](https://github.com/fworks-tech/byewalls/commit/8b04e38d56cae3fd9de61829bc7796e079040bc4) docs: track AI summarization progress in · [`14e7b9e`](https://github.com/fworks-tech/byewalls/commit/14e7b9e41f2c1acfd50dedde598d7ee9efc482a9) test(ai): exercise provider abort timeou · and 3 more commits
 <!-- recent-activity:end -->
 
@@ -136,4 +136,4 @@
 
 ---
 
-*Last updated: Oct 7, 2026
+*Last updated: Oct 8, 2026
