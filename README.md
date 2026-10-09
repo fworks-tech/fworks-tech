@@ -52,10 +52,6 @@
   #318 hardens the Mediator's machinery filter for Portuguese and arrow chains with regression tests (f928be9), closing issue #318.
   **Changes:** [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p · [`a022dd3`](https://github.com/fworks-tech/agenthood-site/commit/a022dd357545e4502a4ae4b6fd00fde76ccf7653) fix(studio): stop workspace collapsing h · [`4b0a00d`](https://github.com/fworks-tech/agenthood-site/commit/4b0a00da792e7ccbb29071b442829ea609e4d917) fix(studio): tell members to hide their · and 2 more commits
 
-- [**lightcraft**](https://github.com/storytold/lightcraft)
-  **Brief:** PR #445 restores green FreeBSD CI by generating each procedural demo scene once per process (d9457e6), avoiding a ~200 CPU-second cost per 6000×4000 demo original that #323's loupe tests ran into.
-  PR #384 adds non-destructive AI Bayer RAW denoise with an opt-in pure-Rust ONNX CPU/GPU interpreter, cached results, and an Amount control, without bundling or downloading trained weights at startup (7935999); PR #426 separately fixes the new web-worker window test.
-  **Changes:** [`d9457e6`](https://github.com/storytold/lightcraft/commit/d9457e6b23f833924a58679a7f42505363cd7eb5) CI: generate each procedural demo scene · [`82fc317`](https://github.com/storytold/lightcraft/commit/82fc317922c0b84fcffeff807dee350e2df126dc) Merge remote-tracking branch 'origin/mai · [`7935999`](https://github.com/storytold/lightcraft/commit/7935999d944905a472547412b4ce65398df1fe2b) LR-EDIT-DETAIL-DENOISE: non-destructive · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
