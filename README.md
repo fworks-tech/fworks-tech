@@ -42,14 +42,20 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 6h ago
-  **Changes:** [`a42822d`](https://github.com/fworks-tech/agenthood/commit/a42822d3072f3c382d86f4c5462149444d2d4b34) chore(release): v3.74.0 · [`c01061f`](https://github.com/fworks-tech/agenthood/commit/c01061fbcebeeef19c8e857eed66d5cb12d24eec) feat(llm): add OpenCode client session b · [`7bddfc6`](https://github.com/fworks-tech/agenthood/commit/7bddfc6365c1ccaea1b00dbc8e1ee2aa5ed270e0) feat(vscode): update version to 1.0.0 in · and 3 more commits
+- [**agenthood**](https://github.com/fworks-tech/agenthood)
+  **Brief:** We merged the handlebars 4.7.10 dev-dependency bump (PR #1015, 8fb10d1) and cut v3.75.0 via PR #1014, which carries the protocol-aware OpenCode Zen provider from PR #1012.
+  PR #1012 keeps chat on the OpenAI client, routes /v1/messages through @anthropic-ai/sdk, returns guidance for /v1/responses and /v1/systemone, and adds the independent decideWithJev/chooseWithJev client while swapping dead mimo-v2.5 for glm-5.3-flash (refs #589).
+  **Changes:** [`8fb10d1`](https://github.com/fworks-tech/agenthood/commit/8fb10d12a052e4791793b6a2851bff88f39a8109) chore(deps-dev): bump handlebars from 4. · [`5281c84`](https://github.com/fworks-tech/agenthood/commit/5281c84866eb7f6de0582679d6ae74b9b2c58a58) chore(release): v3.75.0 · [`54ec533`](https://github.com/fworks-tech/agenthood/commit/54ec5338bb9c0d83d0ed2210966aade34d4ebd0a) feat(skills): add install --frozen gate · and 2 more commits
 
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 1h ago
-  **Changes:** [`24b4d3e`](https://github.com/fworks-tech/agenthood-site/commit/24b4d3e3d9bdafee93a5d0155a5e832f3613c4c7) fix(workspace): add hasUserMention to fi · [`51c03f2`](https://github.com/fworks-tech/agenthood-site/commit/51c03f270669e4b1b484c7993c5004567a90cf43) fix(workspace): exclude @user-route/emai · [`68c49c8`](https://github.com/fworks-tech/agenthood-site/commit/68c49c8d9ab78843caf2cdbe140c658514c8462e) fix(docs): guard sync-skills against unp · and 4 more commits
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site)
+  **Brief:** Studio reply polish came through #315, #317, and #318: #315 pins a hide-the-machinery rule and conversational persona in __tests__/system-prompt (4b0a00d), #317 extracts collapseIntermediates in workspace-polish.ts so short @user replies stay visible (a022dd3).
+  #318 hardens the Mediator's machinery filter for Portuguese and arrow chains with regression tests (f928be9), closing issue #318.
+  **Changes:** [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p · [`a022dd3`](https://github.com/fworks-tech/agenthood-site/commit/a022dd357545e4502a4ae4b6fd00fde76ccf7653) fix(studio): stop workspace collapsing h · [`4b0a00d`](https://github.com/fworks-tech/agenthood-site/commit/4b0a00da792e7ccbb29071b442829ea609e4d917) fix(studio): tell members to hide their · and 2 more commits
 
-- 🔀 [**byewalls**](https://github.com/fworks-tech/byewalls) — 3 PRs merged into main · yesterday
-  **Changes:** [`8ec7141`](https://github.com/fworks-tech/byewalls/commit/8ec7141f3d62cc7766cd4fbf1e8959ba679769ff) feat(ai): add AI summarization with prov · [`8b04e38`](https://github.com/fworks-tech/byewalls/commit/8b04e38d56cae3fd9de61829bc7796e079040bc4) docs: track AI summarization progress in · [`14e7b9e`](https://github.com/fworks-tech/byewalls/commit/14e7b9e41f2c1acfd50dedde598d7ee9efc482a9) test(ai): exercise provider abort timeou · and 3 more commits
+- [**lightcraft**](https://github.com/storytold/lightcraft)
+  **Brief:** PR #445 restores green FreeBSD CI by generating each procedural demo scene once per process (d9457e6), avoiding a ~200 CPU-second cost per 6000×4000 demo original that #323's loupe tests ran into.
+  PR #384 adds non-destructive AI Bayer RAW denoise with an opt-in pure-Rust ONNX CPU/GPU interpreter, cached results, and an Amount control, without bundling or downloading trained weights at startup (7935999); PR #426 separately fixes the new web-worker window test.
+  **Changes:** [`d9457e6`](https://github.com/storytold/lightcraft/commit/d9457e6b23f833924a58679a7f42505363cd7eb5) CI: generate each procedural demo scene · [`82fc317`](https://github.com/storytold/lightcraft/commit/82fc317922c0b84fcffeff807dee350e2df126dc) Merge remote-tracking branch 'origin/mai · [`7935999`](https://github.com/storytold/lightcraft/commit/7935999d944905a472547412b4ce65398df1fe2b) LR-EDIT-DETAIL-DENOISE: non-destructive · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -136,4 +142,4 @@
 
 ---
 
-*Last updated: Oct 8, 2026
+*Last updated: Oct 9, 2026
