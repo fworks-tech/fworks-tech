@@ -42,16 +42,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**agenthood**](https://github.com/fworks-tech/agenthood)
-  **Brief:** We merged the handlebars 4.7.10 dev-dependency bump (PR #1015, 8fb10d1) and cut v3.75.0 via PR #1014, which carries the protocol-aware OpenCode Zen provider from PR #1012.
-  PR #1012 keeps chat on the OpenAI client, routes /v1/messages through @anthropic-ai/sdk, returns guidance for /v1/responses and /v1/systemone, and adds the independent decideWithJev/chooseWithJev client while swapping dead mimo-v2.5 for glm-5.3-flash (refs #589).
-  **Changes:** [`8fb10d1`](https://github.com/fworks-tech/agenthood/commit/8fb10d12a052e4791793b6a2851bff88f39a8109) chore(deps-dev): bump handlebars from 4. · [`5281c84`](https://github.com/fworks-tech/agenthood/commit/5281c84866eb7f6de0582679d6ae74b9b2c58a58) chore(release): v3.75.0 · [`54ec533`](https://github.com/fworks-tech/agenthood/commit/54ec5338bb9c0d83d0ed2210966aade34d4ebd0a) feat(skills): add install --frozen gate · and 2 more commits
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — merged [PR #2](https://github.com/fworks-tech/trucksafe/pull/2): feat(api): scaffold Django API with weather risk e · just now
+  **Changes:** [`5fbfa92`](https://github.com/fworks-tech/trucksafe/commit/5fbfa92b791829c44914f8982ebf647c3072441e) chore: add example environment configura · [`ebaf848`](https://github.com/fworks-tech/trucksafe/commit/ebaf848cddd5bd87f0c335ecb41cbe45d79e3942) chore: add comprehensive .gitignore file · [`e703be7`](https://github.com/fworks-tech/trucksafe/commit/e703be7875325899ef4f027e8788ba274db45ffd) chore: add VSCode settings for Python in
 
-- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site)
-  **Brief:** Studio reply polish came through #315, #317, and #318: #315 pins a hide-the-machinery rule and conversational persona in __tests__/system-prompt (4b0a00d), #317 extracts collapseIntermediates in workspace-polish.ts so short @user replies stay visible (a022dd3).
-  #318 hardens the Mediator's machinery filter for Portuguese and arrow chains with regression tests (f928be9), closing issue #318.
-  **Changes:** [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p · [`a022dd3`](https://github.com/fworks-tech/agenthood-site/commit/a022dd357545e4502a4ae4b6fd00fde76ccf7653) fix(studio): stop workspace collapsing h · [`4b0a00d`](https://github.com/fworks-tech/agenthood-site/commit/4b0a00da792e7ccbb29071b442829ea609e4d917) fix(studio): tell members to hide their · and 2 more commits
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 5h ago
+  **Changes:** [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09 · [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p
 
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 6h ago
+  **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -138,4 +136,4 @@
 
 ---
 
-*Last updated: Oct 9, 2026
+*Last updated: Oct 10, 2026
