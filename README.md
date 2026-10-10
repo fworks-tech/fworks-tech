@@ -43,13 +43,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — merged [PR #2](https://github.com/fworks-tech/trucksafe/pull/2): feat(api): scaffold Django API with weather risk e · just now
-  **Changes:** [`5fbfa92`](https://github.com/fworks-tech/trucksafe/commit/5fbfa92b791829c44914f8982ebf647c3072441e) chore: add example environment configura · [`ebaf848`](https://github.com/fworks-tech/trucksafe/commit/ebaf848cddd5bd87f0c335ecb41cbe45d79e3942) chore: add comprehensive .gitignore file · [`e703be7`](https://github.com/fworks-tech/trucksafe/commit/e703be7875325899ef4f027e8788ba274db45ffd) chore: add VSCode settings for Python in
-
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 5h ago
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 8h ago
   **Changes:** [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09 · [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 6h ago
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — merged [PR #2](https://github.com/fworks-tech/trucksafe/pull/2): feat(api): scaffold Django API with weather risk e · 3h ago
+  **Changes:** [`5fbfa92`](https://github.com/fworks-tech/trucksafe/commit/5fbfa92b791829c44914f8982ebf647c3072441e) chore: add example environment configura · [`ebaf848`](https://github.com/fworks-tech/trucksafe/commit/ebaf848cddd5bd87f0c335ecb41cbe45d79e3942) chore: add comprehensive .gitignore file · [`e703be7`](https://github.com/fworks-tech/trucksafe/commit/e703be7875325899ef4f027e8788ba274db45ffd) chore: add VSCode settings for Python in
+
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 10h ago
   **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
 <!-- recent-activity:end -->
 
