@@ -36,7 +36,7 @@
 | [atlaslink](https://github.com/fworks-tech/atlaslink) | Multi-agent task orchestrator, Agenthood proof-of-concept, and modern UI to customize and integrate agents through gorgeous, easy-to-use, live diagram flows. Preview its development at [atlas.flabs.tech](https://atlas.flabs.tech) |
 | [arxiv-manager](https://github.com/fworks-tech/arxiv-manager) | AI-powered visual-reasoning Q&A generator — 7-agent pipeline (draft, self-critique, consensus), CRAG architecture (semantic cache + hybrid retrieve + cross-encoder rerank), 8 MCP tools, hot-swappable prompts, structured observability with token/cost tracking, 220+ tests |
 | [trucksafe](https://github.com/fworks-tech/trucksafe) | *(new)* Weather-aware truck routing — helps truck drivers choose safer, smarter routes based on weather, load weight, travel time, and checkpoint risk. Django API with a framework-independent weather risk engine, deterministic business rules, and a planned React/map frontend |
-| [deeptales](https://github.com/fworks-tech/deeptales) | *(new)* The horror game factory: a generator framework that stamps complete, playable Godot 4.x horror games from a one-line pitch — Until Dawn-style branching, analog-horror art and audio pipelines, contract-verified output, and a FastAPI/React Studio with visual story editing. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) |
+| [deeptales](https://github.com/fworks-tech/deeptales) | *(new)* Game-generator framework that stamps complete, runnable Godot 4.x mobile horror games from a one-line pitch — branching stories, consequence-driven gameplay. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) |
 
 ---
 
