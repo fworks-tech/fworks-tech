@@ -30,6 +30,7 @@
 
 | Repository | Description |
 |---|---|
+| [trucksafe](https://github.com/fworks-tech/trucksafe) | *(new)* Weather-aware truck routing — helps truck drivers choose safer, smarter routes based on weather, load weight, travel time, and checkpoint risk. Django API with a framework-independent weather risk engine, deterministic business rules, and a planned React/map frontend |
 | [deeptales](https://github.com/fworks-tech/deeptales) | *(new)* The horror game factory: a generator framework that stamps complete, playable Godot 4.x horror games from a one-line pitch — Until Dawn-style branching, analog-horror art and audio pipelines, contract-verified output, and a FastAPI/React Studio with visual story editing. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) |
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Once UI design system, MDX blog, dynamic OG images, WCAG 2.1 AA, Vitest + Playwright E2E, Storybook 10, Lighthouse CI. Live at [flabs.tech](https://flabs.tech) |
 | [agenthood](https://github.com/fworks-tech/agenthood) | A full AI engineering team that earns every merge. 20 specialized agents across the whole software lifecycle — portable SKILL.md files, an autonomous TypeScript runtime, a browser Studio, and a tamper-evident audit trail for every decision. Published on [npm](https://www.npmjs.com/package/agenthood) |
@@ -67,6 +68,9 @@
 ![Zod](https://img.shields.io/badge/Zod-3068B7?style=flat-square&logo=zod&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=flat-square&logo=leaflet&logoColor=white)
 ![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=flat-square&logo=storybook&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=reactquery&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white)
+![Mapbox GL JS](https://img.shields.io/badge/Mapbox%20GL%20JS-000000?style=flat-square&logo=mapbox&logoColor=white)
 
 **Game Dev:**
 ![Godot](https://img.shields.io/badge/Godot-478CBF?style=flat-square&logo=godotengine&logoColor=white)
@@ -81,6 +85,9 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![Django REST Framework](https://img.shields.io/badge/Django%20REST%20Framework-092E20?style=flat-square&logo=djangorestframework&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![Celery](https://img.shields.io/badge/Celery-37814A?style=flat-square&logo=celery&logoColor=white)
 
 **Web & Templating:**
 ![HTMX](https://img.shields.io/badge/HTMX-3366CC?style=flat-square&logo=htmx&logoColor=white)
@@ -95,6 +102,9 @@
 ![SQLModel](https://img.shields.io/badge/SQLModel-000000?style=flat-square)
 ![PyMuPDF](https://img.shields.io/badge/PyMuPDF-003D7A?style=flat-square)
 ![Pillow](https://img.shields.io/badge/Pillow-3776AB?style=flat-square)
+![PostGIS](https://img.shields.io/badge/PostGIS-336791?style=flat-square&logo=postgis)
+![Ruff](https://img.shields.io/badge/Ruff-000000?style=flat-square&logo=ruff)
+![mypy](https://img.shields.io/badge/mypy-000000?style=flat-square)
 
 **AI & Agents:**
 ![Claude AI](https://img.shields.io/badge/Claude_AI-000000?style=flat-square)
