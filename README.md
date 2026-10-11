@@ -43,13 +43,22 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 8h ago
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 14h ago
+  **Brief:** We merged #2, which scaffolds the Django API with a framework-independent weather risk engine and checkpoint generation, plus .env.example, .gitignore, VSCode settings, and pyproject.toml.
+  Follow-up #4 (8 commits, +525/−47) normalizes checkpoint ETAs to UTC, adds property-based tests for risk monotonicity and checkpoint invariants, and reads Django settings from the environment (ec98faf, bf42e43, 55bca63).
+  PR #5 clarifies README setup steps 2–5, makes the venv activation optional, and normalizes Markdown table delimiters (ed5f8a4).
+  **Changes:** [`ed5f8a4`](https://github.com/fworks-tech/trucksafe/commit/ed5f8a489314f0b0e3a1630ce615b222ac7a963c) docs(readme): clarify setup working dire · [`ec98faf`](https://github.com/fworks-tech/trucksafe/commit/ec98faf02d2158d3ed8d68282eedc6bc60b90604) fix(routing): normalize checkpoint ETAs · [`bf42e43`](https://github.com/fworks-tech/trucksafe/commit/bf42e43c94f7c71e36288fae38eacf6b69c4b335) test: add property-based tests for risk · and 4 more commits
+
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · yesterday
+  **Brief:** Agenthood bump #321 pins 3.75.0 and regenerates agents.generated.ts, registry.generated.ts, and release notes; tools.test.ts switches to the-scribe because commit-messages is a deprecated stub (4385acc).
+  Studio fix #318 forbids chains, confidence, and specialist-addressing in the Mediator prompt and adds patterns for arrow chains, @member, and backticked slugs, with regression tests (f928be9).
+  News digest #319 adds the 2026-10-09 release summary for a human review pass before publication (068abb6).
   **Changes:** [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09 · [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p
 
-- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — merged [PR #2](https://github.com/fworks-tech/trucksafe/pull/2): feat(api): scaffold Django API with weather risk e · 3h ago
-  **Changes:** [`5fbfa92`](https://github.com/fworks-tech/trucksafe/commit/5fbfa92b791829c44914f8982ebf647c3072441e) chore: add example environment configura · [`ebaf848`](https://github.com/fworks-tech/trucksafe/commit/ebaf848cddd5bd87f0c335ecb41cbe45d79e3942) chore: add comprehensive .gitignore file · [`e703be7`](https://github.com/fworks-tech/trucksafe/commit/e703be7875325899ef4f027e8788ba274db45ffd) chore: add VSCode settings for Python in
-
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 10h ago
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · yesterday
+  **Brief:** Refactor #1018 inlines single-implementation interfaces, removes dead modules, delegates risk glob matching to minimatch, and hashes patterns with truncated sha256, closing #1017 (d21f1d3, db89023).
+  Release v3.75.0 (#1014) makes the OpenCode Zen provider protocol-aware and adds Jev System One via #1012, with refs #589 (5281c84).
+  Dependabot #1015 bumps handlebars to 4.7.10, covering security fixes around source map URLs and #each iteration (8fb10d1).
   **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
 <!-- recent-activity:end -->
 
@@ -146,4 +155,4 @@
 
 ---
 
-*Last updated: Oct 10, 2026
+*Last updated: Oct 11, 2026
