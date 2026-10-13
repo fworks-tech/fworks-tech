@@ -43,22 +43,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- Trucksafe now has an interactive route map, a React route-planning slice, and backend-aligned docs.
-  **Brief:** We added an interactive route map in PR #12 (b87ec28, fbffad9): MapLibre GL renders route geometries, checkpoints color by risk, and selection syncs across map, route cards, and a radio list with full textual fallback.
-  PR #11 (f7c9a65, f020bf3) ships the first frontend slice — POST /api/v1/route-plans, a Zod-validated typed API client, MUI risk tokens, and loading/success/error/empty states.
-  PR #10 (ebed892) fixes stale docs from PR #9: README now lists route-planning and health endpoints, notes mock adapters via the provider factory, and checks implemented specs.
-  **Changes:** [`fbffad9`](https://github.com/fworks-tech/trucksafe/commit/fbffad9bbee1eb02c03bd574f3522d740c6c2c67) chore(web): add maplibre-gl dependency · [`b87ec28`](https://github.com/fworks-tech/trucksafe/commit/b87ec2857b64de063e698f2328f3557f7a8c4321) feat(web): add interactive route map vis · [`541786a`](https://github.com/fworks-tech/trucksafe/commit/541786a4886b550840d4fddba7e0207da7d6bb21) test(web): preserve component identity o · and 4 more commits
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 3h ago
+  **Changes:** [`1264775`](https://github.com/fworks-tech/trucksafe/commit/126477542a63d9cbb89e99cfa5ddbcc0f0da8fac) chore(repo): normalize line endings and · [`75d8f23`](https://github.com/fworks-tech/trucksafe/commit/75d8f23bcbf8368c0a14244961f971dbdea45e0a) feat(api): add production container and · [`783b210`](https://github.com/fworks-tech/trucksafe/commit/783b2109edf718a95776268e1d40bf45f340261a) feat(api): add env-driven CORS allowlist · and 6 more commits
 
-- Agenthood-site got a dependency bump, a news digest, and a hardened Mediator filter.
-  **Brief:** Dep bump PR #321 (4385acc) moves agenthood 3.71.1 → 3.75.0, regenerates agents.generated.ts/registry.generated.ts and release-notes.md, and swaps tools.test.ts to the-scribe because commit-messages is deprecated.
-  The 2026-10-09 news digest (PR #319, 068abb6) adds a generated draft of unreported Agenthood releases for human review before merging.
-  PR #318 (f928be9) closes #318: the Mediator no longer leaks routing machinery, with prompt rules against chains/confidence/specialist-addressing and collapseFraming patterns for arrow chains, @member calls, and backticked intents; regression tests included.
-  **Changes:** [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09 · [`f928be9`](https://github.com/fworks-tech/agenthood-site/commit/f928be9b0693e942443ae434239184ce799d7d38) fix(studio): harden machinery filter + p
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 5h ago
+  **Changes:** [`5a965f9`](https://github.com/fworks-tech/agenthood-site/commit/5a965f95109f97e4951566ef59814770a29a55a5) chore(deps): bump the patch-dependencies · [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09
 
-- Agenthood's 3.75.0 release includes a provider refactor, a handlebars security bump, and OpenCode Zen protocol awareness.
-  **Brief:** PR #1018 (d21f1d3, db89023, f960362) closes #1017 by inlining single-implementation interfaces, replacing polynomial hashing with truncated sha256, and delegating risk glob matching to minimatch.
-  PR #1015 (8fb10d1) bumps handlebars 4.7.9 → 4.7.10, picking up the source-map URL sanitization and lazy #each iteration fix.
-  PR #1014 (5281c84) publishes v3.75.0, which makes the OpenCode Zen provider protocol-aware and adds Jev System One (#1012, refs #589).
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3d ago
   **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
 <!-- recent-activity:end -->
 
@@ -155,4 +146,4 @@
 
 ---
 
-*Last updated: Oct 12, 2026
+*Last updated: Oct 13, 2026
