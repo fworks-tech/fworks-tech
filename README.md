@@ -43,14 +43,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 3h ago
-  **Changes:** [`1264775`](https://github.com/fworks-tech/trucksafe/commit/126477542a63d9cbb89e99cfa5ddbcc0f0da8fac) chore(repo): normalize line endings and · [`75d8f23`](https://github.com/fworks-tech/trucksafe/commit/75d8f23bcbf8368c0a14244961f971dbdea45e0a) feat(api): add production container and · [`783b210`](https://github.com/fworks-tech/trucksafe/commit/783b2109edf718a95776268e1d40bf45f340261a) feat(api): add env-driven CORS allowlist · and 6 more commits
-
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 5h ago
-  **Changes:** [`5a965f9`](https://github.com/fworks-tech/agenthood-site/commit/5a965f95109f97e4951566ef59814770a29a55a5) chore(deps): bump the patch-dependencies · [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09
-
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3d ago
-  **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
+- We merged GET /route-plans/{route_plan_id} in #25 (4a960bb), returning the stored payload or a 404 envelope with no recompute, plus three integration tests.
+  **Brief:** We merged GET /route-plans/{route_plan_id} in #25 (4a960bb), returning the stored payload or a 404 envelope with no recompute, plus three integration tests.
+  #24 (769380e) adds a keyless Open-Meteo weather provider with mph and in/hr conversions and eight stubbed-transport unit tests; null hours fall back to unavailable weather.
+  #23 rounds observed risk values to one decimal (bb45cb0), names routes in checkpoint headings (9399079), and caps the sidebar list at 320px (b23d6c2).
+  **Changes:** [`4a960bb`](https://github.com/fworks-tech/trucksafe/commit/4a960bb526ccf26340d4365477bb53f66091992a) feat(api): retrieve stored route plans b · [`151e1e8`](https://github.com/fworks-tech/trucksafe/commit/151e1e8f97c2230e63942e31a5bc4a80ccb8a61b) fix(api): address pr review on plan retr · [`769380e`](https://github.com/fworks-tech/trucksafe/commit/769380e4acc0e7fd02ff24a5e4e0493fa47507c2) feat(api): add open-meteo forecast weath · and 4 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -146,4 +143,4 @@
 
 ---
 
-*Last updated: Oct 13, 2026
+*Last updated: Oct 14, 2026
