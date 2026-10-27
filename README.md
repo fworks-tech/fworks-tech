@@ -43,14 +43,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 3h ago
-  **Changes:** [`1264775`](https://github.com/fworks-tech/trucksafe/commit/126477542a63d9cbb89e99cfa5ddbcc0f0da8fac) chore(repo): normalize line endings and · [`75d8f23`](https://github.com/fworks-tech/trucksafe/commit/75d8f23bcbf8368c0a14244961f971dbdea45e0a) feat(api): add production container and · [`783b210`](https://github.com/fworks-tech/trucksafe/commit/783b2109edf718a95776268e1d40bf45f340261a) feat(api): add env-driven CORS allowlist · and 6 more commits
-
-- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 5h ago
-  **Changes:** [`5a965f9`](https://github.com/fworks-tech/agenthood-site/commit/5a965f95109f97e4951566ef59814770a29a55a5) chore(deps): bump the patch-dependencies · [`4385acc`](https://github.com/fworks-tech/agenthood-site/commit/4385acc4c00aef644620752d02a7f2088b14ab33) chore(deps): bump agenthood to 3.75.0 · [`068abb6`](https://github.com/fworks-tech/agenthood-site/commit/068abb6b49a4d9b0918bdd21b532837a85c3605e) content(news): digest for 2026-10-09
-
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3d ago
-  **Changes:** [`d21f1d3`](https://github.com/fworks-tech/agenthood/commit/d21f1d3e3983b882a6b934096bbaa5eaa42bec83) refactor(utils): hash patterns with trun · [`db89023`](https://github.com/fworks-tech/agenthood/commit/db89023f793f036515779cd4f790c352c9741651) refactor(core): delegate risk glob match · [`f960362`](https://github.com/fworks-tech/agenthood/commit/f9603621d605f148ae977ad2b316ef8d8642addb) refactor(agents): internalize agentTrace · and 2 more commits
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 12d ago
+  **Changes:** [`a2f8d2f`](https://github.com/fworks-tech/trucksafe/commit/a2f8d2fe8e7f724d235ab101c0a2c4d6d3b636c9) fix(web): give tour copy a human voice a · [`f0e08f3`](https://github.com/fworks-tech/trucksafe/commit/f0e08f30ef16a20c96490bd49d9c09b87b96b4c7) fix(web): spell out all five risk bands · [`d312d9d`](https://github.com/fworks-tech/trucksafe/commit/d312d9d129141fd8278f18709ab8b7f4124813cd) fix(web): use under-language for continu · and 5 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -146,4 +140,4 @@
 
 ---
 
-*Last updated: Oct 13, 2026
+*Last updated: Oct 27, 2026
