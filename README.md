@@ -43,10 +43,10 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**hasheyes**](https://github.com/fworks-tech/hasheyes) — 3 PRs merged into main · 2h ago
-  **Changes:** [`f60c839`](https://github.com/fworks-tech/hasheyes/commit/f60c839e3f486be86ac3afcf436c9877dc6cc9b7) chore: bootstrap pnpm monorepo with stri · [`880fb95`](https://github.com/fworks-tech/hasheyes/commit/880fb95271969e6f631914ff4f61767674c236fc) chore: bootstrap pnpm monorepo with stri · [`8cb00ba`](https://github.com/fworks-tech/hasheyes/commit/8cb00baacf0f2493cca306efbd0dc36cc495ce26) chore: remove legacy frontend scaffold m · and 4 more commits
+- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · yesterday
+  **Changes:** [`f60c839`](https://github.com/fworks-tech/chaintelescope/commit/f60c839e3f486be86ac3afcf436c9877dc6cc9b7) chore: bootstrap pnpm monorepo with stri · [`880fb95`](https://github.com/fworks-tech/chaintelescope/commit/880fb95271969e6f631914ff4f61767674c236fc) chore: bootstrap pnpm monorepo with stri · [`8cb00ba`](https://github.com/fworks-tech/chaintelescope/commit/8cb00baacf0f2493cca306efbd0dc36cc495ce26) chore: remove legacy frontend scaffold m · and 4 more commits
 
-- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 14d ago
+- 🔀 [**trucksafe**](https://github.com/fworks-tech/trucksafe) — 3 PRs merged into main · 15d ago
   **Changes:** [`a2f8d2f`](https://github.com/fworks-tech/trucksafe/commit/a2f8d2fe8e7f724d235ab101c0a2c4d6d3b636c9) fix(web): give tour copy a human voice a · [`f0e08f3`](https://github.com/fworks-tech/trucksafe/commit/f0e08f30ef16a20c96490bd49d9c09b87b96b4c7) fix(web): spell out all five risk bands · [`d312d9d`](https://github.com/fworks-tech/trucksafe/commit/d312d9d129141fd8278f18709ab8b7f4124813cd) fix(web): use under-language for continu · and 5 more commits
 <!-- recent-activity:end -->
 
@@ -143,4 +143,4 @@
 
 ---
 
-*Last updated: Oct 29, 2026
+*Last updated: Oct 30, 2026
