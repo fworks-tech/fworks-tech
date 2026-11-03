@@ -35,7 +35,10 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · 3d ago
+- 🔀 [**nft-marketplace**](https://github.com/fworks-tech/nft-marketplace) — 2 PRs merged into main · 5h ago
+  **Changes:** [`8e436f1`](https://github.com/fworks-tech/nft-marketplace/commit/8e436f1244a65fb20c0b689710f9b6be5fa5e692) feat(mock-backend): complete contracts, · [`b61cc9b`](https://github.com/fworks-tech/nft-marketplace/commit/b61cc9bd40dcb73846c9e7245c8c92a76a23ef68) feat(api): add typed services for every · [`eaac4ab`](https://github.com/fworks-tech/nft-marketplace/commit/eaac4abed88ad8598f4fd2c7f913322386ef4cb9) feat(mock-backend): migrate to msw 2 and · and 3 more commits
+
+- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · 5d ago
   **Changes:** [`f60c839`](https://github.com/fworks-tech/chaintelescope/commit/f60c839e3f486be86ac3afcf436c9877dc6cc9b7) chore: bootstrap pnpm monorepo with stri · [`880fb95`](https://github.com/fworks-tech/chaintelescope/commit/880fb95271969e6f631914ff4f61767674c236fc) chore: bootstrap pnpm monorepo with stri · [`8cb00ba`](https://github.com/fworks-tech/chaintelescope/commit/8cb00baacf0f2493cca306efbd0dc36cc495ce26) chore: remove legacy frontend scaffold m · and 4 more commits
 <!-- recent-activity:end -->
 
@@ -132,4 +135,4 @@
 
 ---
 
-*Last updated: Nov 1, 2026
+*Last updated: Nov 3, 2026
