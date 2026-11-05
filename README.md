@@ -71,8 +71,17 @@
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=flat-square&logo=leaflet&logoColor=white)
 ![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=flat-square&logo=storybook&logoColor=white)
 ![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=reactquery&logoColor=white)
+![TanStack Router](https://img.shields.io/badge/TanStack%20Router-FF4154?style=flat-square&logo=reactrouter&logoColor=white)
 ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white)
 ![Mapbox GL JS](https://img.shields.io/badge/Mapbox%20GL%20JS-000000?style=flat-square&logo=mapbox&logoColor=white)
+![MapLibre GL JS](https://img.shields.io/badge/MapLibre%20GL%20JS-396CB2?style=flat-square&logo=maplibre&logoColor=white)
+![React Flow](https://img.shields.io/badge/React%20Flow-FF0072?style=flat-square)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=flat-square&logo=shadcnui&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix%20UI-161618?style=flat-square&logo=radixui&logoColor=white)
+![Once UI](https://img.shields.io/badge/Once%20UI-000000?style=flat-square)
+![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=flat-square&logo=sass&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=axios&logoColor=white)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=flat-square&logo=socketdotio&logoColor=white)
 
 **Game Dev:**
 ![Godot](https://img.shields.io/badge/Godot-478CBF?style=flat-square&logo=godotengine&logoColor=white)
@@ -82,7 +91,10 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![Fastify](https://img.shields.io/badge/Fastify-000000?style=flat-square&logo=fastify&logoColor=white)
+![Hapi.js](https://img.shields.io/badge/Hapi.js-FF9900?style=flat-square)
 ![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
@@ -104,6 +116,8 @@
 ![SQLModel](https://img.shields.io/badge/SQLModel-000000?style=flat-square)
 ![PyMuPDF](https://img.shields.io/badge/PyMuPDF-003D7A?style=flat-square)
 ![Pillow](https://img.shields.io/badge/Pillow-3776AB?style=flat-square)
+![ImageHash](https://img.shields.io/badge/ImageHash-000000?style=flat-square)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
 ![PostGIS](https://img.shields.io/badge/PostGIS-336791?style=flat-square&logo=postgis)
 ![Ruff](https://img.shields.io/badge/Ruff-000000?style=flat-square&logo=ruff)
 ![mypy](https://img.shields.io/badge/mypy-000000?style=flat-square)
@@ -116,6 +130,8 @@
 ![sentence-transformers](https://img.shields.io/badge/sentence--transformers-FF6F00?style=flat-square)
 ![MCP](https://img.shields.io/badge/MCP-000000?style=flat-square)
 ![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-6467F2?style=flat-square&logo=openrouter&logoColor=white)
+![Vercel AI SDK](https://img.shields.io/badge/Vercel%20AI%20SDK-000000?style=flat-square&logo=vercel&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat-square&logo=ollama&logoColor=white)
 ![Anthropic](https://img.shields.io/badge/Anthropic-191919?style=flat-square)
@@ -128,6 +144,11 @@
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
 ![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
+![Hypothesis](https://img.shields.io/badge/Hypothesis-BD1C2B?style=flat-square)
+![MSW](https://img.shields.io/badge/MSW-FF6A33?style=flat-square&logo=mockserviceworker&logoColor=white)
+![axe-core](https://img.shields.io/badge/axe--core-FF6F00?style=flat-square)
+![Lighthouse CI](https://img.shields.io/badge/Lighthouse%20CI-F44B21?style=flat-square&logo=lighthouse&logoColor=white)
+![c8](https://img.shields.io/badge/c8-000000?style=flat-square)
 
 **Cloud & DevOps:**
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
@@ -137,6 +158,13 @@
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
 ![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white)
 ![Upstash](https://img.shields.io/badge/Upstash-00E9A3?style=flat-square&logo=upstash&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=prettier&logoColor=black)
+![semantic-release](https://img.shields.io/badge/semantic--release-494949?style=flat-square&logo=semanticrelease&logoColor=white)
+![Gitleaks](https://img.shields.io/badge/Gitleaks-FF0000?style=flat-square)
+![PostHog](https://img.shields.io/badge/PostHog-000000?style=flat-square&logo=posthog&logoColor=white)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-425CC7?style=flat-square&logo=opentelemetry&logoColor=white)
 
 ---
 
@@ -148,4 +176,4 @@
 
 ---
 
-*Last updated: Oct 10, 2026
+*Last updated: Nov 05, 2026
