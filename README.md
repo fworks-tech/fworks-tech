@@ -36,8 +36,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · 7d ago
-  **Changes:** [`f60c839`](https://github.com/fworks-tech/chaintelescope/commit/f60c839e3f486be86ac3afcf436c9877dc6cc9b7) chore: bootstrap pnpm monorepo with stri · [`880fb95`](https://github.com/fworks-tech/chaintelescope/commit/880fb95271969e6f631914ff4f61767674c236fc) chore: bootstrap pnpm monorepo with stri · [`8cb00ba`](https://github.com/fworks-tech/chaintelescope/commit/8cb00baacf0f2493cca306efbd0dc36cc495ce26) chore: remove legacy frontend scaffold m · and 4 more commits
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · 5h ago
+  **Changes:** [`59c0be2`](https://github.com/fworks-tech/flabs.tech/commit/59c0be2ea450a48ffc6f1a940d3bf12898ea7fac) test: replace flaky networkidle waits wi · [`0a82489`](https://github.com/fworks-tech/flabs.tech/commit/0a8248973e2658c9ab487c392dc3aae4c7aa16a3) fix: tolerate pre-migration Redis key ty · [`b7a1221`](https://github.com/fworks-tech/flabs.tech/commit/b7a12217cb5a4e95756f8620252fd9509d6d025b) feat: defer third-party scripts and prel
+
+- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · 7h ago
+  **Changes:** [`4dc9a26`](https://github.com/fworks-tech/chaintelescope/commit/4dc9a2680ae5d258be83079249ba069266473c49) docs(security): write the threat model a · [`a50b101`](https://github.com/fworks-tech/chaintelescope/commit/a50b101372c71cdc01e8704cbbbd9ea29871689a) feat(api): pin the route status matrix a · [`6944508`](https://github.com/fworks-tech/chaintelescope/commit/69445083da114d80e0ac7e4f2cd9bfb045fda35c) chore(openapi): run the generator withou · and 2 more commits
+
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · 8h ago
+  **Changes:** [`23a81b2`](https://github.com/fworks-tech/atlaslink/commit/23a81b2d4b9f063c69448ae3074b9e41745fe3a1) ci: make coverage, lint, and dependabot · [`bec95f8`](https://github.com/fworks-tech/atlaslink/commit/bec95f83128476b306fa56d02c8624479fd08399) chore(agenthood): commit the member skil · [`053a01d`](https://github.com/fworks-tech/atlaslink/commit/053a01d3a2b7b6ab3367007efeada1e6f5c1c19b) chore(agenthood): replace decorative enf · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -174,4 +180,4 @@
 
 ---
 
-*Last updated: Nov 5, 2026
+*Last updated: Nov 6, 2026
