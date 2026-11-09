@@ -30,6 +30,7 @@
 | [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(new)* Crypto intelligence command center — Streamlit dashboard for watchlists, alerts, news aggregation, trending reports, risk/volatility charts, and a context-grounded AI assistant. Mid-migration to a Hapi.js/TypeScript API with a React + Vite client. Live at [chain-telescope.streamlit.app](https://chain-telescope.streamlit.app) |
 | [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(new)* NFT marketplace frontend — React 19 + TypeScript with TanStack Router/Query, Socket.IO realtime, and Tailwind v4 + shadcn/ui. Runs entirely on MSW mocks (REST + WebSocket), with Vitest unit/contract tests and Playwright a11y + visual regression. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) |
 | [trucksafe](https://github.com/fworks-tech/trucksafe) | *(new)* Weather-aware truck routing — helps truck drivers choose safer, smarter routes based on weather, load weight, travel time, and checkpoint risk. Django API with a framework-independent weather risk engine, deterministic business rules, and a planned React/map frontend. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) |
+| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(new)* Turn-based 3v3 artillery duel in the browser — React 18 + strict TypeScript UI wrapped around a renderer-independent simulation: destructible pixel terrain, wind-bent ballistics, and an AI that forward-simulates the real physics. MSW mock REST with paginated ranking/history and idempotent match writes, Playwright E2E on desktop and mobile, plus a self-contained single-HTML build. Live at [wormage.flabs.tech](https://wormage.flabs.tech). AWS backend and authoritative online play on the roadmap |
 
 ---
 
@@ -76,6 +77,9 @@
 
 **Game Dev:**
 ![Godot](https://img.shields.io/badge/Godot-478CBF?style=flat-square&logo=godotengine&logoColor=white)
+![PixiJS](https://img.shields.io/badge/PixiJS_8-E72264?style=flat-square)
+![Canvas 2D](https://img.shields.io/badge/Canvas_2D-E34F26?style=flat-square&logo=html5&logoColor=white)
+![Web Audio API](https://img.shields.io/badge/Web_Audio_API-FF6F00?style=flat-square)
 
 **Backend & APIs:**
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
