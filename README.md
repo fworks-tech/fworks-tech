@@ -37,14 +37,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · 3d ago
-  **Changes:** [`59c0be2`](https://github.com/fworks-tech/flabs.tech/commit/59c0be2ea450a48ffc6f1a940d3bf12898ea7fac) test: replace flaky networkidle waits wi · [`0a82489`](https://github.com/fworks-tech/flabs.tech/commit/0a8248973e2658c9ab487c392dc3aae4c7aa16a3) fix: tolerate pre-migration Redis key ty · [`b7a1221`](https://github.com/fworks-tech/flabs.tech/commit/b7a12217cb5a4e95756f8620252fd9509d6d025b) feat: defer third-party scripts and prel
+- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 2 PRs merged into main · 2h ago
+  **Changes:** [`75c18a8`](https://github.com/fworks-tech/wormage-demo/commit/75c18a8276422c28bce30782f90e640ed4af473c) ci: run only the tests a pull request ca · [`bc8adf5`](https://github.com/fworks-tech/wormage-demo/commit/bc8adf52583806e55402595bce2250039afa31d8) feat(ui): run the /demo match in fullscr · [`c4de21a`](https://github.com/fworks-tech/wormage-demo/commit/c4de21ae8b1ebf43022e8e1c6114d27db2537386) Merge remote-tracking branch 'origin/mai
 
-- 🔀 [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — 3 PRs merged into main · 3d ago
-  **Changes:** [`4dc9a26`](https://github.com/fworks-tech/chaintelescope/commit/4dc9a2680ae5d258be83079249ba069266473c49) docs(security): write the threat model a · [`a50b101`](https://github.com/fworks-tech/chaintelescope/commit/a50b101372c71cdc01e8704cbbbd9ea29871689a) feat(api): pin the route status matrix a · [`6944508`](https://github.com/fworks-tech/chaintelescope/commit/69445083da114d80e0ac7e4f2cd9bfb045fda35c) chore(openapi): run the generator withou · and 2 more commits
+- 🔀 [**Hookshot**](https://github.com/NotRexed/Hookshot) — 3 PRs merged into main · just now
+  **Changes:** [`95c5c1d`](https://github.com/NotRexed/Hookshot/commit/95c5c1dcdce4ab44a24d684bad85e1a3f42603df) fix(vk): publish complete screenshot res · [`675367e`](https://github.com/NotRexed/Hookshot/commit/675367ebac8451f603194378f23fefe5ae0abcb1) fix(vk): snapshot pending shots before r · [`9bc0717`](https://github.com/NotRexed/Hookshot/commit/9bc0717edd7418acb118ef51c1563735e9a51dfe) feat(vk): trace effective presentation g · and 2 more commits
 
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · 3d ago
-  **Changes:** [`23a81b2`](https://github.com/fworks-tech/atlaslink/commit/23a81b2d4b9f063c69448ae3074b9e41745fe3a1) ci: make coverage, lint, and dependabot · [`bec95f8`](https://github.com/fworks-tech/atlaslink/commit/bec95f83128476b306fa56d02c8624479fd08399) chore(agenthood): commit the member skil · [`053a01d`](https://github.com/fworks-tech/atlaslink/commit/053a01d3a2b7b6ab3367007efeada1e6f5c1c19b) chore(agenthood): replace decorative enf · and 2 more commits
+- 🔀 [**a11yproject.com**](https://github.com/a11yproject/a11yproject.com) — 3 PRs merged into main · 4d ago
+  **Changes:** [`1693075`](https://github.com/a11yproject/a11yproject.com/commit/16930750426f1a544b74dfa3095fa37e3022389a) Update team.json Soren entry with curren · [`7d96c64`](https://github.com/a11yproject/a11yproject.com/commit/7d96c6486110bd631ee59eb39e8d754e9ae570de) fix: small updates to figure out what i' · [`e474152`](https://github.com/a11yproject/a11yproject.com/commit/e47415260e7fe6563939354bd4f227a900d62c36) Bump svgo from 2.8.0 to 2.8.4
 <!-- recent-activity:end -->
 
 ---
@@ -184,4 +184,4 @@
 
 ---
 
-*Last updated: Nov 9, 2026
+*Last updated: Nov 10, 2026
