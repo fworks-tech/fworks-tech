@@ -39,12 +39,6 @@
 <!-- recent-activity:start -->
 - 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 2 PRs merged into main · 2h ago
   **Changes:** [`75c18a8`](https://github.com/fworks-tech/wormage-demo/commit/75c18a8276422c28bce30782f90e640ed4af473c) ci: run only the tests a pull request ca · [`bc8adf5`](https://github.com/fworks-tech/wormage-demo/commit/bc8adf52583806e55402595bce2250039afa31d8) feat(ui): run the /demo match in fullscr · [`c4de21a`](https://github.com/fworks-tech/wormage-demo/commit/c4de21ae8b1ebf43022e8e1c6114d27db2537386) Merge remote-tracking branch 'origin/mai
-
-- 🔀 [**Hookshot**](https://github.com/NotRexed/Hookshot) — 3 PRs merged into main · just now
-  **Changes:** [`95c5c1d`](https://github.com/NotRexed/Hookshot/commit/95c5c1dcdce4ab44a24d684bad85e1a3f42603df) fix(vk): publish complete screenshot res · [`675367e`](https://github.com/NotRexed/Hookshot/commit/675367ebac8451f603194378f23fefe5ae0abcb1) fix(vk): snapshot pending shots before r · [`9bc0717`](https://github.com/NotRexed/Hookshot/commit/9bc0717edd7418acb118ef51c1563735e9a51dfe) feat(vk): trace effective presentation g · and 2 more commits
-
-- 🔀 [**a11yproject.com**](https://github.com/a11yproject/a11yproject.com) — 3 PRs merged into main · 4d ago
-  **Changes:** [`1693075`](https://github.com/a11yproject/a11yproject.com/commit/16930750426f1a544b74dfa3095fa37e3022389a) Update team.json Soren entry with curren · [`7d96c64`](https://github.com/a11yproject/a11yproject.com/commit/7d96c6486110bd631ee59eb39e8d754e9ae570de) fix: small updates to figure out what i' · [`e474152`](https://github.com/a11yproject/a11yproject.com/commit/e47415260e7fe6563939354bd4f227a900d62c36) Bump svgo from 2.8.0 to 2.8.4
 <!-- recent-activity:end -->
 
 ---
