@@ -37,8 +37,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 2 PRs merged into main · 2h ago
-  **Changes:** [`75c18a8`](https://github.com/fworks-tech/wormage-demo/commit/75c18a8276422c28bce30782f90e640ed4af473c) ci: run only the tests a pull request ca · [`bc8adf5`](https://github.com/fworks-tech/wormage-demo/commit/bc8adf52583806e55402595bce2250039afa31d8) feat(ui): run the /demo match in fullscr · [`c4de21a`](https://github.com/fworks-tech/wormage-demo/commit/c4de21ae8b1ebf43022e8e1c6114d27db2537386) Merge remote-tracking branch 'origin/mai
+- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · 3h ago
+  **Changes:** [`f45ac73`](https://github.com/fworks-tech/wormage-demo/commit/f45ac735066768bcde39ab5ae0c2d4dc22254b48) fix(hud): equal team cards and a compact · [`19846f1`](https://github.com/fworks-tech/wormage-demo/commit/19846f16ebd7b1979601b44050b7f58b8fd7645e) fix(game): finish the arena composition · [`dfa3b78`](https://github.com/fworks-tech/wormage-demo/commit/dfa3b787e7241d45ba8bc8f2d3a7ac6de6155750) fix(ui): return focus to the panel trigg · and 1 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -178,4 +178,4 @@
 
 ---
 
-*Last updated: Nov 10, 2026
+*Last updated: Nov 11, 2026
