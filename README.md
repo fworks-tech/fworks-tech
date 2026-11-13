@@ -37,8 +37,8 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 2 PRs merged into main · 2h ago
-  **Changes:** [`75c18a8`](https://github.com/fworks-tech/wormage-demo/commit/75c18a8276422c28bce30782f90e640ed4af473c) ci: run only the tests a pull request ca · [`bc8adf5`](https://github.com/fworks-tech/wormage-demo/commit/bc8adf52583806e55402595bce2250039afa31d8) feat(ui): run the /demo match in fullscr · [`c4de21a`](https://github.com/fworks-tech/wormage-demo/commit/c4de21ae8b1ebf43022e8e1c6114d27db2537386) Merge remote-tracking branch 'origin/mai
+- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · yesterday
+  **Changes:** [`7c586c6`](https://github.com/fworks-tech/wormage-demo/commit/7c586c6286046f8cd4401296b73ee315d2b986bf) feat(game): telegraph the CPU aim and po · [`6052153`](https://github.com/fworks-tech/wormage-demo/commit/60521531e7d8279cc713fc473de07ea973dcfef1) feat(ui): give the result card a story a · [`f45ac73`](https://github.com/fworks-tech/wormage-demo/commit/f45ac735066768bcde39ab5ae0c2d4dc22254b48) fix(hud): equal team cards and a compact
 <!-- recent-activity:end -->
 
 ---
@@ -178,4 +178,4 @@
 
 ---
 
-*Last updated: Nov 10, 2026
+*Last updated: Nov 13, 2026
