@@ -37,11 +37,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · just now
-  **Changes:** [`99b9bea`](https://github.com/fworks-tech/atlaslink/commit/99b9beab5103995dda7d20a51dd473b673bf03ac) fix(auth): close self-serve signup and r · [`73e4086`](https://github.com/fworks-tech/atlaslink/commit/73e4086391675da77a990c7dcd70324146b2d7dc) chore(deploy): decommission render and r · [`54bf8f2`](https://github.com/fworks-tech/atlaslink/commit/54bf8f28cacf73a50fc358a4c8d828b031e6ea67) fix(runbook): correct the restore, dns, · and 1 more commits
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · 5h ago
+  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
 
-- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · 2d ago
-  **Changes:** [`7c586c6`](https://github.com/fworks-tech/wormage-demo/commit/7c586c6286046f8cd4401296b73ee315d2b986bf) feat(game): telegraph the CPU aim and po · [`6052153`](https://github.com/fworks-tech/wormage-demo/commit/60521531e7d8279cc713fc473de07ea973dcfef1) feat(ui): give the result card a story a · [`f45ac73`](https://github.com/fworks-tech/wormage-demo/commit/f45ac735066768bcde39ab5ae0c2d4dc22254b48) fix(hud): equal team cards and a compact
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3h ago
+  **Changes:** [`5591b10`](https://github.com/fworks-tech/agenthood/commit/5591b10117a9fe2f3a655e816ebf4f4654bac1f8) chore(deps-dev): bump qs · [`43e6bc6`](https://github.com/fworks-tech/agenthood/commit/43e6bc6d16be626b665bdf91b45b401e114af06f) chore(release): v3.76.0 · [`2f74110`](https://github.com/fworks-tech/agenthood/commit/2f74110ab7f7697714d96056852f12ccf3d4e1f9) chore(deps): bump @azure/msal-node · and 2 more commits
+
+- 🔀 [**flabs.tech**](https://github.com/fworks-tech/flabs.tech) — 3 PRs merged into main · 7h ago
+  **Changes:** [`65ae66c`](https://github.com/fworks-tech/flabs.tech/commit/65ae66c594db46a5dbc9485c0043f512595b3bb2) docs(projects): rewrite atlaslink page a · [`59c0be2`](https://github.com/fworks-tech/flabs.tech/commit/59c0be2ea450a48ffc6f1a940d3bf12898ea7fac) test: replace flaky networkidle waits wi · [`0a82489`](https://github.com/fworks-tech/flabs.tech/commit/0a8248973e2658c9ab487c392dc3aae4c7aa16a3) fix: tolerate pre-migration Redis key ty
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +184,4 @@
 
 ---
 
-*Last updated: Nov 14, 2026
+*Last updated: Nov 15, 2026
