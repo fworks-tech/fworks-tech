@@ -37,7 +37,10 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · yesterday
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · just now
+  **Changes:** [`99b9bea`](https://github.com/fworks-tech/atlaslink/commit/99b9beab5103995dda7d20a51dd473b673bf03ac) fix(auth): close self-serve signup and r · [`73e4086`](https://github.com/fworks-tech/atlaslink/commit/73e4086391675da77a990c7dcd70324146b2d7dc) chore(deploy): decommission render and r · [`54bf8f2`](https://github.com/fworks-tech/atlaslink/commit/54bf8f28cacf73a50fc358a4c8d828b031e6ea67) fix(runbook): correct the restore, dns, · and 1 more commits
+
+- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · 2d ago
   **Changes:** [`7c586c6`](https://github.com/fworks-tech/wormage-demo/commit/7c586c6286046f8cd4401296b73ee315d2b986bf) feat(game): telegraph the CPU aim and po · [`6052153`](https://github.com/fworks-tech/wormage-demo/commit/60521531e7d8279cc713fc473de07ea973dcfef1) feat(ui): give the result card a story a · [`f45ac73`](https://github.com/fworks-tech/wormage-demo/commit/f45ac735066768bcde39ab5ae0c2d4dc22254b48) fix(hud): equal team cards and a compact
 <!-- recent-activity:end -->
 
@@ -178,4 +181,4 @@
 
 ---
 
-*Last updated: Nov 13, 2026
+*Last updated: Nov 14, 2026
