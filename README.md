@@ -37,11 +37,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · just now
-  **Changes:** [`99b9bea`](https://github.com/fworks-tech/atlaslink/commit/99b9beab5103995dda7d20a51dd473b673bf03ac) fix(auth): close self-serve signup and r · [`73e4086`](https://github.com/fworks-tech/atlaslink/commit/73e4086391675da77a990c7dcd70324146b2d7dc) chore(deploy): decommission render and r · [`54bf8f2`](https://github.com/fworks-tech/atlaslink/commit/54bf8f28cacf73a50fc358a4c8d828b031e6ea67) fix(runbook): correct the restore, dns, · and 1 more commits
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
+  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
 
-- 🔀 [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — 3 PRs merged into main · 2d ago
-  **Changes:** [`7c586c6`](https://github.com/fworks-tech/wormage-demo/commit/7c586c6286046f8cd4401296b73ee315d2b986bf) feat(game): telegraph the CPU aim and po · [`6052153`](https://github.com/fworks-tech/wormage-demo/commit/60521531e7d8279cc713fc473de07ea973dcfef1) feat(ui): give the result card a story a · [`f45ac73`](https://github.com/fworks-tech/wormage-demo/commit/f45ac735066768bcde39ab5ae0c2d4dc22254b48) fix(hud): equal team cards and a compact
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
+  **Changes:** [`335f448`](https://github.com/fworks-tech/agenthood/commit/335f448f6262a9b0fbf206b1b944ad3a5ea441a4) chore(release): v3.78.0 · [`6e20428`](https://github.com/fworks-tech/agenthood/commit/6e20428c1910cf0449a90d35749678ce8430a00a) fix(core): scope OpenCode catalog pricin · [`08cd646`](https://github.com/fworks-tech/agenthood/commit/08cd646a58d72b7cee0d838e5d667a82bbceb8e3) feat(llm): derive OpenCode pricing and r · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +181,4 @@
 
 ---
 
-*Last updated: Nov 14, 2026
+*Last updated: Nov 16, 2026
