@@ -37,11 +37,11 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
-  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 10h ago
+  **Changes:** [`cdf980c`](https://github.com/fworks-tech/agenthood/commit/cdf980c45b08f92184c23c8c01aa3c6716fecf03) chore(release): v4.0.0 · [`da25d32`](https://github.com/fworks-tech/agenthood/commit/da25d32e2fcffdf32c6e3d33d7046b02d5158d5f) chore(deps): bump openai from 7.55.0 to · [`818a323`](https://github.com/fworks-tech/agenthood/commit/818a32365b1ea741441249e6d0c62ae238b8dc5e) ci(workflows): run PR standards on the 4 · and 2 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
-  **Changes:** [`335f448`](https://github.com/fworks-tech/agenthood/commit/335f448f6262a9b0fbf206b1b944ad3a5ea441a4) chore(release): v3.78.0 · [`6e20428`](https://github.com/fworks-tech/agenthood/commit/6e20428c1910cf0449a90d35749678ce8430a00a) fix(core): scope OpenCode catalog pricin · [`08cd646`](https://github.com/fworks-tech/agenthood/commit/08cd646a58d72b7cee0d838e5d667a82bbceb8e3) feat(llm): derive OpenCode pricing and r · and 2 more commits
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · 2d ago
+  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +181,4 @@
 
 ---
 
-*Last updated: Nov 16, 2026
+*Last updated: Nov 17, 2026
