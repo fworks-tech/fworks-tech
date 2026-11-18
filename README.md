@@ -37,11 +37,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
-  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3h ago
+  **Changes:** [`1fdc994`](https://github.com/fworks-tech/agenthood/commit/1fdc994fd9d68e5c51fdc21758cafb85acf99468) ci(workflows): anchor the catalog sync b · [`f0db750`](https://github.com/fworks-tech/agenthood/commit/f0db750577421d3c38523032aa669a8118e5df86) ci(workflows): link the sync PR body to · [`2e67870`](https://github.com/fworks-tech/agenthood/commit/2e6787061961d2c6ca1465582c8bac6be40d3e25) ci(workflows): lease the catalog sync pu · and 5 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
-  **Changes:** [`335f448`](https://github.com/fworks-tech/agenthood/commit/335f448f6262a9b0fbf206b1b944ad3a5ea441a4) chore(release): v3.78.0 · [`6e20428`](https://github.com/fworks-tech/agenthood/commit/6e20428c1910cf0449a90d35749678ce8430a00a) fix(core): scope OpenCode catalog pricin · [`08cd646`](https://github.com/fworks-tech/agenthood/commit/08cd646a58d72b7cee0d838e5d667a82bbceb8e3) feat(llm): derive OpenCode pricing and r · and 2 more commits
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 6h ago
+  **Changes:** [`c054461`](https://github.com/fworks-tech/agenthood-site/commit/c05446156ef7b50a57792e42ef22fafb9bf83e44) fix: address mobile responsiveness audit · [`17a0f8e`](https://github.com/fworks-tech/agenthood-site/commit/17a0f8ec450e0c623316da8a4a62cc81ff8a1d10) fix(ui): complete member icons, derive t · [`5e37cd9`](https://github.com/fworks-tech/agenthood-site/commit/5e37cd96b3379d363ee590c0fbbbfe667b949bf3) fix(site): add /news to sitemap, align n · and 4 more commits
+
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 2 PRs merged into main · 9h ago
+  **Changes:** [`bfa7670`](https://github.com/fworks-tech/atlaslink/commit/bfa76709b775d10f9ddcdf91edad28902507347a) chore(deps): bump agenthood to 4.0.0 · [`7ca98ea`](https://github.com/fworks-tech/atlaslink/commit/7ca98ea4d738dca20073a0f6332e9ff7588b648d) fix(api): accept legacy member names on · [`dab51e5`](https://github.com/fworks-tech/atlaslink/commit/dab51e523a48b8c22d3e74e34c7426f4e357420c) chore(config): use canonical member name · and 1 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +184,4 @@
 
 ---
 
-*Last updated: Nov 16, 2026
+*Last updated: Nov 18, 2026
