@@ -37,11 +37,14 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
-  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
+- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 3h ago
+  **Changes:** [`62417b3`](https://github.com/fworks-tech/agenthood/commit/62417b3b6b3080623b5754d182ae06cece336a5c) fix(tests): cast readdirSync mock to sat · [`221848a`](https://github.com/fworks-tech/agenthood/commit/221848a6cff5fd8ff8e715e39e6b011b1b0a0ffd) fix(trace): guard printMcp against malfo · [`a59a6b1`](https://github.com/fworks-tech/agenthood/commit/a59a6b17a2241d0fde2f4b81d5caf85883c894d3) feat(trace): list mcp servers, grants an · and 2 more commits
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
-  **Changes:** [`335f448`](https://github.com/fworks-tech/agenthood/commit/335f448f6262a9b0fbf206b1b944ad3a5ea441a4) chore(release): v3.78.0 · [`6e20428`](https://github.com/fworks-tech/agenthood/commit/6e20428c1910cf0449a90d35749678ce8430a00a) fix(core): scope OpenCode catalog pricin · [`08cd646`](https://github.com/fworks-tech/agenthood/commit/08cd646a58d72b7cee0d838e5d667a82bbceb8e3) feat(llm): derive OpenCode pricing and r · and 2 more commits
+- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · 8h ago
+  **Changes:** [`c076598`](https://github.com/fworks-tech/atlaslink/commit/c07659834cbd95babe5d66687f29463e98b9b4b6) feat(events): forward tool.denied · [`16e6b61`](https://github.com/fworks-tech/atlaslink/commit/16e6b61ce19622cc3e6b85473ae4baca2c360090) chore(deps): bump the dev-dependencies g · [`a0243b2`](https://github.com/fworks-tech/atlaslink/commit/a0243b2aa3c34ad01868642cc668b357ef7b6339) chore(deps): add conventional-commits pe · and 3 more commits
+
+- 🔀 [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — 3 PRs merged into main · 15h ago
+  **Changes:** [`b69f54e`](https://github.com/fworks-tech/agenthood-site/commit/b69f54e193bff9ee2bc0a36844a48b20c5ae1a8f) content(news): digest for 2026-11-19 · [`c054461`](https://github.com/fworks-tech/agenthood-site/commit/c05446156ef7b50a57792e42ef22fafb9bf83e44) fix: address mobile responsiveness audit · [`17a0f8e`](https://github.com/fworks-tech/agenthood-site/commit/17a0f8ec450e0c623316da8a4a62cc81ff8a1d10) fix(ui): complete member icons, derive t · and 2 more commits
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +184,4 @@
 
 ---
 
-*Last updated: Nov 16, 2026
+*Last updated: Nov 20, 2026
