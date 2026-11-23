@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Auto-update the Recent Activity section in README.md.
 
-Discovers active repos from the org's public events, fetches the last
-3 PRs merged into main for each, and drafts an LLM ``Brief`` covering
-those PRs. Each entry carries a bullet headline linking to the repo,
-the grounded brief (when OPENCODE_API_KEY is set), and deterministic
-``Changes`` / ``Related`` reference lines built from real GitHub API
-data — commit SHAs and PR references — so the links stay valid even
-when the LLM is unavailable. Always bumps the "Last updated" footer.
+Discovers active repos from the org's public events, collects the
+substantive signals from the last two weeks (merged PRs, releases and
+open PRs, excluding bot and dependency noise), and asks an LLM to write
+one short, reader-friendly entry per repo. The LLM only picks signal
+ids; every link is rendered from GitHub API data, so an unavailable
+model degrades to a deterministic description-plus-titles fallback
+instead of breaking the section.
 
-Outputs ``changed=1`` via $GITHUB_OUTPUT, or ``changed=0`` if the
-section is missing, the API call fails, or no quality briefs remain.
+Outputs ``changed=1`` via $GITHUB_OUTPUT only when the activity block
+actually changed; the workflow reuses one pull request across runs.
 """
 
 import json
@@ -18,10 +18,12 @@ import os
 import re
 import subprocess
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ORG = "fworks-tech"
 TOP_N = 3
+CANDIDATE_N = 6
+WINDOW_DAYS = 14
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 README_PATH = os.path.join(REPO_ROOT, "README.md")
@@ -48,7 +50,9 @@ EMOJI = {
 API_BASE = os.environ.get(
     "OPENCODE_README_BASE_URL", "https://opencode.ai/zen/v1"
 )
-MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4-flash")
+MODEL = os.environ.get("OPENCODE_README_MODEL", "deepseek-v4.1-flash")
+FALLBACK_MODELS = ["qwen3.8-flash"]
+MODELS = [MODEL] + [m for m in FALLBACK_MODELS if m != MODEL]
 SESSION_ID = os.environ.get("OPENCODE_SESSION_ID", "agenthood-readme-briefs")
 
 
@@ -82,7 +86,7 @@ def fetch_events(token):
     return data if isinstance(data, list) else None
 
 
-PRS_PER_REPO = 3
+PRS_PER_REPO = 20
 
 
 def fetch_recent_merged_prs(repo_full, token, limit=PRS_PER_REPO):
@@ -116,58 +120,262 @@ def fetch_recent_merged_prs(repo_full, token, limit=PRS_PER_REPO):
     return merged
 
 
-def format_prs_context(repo_full, prs, token):
-    """Build LLM context from a list of merged PRs."""
-    lines = []
-    for pr in prs:
-        lines.append(
-            f"PR #{pr['number']} merged {pr['merged_at'][:10]}: "
-            f"{pr['title']} by @{pr['user']}"
-        )
-        if pr.get("body"):
-            body = clean_text(pr["body"]).strip()
-            if body:
-                lines.append("  " + body[:500])
-        commits = fetch_pr_commits(repo_full, pr["number"], token)
-        if commits:
-            lines.append(
-                "  commits: "
-                + "; ".join(f"{sha[:7]} {subj}" for sha, subj in commits[:10])[:300]
-            )
-    return "\n".join(lines)
+def fetch_repo_meta(repo_full, token):
+    """Short repo description and topics, used to ground the prose."""
+    data = api_get(f"https://api.github.com/repos/{repo_full}", token)
+    if not isinstance(data, dict):
+        return {}
+    return {
+        "description": data.get("description") or "",
+        "topics": data.get("topics") or [],
+    }
 
 
-def collect_prs_refs(repo_full, prs, token):
-    """Build reference links from a list of merged PRs."""
-    refs = []
-    seen_prs = set()
-    for pr in prs:
-        if pr["number"] not in seen_prs:
-            refs.append(_pr_ref(repo_full, pr["number"], pr["title"]))
-            seen_prs.add(pr["number"])
-        commits = fetch_pr_commits(repo_full, pr["number"], token)
-        for sha, subj in commits[:3]:
-            refs.append(_commit_ref(repo_full, sha, subj))
-    return refs
-
-
-def describe_prs(repo_short, repo_full, prs):
-    """Build bullet line for a repo's recent merged PRs."""
-    base = repo_url(repo_full)
-    count = len(prs)
-    latest = prs[0] if prs else None
-    age = f" \u00B7 {relative_time(latest['merged_at'])}" if latest else ""
-    if count == 1:
-        title = clean_text(latest["title"])[:50]
-        return (
-            f"- \U0001F500 [**{repo_short}**]({base}) \u2014 merged "
-            f"[PR #{latest['number']}]({base}/pull/{latest['number']})"
-            f"{': ' + title if title else ''}{age}"
-        )
-    return (
-        f"- \U0001F500 [**{repo_short}**]({base}) \u2014 "
-        f"{count} PRs merged into main{age}"
+def fetch_recent_releases(repo_full, token, limit=5):
+    """Releases for a repo, newest first."""
+    if not token:
+        return []
+    data = api_get(
+        f"https://api.github.com/repos/{repo_full}/releases?per_page={limit}",
+        token,
     )
+    if not isinstance(data, list):
+        return []
+    return [
+        {
+            "tag": rel.get("tag_name") or "",
+            "name": rel.get("name") or "",
+            "body": rel.get("body") or "",
+            "published_at": rel.get("published_at") or "",
+        }
+        for rel in data
+    ]
+
+
+def fetch_open_prs(repo_full, token, limit=10):
+    """Open pull requests for a repo, most recently updated first."""
+    if not token:
+        return []
+    url = (
+        f"https://api.github.com/repos/{repo_full}/pulls"
+        f"?state=open&sort=updated&direction=desc&per_page={limit}"
+    )
+    data = api_get(url, token)
+    if not isinstance(data, list):
+        return []
+    return [
+        {
+            "number": pr.get("number"),
+            "title": pr.get("title", ""),
+            "body": pr.get("body") or "",
+            "updated_at": pr.get("updated_at", ""),
+            "user": (pr.get("user") or {}).get("login", ""),
+            "draft": bool(pr.get("draft")),
+        }
+        for pr in data
+    ]
+
+
+def within_window(iso_ts, days=WINDOW_DAYS):
+    """True when an ISO timestamp falls inside the activity window."""
+    if not iso_ts:
+        return False
+    dt = datetime.fromisoformat(iso_ts.replace("Z", "+00:00"))
+    return datetime.now(timezone.utc) - dt <= timedelta(days=days)
+
+
+DEPENDENCY_BOTS = {"dependabot[bot]", "renovate[bot]"}
+AUTOMATION_BOTS = {"github-actions[bot]", "app/github-actions"}
+NOISE_TITLE_RE = re.compile(
+    r"^(?:chore\(deps[^)]*\)|chore:\s*bump|build\(deps[^)]*\))", re.IGNORECASE
+)
+
+
+def is_noise_pr(pr, allow_automation=False):
+    """Bot-authored or dependency-bump PRs are not reader-worthy.
+
+    Open PRs allow automation-authored work: a draft release or a catalog
+    refresh is meaningful activity, unlike a dependency bump.
+    """
+    if (pr.get("user") or "") in DEPENDENCY_BOTS:
+        return True
+    if not allow_automation and (pr.get("user") or "") in AUTOMATION_BOTS:
+        return True
+    return bool(NOISE_TITLE_RE.match(pr.get("title", "")))
+
+
+def clean_pr_title(title):
+    """Drop the conventional-commit prefix from a PR title."""
+    text = re.sub(
+        r"^[a-z]+(?:\([^)]*\))?!?:\s*", "", (title or "").strip(), flags=re.IGNORECASE
+    )
+    text = clean_text(text).strip()
+    if text[:1].islower() and not re.match(r"^v\d", text):
+        text = text[:1].upper() + text[1:]
+    return text
+
+
+def first_sentence(text, limit=120):
+    """First sentence of a description, trimmed at a word boundary."""
+    text = re.sub(r"\s+", " ", clean_text(text or "")).strip()
+    if not text:
+        return ""
+    match = re.match(r"(.+?[.!?])(?:\s|$)", text)
+    sentence = match.group(1) if match else text
+    if len(sentence) > limit:
+        sentence = sentence[:limit].rsplit(" ", 1)[0].rstrip(" ,;:-") + "\u2026"
+    return sentence
+
+
+def excerpt(text, limit):
+    """Plain-text excerpt for the LLM context."""
+    text = re.sub(r"```.*?```", " ", text or "", flags=re.DOTALL)
+    text = re.sub(r"\s+", " ", clean_text(text)).strip()
+    return text[:limit].rstrip()
+
+
+def _signal(kind, title, url, date, context, weight):
+    return {
+        "kind": kind,
+        "title": title,
+        "url": url,
+        "date": date,
+        "context": context,
+        "weight": weight,
+    }
+
+
+def collect_signals(repo_full, token):
+    """Substantive signals for one repo, newest first, with stable ids.
+
+    Releases score highest because they mark a finished milestone; merged
+    PRs and open PRs carry the rest of the story. Bot and dependency PRs
+    are dropped so a quiet week does not turn into a changelog of bumps.
+    """
+    signals = []
+    base = repo_url(repo_full)
+
+    releases = 0
+    for rel in fetch_recent_releases(repo_full, token):
+        if releases >= 2:
+            break
+        if not within_window(rel["published_at"]):
+            continue
+        title = rel["tag"] or rel["name"] or "release"
+        detail = rel["name"] or excerpt(rel["body"], 240)
+        signals.append(
+            _signal(
+                "release",
+                title,
+                f"{base}/releases/tag/{rel['tag']}" if rel["tag"] else base,
+                rel["published_at"],
+                f"release {title} published {rel['published_at'][:10]}"
+                + (f": {detail}" if detail else ""),
+                3,
+            )
+        )
+        releases += 1
+
+    merged = 0
+    for pr in fetch_recent_merged_prs(repo_full, token):
+        if merged >= 4:
+            break
+        if not pr.get("merged_at") or not within_window(pr["merged_at"]):
+            continue
+        if is_noise_pr(pr):
+            continue
+        signals.append(
+            _signal(
+                "pr",
+                clean_pr_title(pr["title"]) or f"PR #{pr['number']}",
+                f"{base}/pull/{pr['number']}",
+                pr["merged_at"],
+                f"merged pull request #{pr['number']} on {pr['merged_at'][:10]}: "
+                f"{pr['title']}"
+                + (f" - {excerpt(pr['body'], 400)}" if pr.get("body") else ""),
+                2,
+            )
+        )
+        merged += 1
+
+    opened = 0
+    for pr in fetch_open_prs(repo_full, token):
+        if opened >= 3:
+            break
+        if not within_window(pr["updated_at"]) or is_noise_pr(
+            pr, allow_automation=True
+        ):
+            continue
+        title = clean_pr_title(pr["title"]) or f"PR #{pr['number']}"
+        if pr["draft"]:
+            title += " (draft)"
+        signals.append(
+            _signal(
+                "open_pr",
+                title,
+                f"{base}/pull/{pr['number']}",
+                pr["updated_at"],
+                f"open pull request #{pr['number']} updated {pr['updated_at'][:10]}: "
+                f"{pr['title']}"
+                + (" (draft)" if pr["draft"] else "")
+                + (f" - {excerpt(pr['body'], 400)}" if pr.get("body") else ""),
+                2,
+            )
+        )
+        opened += 1
+
+    signals.sort(key=lambda signal: signal["date"], reverse=True)
+    for i, signal in enumerate(signals):
+        signal["id"] = f"S{i + 1}"
+    return signals
+
+
+def discover_repos(events):
+    """Repos named in the public events, most recent first, deduped."""
+    repos = []
+    seen = set()
+    for event in events:
+        repo_full = event.get("repo", {}).get("name", "")
+        repo_short = repo_full.split("/")[-1]
+        if not repo_full.startswith(f"{ORG}/"):
+            continue
+        if not repo_short or repo_short == ORG or repo_full in seen:
+            continue
+        seen.add(repo_full)
+        repos.append((repo_short, repo_full))
+        if len(repos) >= CANDIDATE_N:
+            break
+    return repos
+
+
+def build_items(events, token=None):
+    """Select the most substantive repos and assemble their LLM items.
+
+    Repos with no signals are dropped; the rest are ranked by signal
+    weight and recency, capped at TOP_N, then shown newest first.
+    """
+    items = []
+    for repo_short, repo_full in discover_repos(events):
+        signals = collect_signals(repo_full, token)
+        if not signals:
+            continue
+        meta = fetch_repo_meta(repo_full, token)
+        items.append(
+            {
+                "repo": repo_short,
+                "full": repo_full,
+                "url": repo_url(repo_full),
+                "description": meta.get("description", ""),
+                "topics": meta.get("topics", []),
+                "signals": signals,
+                "latest": max(signal["date"] for signal in signals),
+                "score": sum(signal["weight"] for signal in signals),
+            }
+        )
+    items.sort(key=lambda item: (item["score"], item["latest"]), reverse=True)
+    items = items[:TOP_N]
+    items.sort(key=lambda item: item["latest"], reverse=True)
+    return items
 
 
 def fetch_pr_commits(repo_full, pr_number, token):
@@ -405,45 +613,6 @@ def collect_refs(event, detail):
     return refs
 
 
-def parse_events(events, token=None):
-    """Discover repos from events, build entries from last 3 merged PRs.
-
-    Steps:
-    1. Scan events to find active repos (deduped, most recent first).
-    2. For each repo, fetch the last 3 PRs merged into main.
-    3. Build (bullet, context, refs) from those PRs.
-
-    Repos with no merged PRs are skipped.
-    """
-    # Discover repos from events (deduped, preserving most-recent order)
-    discovered = []
-    seen_repos = set()
-    for event in events:
-        repo_full = event.get("repo", {}).get("name", "")
-        repo_short = repo_full.split("/")[-1]
-        if not repo_short or repo_short == ORG:
-            continue
-        if repo_short in seen_repos:
-            continue
-        seen_repos.add(repo_short)
-        discovered.append((repo_short, repo_full))
-        if len(discovered) >= TOP_N:
-            break
-
-    # Build entries from merged PRs
-    result = {}
-    for repo_short, repo_full in discovered:
-        prs = fetch_recent_merged_prs(repo_full, token)
-        if not prs:
-            continue
-        result[repo_short] = (
-            describe_prs(repo_short, repo_full, prs),
-            format_prs_context(repo_full, prs, token),
-            collect_prs_refs(repo_full, prs, token),
-        )
-    return result
-
-
 def event_context(event, detail=None):
     """Structured multi-line digest of an event, used for the LLM prompt."""
     etype = event.get("type", "")
@@ -639,54 +808,52 @@ def describe_event(event, repo_short, repo_full):
     return f"- {emoji} [**{repo_short}**]({base}) \u2014 activity{age}"
 
 
-def _changes_line(refs):
-    """Deterministic '**Changes:**' line linking commit SHAs."""
-    commits = [r for r in refs if r["kind"] == "commit"]
-    if not commits:
+def sanitize_prose(text):
+    """Strip markdown and URLs from LLM prose before it reaches the README."""
+    text = clean_text(str(text or ""))
+    text = re.sub(r"https?://\S+", "", text, flags=re.IGNORECASE)
+    text = text.replace("<", "").replace(">", "")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.lstrip("-*# ").strip()
+
+
+def fallback_entry(item):
+    """Deterministic entry used when the LLM is unavailable or rejected."""
+    headline = first_sentence(item.get("description", "")) or "Recent work"
+    signals = [s for s in item["signals"] if s["kind"] in ("pr", "release")]
+    if not signals:
+        signals = item["signals"]
+    return {
+        "headline": headline,
+        "body": "",
+        "links": [s["id"] for s in signals[:2]],
+    }
+
+
+def _links_line(item, entry):
+    by_id = {s["id"]: s for s in item["signals"]}
+    links = [by_id[link] for link in (entry.get("links") or []) if link in by_id]
+    if not links:
         return ""
-    parts = [
-        f"[`{r['sha']}`]({r['url']})"
-        + (f" {clean_text(r['subject'])[:40].rstrip()}" if r.get("subject") else "")
-        for r in commits[:3]
-    ]
-    if len(commits) > 3:
-        parts.append(f"and {len(commits) - 3} more commits")
-    return "**Changes:** " + " \u00B7 ".join(parts)
+    return " \u00B7 ".join(f"[{s['title']}]({s['url']})" for s in links)
 
 
-def _related_line(refs):
-    """Deterministic '**Related:**' line linking issues (and PRs)."""
-    related = [r for r in refs if r["kind"] in ("issue", "pr")][:3]
-    if not any(r["kind"] == "issue" for r in related):
-        return ""
-    pieces = [
-        f"[{'issue' if r['kind'] == 'issue' else 'PR'} #{r['number']}]({r['url']})"
-        + (f" \u2014 {clean_text(r['title'])[:40]}" if r.get("title") else "")
-        for r in related
-    ]
-    return "**Related:** " + " \u00B7 ".join(pieces)
-
-
-def build_activity_lines(event_map, summaries, refs_list=None):
-    """Build entry blocks: bullet headline, brief, and deterministic refs."""
-    summary_list = summaries or []
+def render_activity(items, entries):
+    """Render the section body from selected items and LLM entries."""
+    entries = list(entries or [])
+    entries.extend([None] * (len(items) - len(entries)))
     blocks = []
-    for i, line in enumerate(event_map.values()):
-        block = line
-        summary = summary_list[i] if i < len(summary_list) and summary_list[i] else []
-        if summary:
-            block += "\n  **Brief:** " + summary[0]
-            for extra in summary[1:]:
-                block += "\n  " + extra
-        if refs_list and refs_list[i]:
-            changes = _changes_line(refs_list[i])
-            if changes:
-                block += "\n  " + changes
-            related = _related_line(refs_list[i])
-            if related:
-                block += "\n  " + related
+    for item, entry in zip(items, entries):
+        entry = entry or fallback_entry(item)
+        age = f" \u00B7 {relative_time(item['latest'])}" if item.get("latest") else ""
+        block = f"- [**{item['repo']}**]({item['url']}) \u2014 {entry['headline']}{age}"
+        if entry.get("body"):
+            block += f"\n  {entry['body']}"
+        links = _links_line(item, entry)
+        if links:
+            block += f"\n  {links}"
         blocks.append(block)
-    return "\n\n".join(blocks) + "\n"
+    return "\n\n".join(blocks) + "\n" if blocks else ""
 
 
 def llm_completions(payload):
@@ -729,67 +896,138 @@ FORBIDDEN_WORDS = [
     "empowers",
 ]
 
+TECHNICAL_WORDS = [
+    "lambda",
+    "endpoint",
+    "api",
+    "daemon",
+    "schema",
+    "migration",
+    "middleware",
+    "hook",
+    "flag",
+    "config",
+    "cache",
+    "tick",
+    "snapshot",
+    "refactor",
+    "linter",
+    "dependency",
+    "branch",
+    "ci",
+    "tests",
+    "file",
+]
+
 SYSTEM_PROMPT = (
-    "You summarize recent pull request activity for a developer's README. "
-    "Each ITEM covers the last 3 PRs merged into main for one repo. "
-    "For every ITEM keep the repo name and markdown links exactly as-is. "
-    "Then write a BRIEF of 1 to 3 short scannable lines that covers the "
-    "key changes across those PRs and names concrete artifacts. "
-    "Voice: first-person plural and approachable (\"We merged…\", \"Adds…\"), "
-    "never hypey. Confident but measured — no exclamation marks, no "
-    "\"game-changing\" marketing. Prefer concrete details over vague praise. "
-    "STRICT RULES: "
-    "(1) GROUNDING — write a REAL brief. State only facts present in the "
-    "CONTEXT; never invent features, fixes, motivations or code you cannot "
-    "see. "
-    f"(2) NO BOILERPLATE — never use these words: {', '.join(FORBIDDEN_WORDS)}. "
-    "If a brief could apply to any repo, rewrite it. "
-    "(3) NAME THE ARTIFACTS — reference the concrete PR numbers, commit "
-    "SHAs and issue numbers from the CONTEXT so the reader can trace the "
-    "changes. Never use meta-labels like 'Artifacts:', 'Summary:', "
-    "'Overview:' or 'Reference:' — fold the references directly into the "
-    "sentences. "
-    "(4) COVER THE PRS — mention what the PRs accomplished, not just that "
-    "they merged. Group related changes; call out standout items. "
-    "(5) VARY — no two briefs may share their opening words or sentence "
-    "structure; rotate the angle (what, why, technical detail). "
-    "(6) SHORT — each line must fit one line and be scannable. "
+    "You write the Recent Activity section of a solo developer's GitHub "
+    "profile README. Readers are visitors: smart people who are not in the "
+    "codebase. They want a quick, pleasant sense of what is being built, in "
+    "plain language. Translate internals into what the software now does for "
+    "its user.\n\n"
+    "For every ITEM return:\n"
+    "- headline: one sentence, at most 90 characters, on what is happening in "
+    "the project now. No PR or issue numbers, no hashes, no conventional "
+    "commit prefixes, no file paths, no repo name repetition.\n"
+    "- body: 2 short sentences, at most 320 characters, saying what changed "
+    "and why a reader would care. Mention an in-progress thread or design "
+    "choice when the signals show one. Do not over-explain.\n"
+    "- links: 0 to 2 signal ids copied exactly from the ITEM (for example "
+    "\"S1\"), in the order referenced. Never invent an id.\n\n"
+    "RULES:\n"
+    "- Ground every claim in the description or signals. Never infer "
+    "motivation, users, metrics, or outcomes.\n"
+    "- If the signals are routine maintenance only, say so in one sentence; "
+    "never inflate dependency bumps.\n"
+    "- When a release has no notes, use the work visible in open or merged "
+    "PRs; never mention missing information or apologize for it.\n"
+    "- Voice: first person singular, used sparingly. Calm and concrete. No "
+    "'we', no marketing adjectives, no exclamation marks, and none of: "
+    + ", ".join(FORBIDDEN_WORDS)
+    + ".\n"
+    "- Do not use technical implementation words: "
+    + ", ".join(TECHNICAL_WORDS)
+    + ". Product-domain names (MCP, agent, AI) are allowed when they are the "
+    "point.\n"
+    "- No emoji, markdown links, headings, bullets, dates, or relative times "
+    "in the text. Vary headline openings.\n\n"
+    "STYLE EXAMPLE (invented project, do not copy facts):\n"
+    "technical: 'The worker now batches Redis writes and retries safely.'\n"
+    "good body: 'Saved games stop disappearing when the network drops: "
+    "progress is written in small batches, so a bad connection costs a few "
+    "seconds instead of the session.'\n\n"
     "Reply with JSON only: "
-    '{"entries": [{"index": 0, "line": "...", "brief": ["...", "..."]}, ...]}, '
-    "one entry per ITEM. The 'index' field MUST match the ITEM number minus 1 "
-    "(ITEM 1 → index 0) so entries can be matched positionally."
+    '{"entries": [{"index": 0, "headline": "...", "body": "...", '
+    '"links": ["S1"]}, ...]}, one entry per ITEM. The index is the ITEM '
+    "number minus 1."
 )
 
+HEADLINE_LIMIT = 120
+BODY_LIMIT = 420
+ISSUE_RE = re.compile(r"#\s*\d+")
+HASH_RE = re.compile(r"\b(?=[a-f0-9]*\d)[a-f0-9]{7,40}\b", re.IGNORECASE)
+URL_RE = re.compile(r"https?://", re.IGNORECASE)
+WE_RE = re.compile(r"\bwe\b", re.IGNORECASE)
 
 
+def item_context(item):
+    """LLM-facing digest: description, topics and numbered signals."""
+    lines = [
+        f"PROJECT: {item['repo']}",
+        f"what it is: {item.get('description', '')[:300]}",
+    ]
+    if item.get("topics"):
+        lines.append("topics: " + ", ".join(item["topics"][:6]))
+    for signal in item["signals"]:
+        lines.append(f"[{signal['id']}] {signal['context']}")
+    return "\n".join(lines)
 
 
-ARTIFACT_RE = re.compile(
-    r"#\d+|`[a-f0-9]{7}`|issue \d+|branch [\w/-]+|tag [\w.-]+|PR \d+|pull/\d+|GH-\d+",
-    re.IGNORECASE,
-)
+def validate_entry(item, entry):
+    """Return the reasons an LLM entry cannot be published."""
+    if not entry:
+        return ["missing entry"]
+    headline = entry.get("headline", "")
+    body = entry.get("body", "")
+    text = f"{headline} {body}"
+    reasons = []
+    if not headline:
+        reasons.append("missing headline")
+    if not body:
+        reasons.append("missing body")
+    if len(headline) > HEADLINE_LIMIT:
+        reasons.append(f"headline over {HEADLINE_LIMIT} characters")
+    if len(body) > BODY_LIMIT:
+        reasons.append(f"body over {BODY_LIMIT} characters")
+    lowered = text.lower()
+    bad_words = [word for word in FORBIDDEN_WORDS if word in lowered]
+    if bad_words:
+        reasons.append("marketing filler: " + ", ".join(bad_words))
+    if ISSUE_RE.search(text):
+        reasons.append("PR/issue numbers are not allowed")
+    if HASH_RE.search(text):
+        reasons.append("commit hashes are not allowed")
+    if URL_RE.search(text):
+        reasons.append("URLs are not allowed")
+    if any(char in text for char in "`[]"):
+        reasons.append("markdown is not allowed")
+    if "!" in text:
+        reasons.append("exclamation marks are not allowed")
+    if WE_RE.search(text):
+        reasons.append("use first-person singular or neutral voice")
+    return reasons
 
 
-def validate_briefs(items, briefs):
-    """Return indices of briefs that fail quality checks.
+def _llm_entries(items, feedback=""):
+    """One LLM pass over the items, with model fallback.
 
-    A brief fails when it is empty, contains forbidden words, or lacks any
-    concrete artifact reference (PR number, commit SHA, issue number, branch
-    name, or tag) drawn from its context.
+    Returns one entry dict (or None) per item. The first model that
+    answers with parseable JSON wins; an unavailable model falls through
+    to the next one instead of silently degrading the whole section.
     """
-    failed = []
-    for i, ((bullet, context), brief) in enumerate(zip(items, briefs)):
-        full_text = " ".join(brief) if brief else ""
-        if not brief or any(word in full_text.lower() for word in FORBIDDEN_WORDS) or not ARTIFACT_RE.search(full_text):
-            failed.append(i)
-    return failed
-
-
-def _polish_once(items, feedback=""):
-    """Single LLM pass: returns (lines, briefs) for the given items."""
-    numbered = "\n".join(
-        f"ITEM {i + 1}: {bullet}\nCONTEXT {i + 1}: {context}"
-        for i, (bullet, context) in enumerate(items)
+    numbered = "\n\n".join(
+        f"ITEM {i + 1}: {item['repo']}\n{item_context(item)}"
+        for i, item in enumerate(items)
     )
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -797,96 +1035,104 @@ def _polish_once(items, feedback=""):
     ]
     if feedback:
         messages.append({"role": "user", "content": feedback})
-    payload = {
-        "model": MODEL,
-        "max_tokens": 16384,
-        "temperature": 0.3,
-        "messages": messages,
-        "response_format": {"type": "json_object"},
-    }
-    data = llm_completions(payload)
-    entries = json.loads(data["choices"][0]["message"]["content"]).get("entries")
-    if not isinstance(entries, list):
-        raise ValueError("entries not a list")
-    raw_entries = [
-        entry for entry in entries[: len(items)]
-        if isinstance(entry, dict) and isinstance(entry.get("index"), int)
-    ]
-    if len(raw_entries) != len(set(e["index"] for e in raw_entries)):
-        print(f"Warning: LLM returned duplicate indices in entries")
-    entries_by_index = {entry["index"]: entry for entry in raw_entries}
-    lines = []
-    briefs = []
-    for i, (bullet, _) in enumerate(items):
-        entry = entries_by_index.get(i)
-        line = str(entry.get("line", "")).strip() if entry else ""
-        brief = entry.get("brief") if entry else None
-        if not line or not isinstance(brief, list) or not 1 <= len(brief) <= 3:
-            lines.append(bullet)
-            briefs.append([])
-            continue
-        lines.append(line if line.lstrip().startswith("-") else f"- {line}")
-        briefs.append([str(b).strip() for b in brief])
-    return lines, briefs
+    last_error = None
+    for model in MODELS:
+        payload = {
+            "model": model,
+            "max_tokens": 8000,
+            "temperature": 0.5,
+            "messages": messages,
+            "response_format": {"type": "json_object"},
+        }
+        try:
+            data = llm_completions(payload)
+            content = data["choices"][0]["message"].get("content") or ""
+            parsed = json.loads(content)
+            raw_entries = (
+                parsed.get("entries") if isinstance(parsed, dict) else parsed
+            )
+            if not isinstance(raw_entries, list):
+                raise ValueError("entries not a list")
+            by_index = {}
+            for raw in raw_entries:
+                if isinstance(raw, dict) and isinstance(raw.get("index"), int):
+                    by_index[raw["index"]] = raw
+            results = []
+            for i, item in enumerate(items):
+                raw = by_index.get(i)
+                if not raw:
+                    results.append(None)
+                    continue
+                headline = sanitize_prose(raw.get("headline", ""))
+                body = sanitize_prose(raw.get("body", ""))
+                known = {signal["id"] for signal in item["signals"]}
+                links = []
+                for link in raw.get("links") or []:
+                    if isinstance(link, str) and link in known and link not in links:
+                        links.append(link)
+                if headline and body:
+                    results.append(
+                        {"headline": headline, "body": body, "links": links[:2]}
+                    )
+                else:
+                    results.append(None)
+            print(f"LLM model: {model}")
+            return results
+        except Exception as e:
+            last_error = e
+            print(f"LLM model {model} failed: {e}")
+    raise RuntimeError(f"all LLM models failed: {last_error}")
 
 
-def _retry_feedback(items, briefs, failed):
-    """Build specific retry feedback from validation failures."""
+def _retry_feedback(items, entries, failed):
+    """Specific feedback for the entries rejected by validation."""
     reasons = []
-    for i, ((bullet, _), brief) in enumerate(zip(items, briefs)):
-        if i not in failed:
-            continue
-        if not brief:
-            reasons.append(f"Entry {i + 1}: brief was empty.")
-        else:
-            full_text = " ".join(brief)
-            bad_words = [w for w in FORBIDDEN_WORDS if w in full_text.lower()]
-            if bad_words:
-                reasons.append(f"Entry {i + 1}: forbidden words: {', '.join(bad_words)}.")
-            if not ARTIFACT_RE.search(full_text):
-                reasons.append(f"Entry {i + 1}: no concrete artifact reference.")
+    for position, idx in enumerate(failed):
+        entry = entries[idx] if idx < len(entries) else None
+        problems = validate_entry(items[idx], entry) or ["missing entry"]
+        reasons.append(f"Entry {position + 1}: " + "; ".join(problems))
     return (
-        "Your previous briefs were rejected for:\n"
-        + "\n".join(f"- {r}" for r in reasons)
-        + "\n\nWrite 1 to 3 scannable lines per entry. Reference a concrete "
-        "artifact (PR number, commit SHA, issue number, branch name, or tag) "
-        "from the context. Do not use filler words."
+        "Your previous entries were rejected for:\n- "
+        + "\n- ".join(reasons)
+        + "\n\nRewrite only these ITEMS, keeping their order. Use only signal "
+        "ids from each item. No numbers, links, hashes, exclamation marks, or "
+        "marketing filler."
     )
 
 
-def polish_lines(items):
-    """Reword bullets and write a per-item brief via OpenCode Go.
+def write_entries(items):
+    """Write reader-facing entries for the selected repos.
 
-    items: list of (bullet_line, context_text). Returns (lines, briefs)
-    where briefs[i] is a list of 1-3 brief lines for lines[i]. Falls
-    back to the original bullets and empty briefs on any failure; a
-    single malformed entry degrades only that entry, not the whole list.
-
-    After generation, briefs are validated: any entry that is empty,
-    contains forbidden words, or lacks a concrete artifact reference is
-    retried once with a reinforcement instruction. Retry results are
-    re-validated — a failed retry keeps the original empty brief.
+    A failed validation is retried once with concrete feedback; an entry
+    that still fails becomes None and the renderer uses the deterministic
+    fallback for that repo.
     """
-    key = os.environ.get("OPENCODE_API_KEY")
-    if not key:
-        return [bullet for bullet, _ in items], [None] * len(items)
+    if not items:
+        return []
+    if not os.environ.get("OPENCODE_API_KEY"):
+        return [None] * len(items)
     try:
-        lines, briefs = _polish_once(items)
-        failed = validate_briefs(items, briefs)
-        if failed:
-            retry_items = [items[i] for i in failed]
-            feedback = _retry_feedback(items, briefs, failed)
-            _, retry_briefs = _polish_once(retry_items, feedback)
-            retry_failed = validate_briefs(retry_items, retry_briefs)
-            for j, idx in enumerate(failed):
-                if j not in retry_failed and j < len(retry_briefs) and retry_briefs[j]:
-                    briefs[idx] = retry_briefs[j]
-                elif j in retry_failed:
-                    briefs[idx] = []
-        return lines, briefs
+        entries = _llm_entries(items)
     except Exception as e:
-        print(f"LLM polish unavailable, keeping fallback text: {e}")
-        return [bullet for bullet, _ in items], [None] * len(items)
+        print(f"LLM unavailable, using fallback text: {e}")
+        return [None] * len(items)
+    failed = [
+        i for i, entry in enumerate(entries) if validate_entry(items[i], entry)
+    ]
+    if not failed:
+        return entries
+    try:
+        retry = _llm_entries(
+            [items[i] for i in failed],
+            _retry_feedback(items, entries, failed),
+        )
+    except Exception as e:
+        print(f"LLM retry failed: {e}")
+        retry = []
+    for position, idx in enumerate(failed):
+        entry = retry[position] if position < len(retry) else None
+        entries[idx] = entry if not validate_entry(items[idx], entry) else None
+    return entries
 
 
 def render_pr_body(repos, blocks, today):
@@ -896,10 +1142,9 @@ def render_pr_body(repos, blocks, today):
         noun = "entries" if len(repos) != 1 else "entry"
         what = (
             f"Updated the Recent Activity section in README.md with the latest "
-            f"public activity \u2014 {len(repos)} {noun}: {', '.join(repos)}."
+            f"public activity — {len(repos)} {noun}: {', '.join(repos)}."
             if repos
-            else "No qualifying activity summaries were generated this run; "
-            "only the Last updated footer was bumped."
+            else "No substantive activity was found this run."
         )
         body_lines.append("## What")
         body_lines.append(what)
@@ -907,25 +1152,26 @@ def render_pr_body(repos, blocks, today):
         body_lines.append("## Why")
         body_lines.append(
             "Keeps the profile's Recent Activity current so visitors see live "
-            "work at a glance, grounded in real events with PR/commit and "
-            "linked-issue references."
+            "work at a glance, grounded in real merged PRs, releases and open "
+            "PRs."
         )
         body_lines.append("")
         body_lines.append("## How to test")
-        body_lines.append("1. Diff this PR and confirm the briefs are factual and the refs link correctly.")
-        body_lines.append("2. Re-run the Update README workflow to refresh the section tomorrow.")
+        body_lines.append("1. Diff this PR and confirm the prose is factual and the links point to the featured PRs/releases.")
+        body_lines.append("2. Re-run the Update README workflow to refresh the section.")
         body_lines.append("")
         body_lines.append("## Recent activity")
         body_lines.extend(blocks.rstrip("\n").split("\n"))
     else:
         body_lines.append("## What")
         body_lines.append(
-            "No qualifying public events found; only the Last updated footer was bumped."
+            "No substantive public activity was found; the current section was kept."
         )
         body_lines.append("")
         body_lines.append("## Why")
         body_lines.append(
-            "Keeps the date footer honest on days with no qualifying activity."
+            "Avoids publishing a date-only change or a section built from "
+            "dependency bumps."
         )
     body_lines.append(f"\nLast updated bumped to {today}.")
     return body_lines
@@ -947,43 +1193,19 @@ def main():
         set_output(0)
         return
 
-    event_map = {}
-    summaries = []
-    refs_list = None
     try:
         events = fetch_events(token)
     except Exception as e:
         print(f"Failed to fetch events: {e}")
         events = None
     if events is None:
-        print("Events unavailable — bumping Last updated footer only.")
+        print("Events unavailable — keeping the current section.")
+        items = []
     else:
-        event_map = parse_events(events, token)
-        if event_map:
-            entries = list(event_map.values())
-            lines, summaries = polish_lines([(b, c) for b, c, _ in entries])
-            refs_list = [r for _, _, r in entries]
-            event_map = dict(zip(event_map.keys(), lines))
-            # Filter out entries without briefs — render only quality content.
-            # But when ALL summaries are None (LLM failure), keep the
-            # entries with their bullet lines so the activity section
-            # still shows recent merges rather than going dark.
-            if any(s for s in summaries):
-                kept = [
-                    key
-                    for key, summary in zip(event_map.keys(), summaries)
-                    if summary
-                ]
-            else:
-                kept = list(event_map.keys())
-            if kept != list(event_map.keys()):
-                removed = set(event_map.keys()) - set(kept)
-                print(f"Skipping entries without briefs: {', '.join(removed)}")
-                event_map = {k: event_map[k] for k in kept}
-                refs_list = [r for r, s in zip(refs_list, summaries) if s]
-                summaries = [s for s in summaries if s]
-            if not event_map:
-                print("No entries with briefs — bumping Last updated footer only.")
+        items = build_items(events, token)
+
+    entries = write_entries(items)
+    new_rows = render_activity(items, entries)
 
     with open(README_PATH, "r", encoding="utf-8") as f:
         content = f.read()
@@ -994,25 +1216,17 @@ def main():
         set_output(0)
         return
 
-    old_activity_block = m.group(1)
-    new_rows = (
-        build_activity_lines(event_map, summaries, refs_list)
-        if event_map
-        else old_activity_block
-    )
-    old_activity = old_activity_block.strip()
-    old_date = re.search(r"Last updated: (.+)", content)
-    old_date_str = old_date.group(1) if old_date else ""
-
-    today = format_date(datetime.now(timezone.utc).isoformat())
-    date_changed = old_date_str != today
-    activity_changed = old_activity != new_rows.strip()
-
-    if not date_changed and not activity_changed:
-        print("No changes detected — date and activity are current.")
+    old_activity = m.group(1).strip()
+    if not new_rows:
+        print("No substantive activity — keeping the current section.")
+        set_output(0)
+        return
+    if old_activity == new_rows.strip():
+        print("Activity unchanged — no update needed.")
         set_output(0)
         return
 
+    today = format_date(datetime.now(timezone.utc).isoformat())
     new_content = content[: m.start(1)] + new_rows + content[m.end(1) :]
     new_content = re.sub(
         r"Last updated: .+", f"Last updated: {today}", new_content
@@ -1021,15 +1235,12 @@ def main():
     with open(README_PATH, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    repos = list(event_map.keys())
-    pr_blocks = new_rows if event_map else ""
-    body_lines = render_pr_body(repos, pr_blocks, today)
-
+    repos = [item["repo"] for item in items]
+    body_lines = render_pr_body(repos, new_rows, today)
     with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
         f.write("\n".join(body_lines) + "\n")
 
-    change_desc = ", ".join(repos) if repos else "date bump only"
-    print(f"README updated. Changes: {change_desc}")
+    print(f"README updated. Changes: {', '.join(repos) if repos else 'none'}")
     set_output(1)
 
 
