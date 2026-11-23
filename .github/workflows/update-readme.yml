@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Run unit tests
+        run: python3 scripts/test_update_readme.py
+
       - name: Run README updater
         id: update
         env:
@@ -28,37 +31,43 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: python3 scripts/update_readme.py
 
-      - name: Close stale auto-update PRs
+      - name: Close legacy auto-update PRs
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           for pr in $(gh pr list --repo fworks-tech/fworks-tech --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("chore/auto-update-readme-")) | .number'); do
-            gh pr close "$pr" --repo fworks-tech/fworks-tech --comment "Superseded by newer auto-update run."
+            gh pr close "$pr" --repo fworks-tech/fworks-tech --comment "Superseded by the reusable auto-update PR."
           done
 
-      - name: Create PR
+      - name: Publish README update
+        if: steps.update.outputs.changed == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          DATE=$(date -u +%Y-%m-%d)
-          BRANCH="chore/auto-update-readme-$DATE"
+          BRANCH="chore/auto-update-readme"
+          TITLE="chore(readme): auto-update recent activity"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git push origin --delete "$BRANCH" 2>/dev/null || true
-          git checkout -b "$BRANCH"
+          git checkout -B "$BRANCH"
           git add README.md
           if git diff --cached --quiet; then
             echo "No README changes to commit; skipping PR."
             exit 0
           fi
-          git commit -m "chore(readme): auto-update recent activity [skip ci]" -m "Refreshed from the GitHub Events API by the update-readme workflow."
-          git push origin "$BRANCH"
-          gh pr create \
-            --repo fworks-tech/fworks-tech \
-            --base main \
-            --head "$BRANCH" \
-            --assignee fworks-tech \
-            --label documentation \
-            --title "chore(readme): auto-update recent activity ($DATE)" \
-            --body-file scripts/update_summary.txt
-          echo "PR created on branch $BRANCH"
+          git commit -m "$TITLE [skip ci]" -m "Refreshed from the GitHub API and OpenCode by the update-readme workflow."
+          git push --force origin "$BRANCH"
+          EXISTING=$(gh pr list --repo fworks-tech/fworks-tech --state open --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file scripts/update_summary.txt
+            echo "PR #$EXISTING updated."
+          else
+            gh pr create \
+              --repo fworks-tech/fworks-tech \
+              --base main \
+              --head "$BRANCH" \
+              --assignee fworks-tech \
+              --label documentation \
+              --title "$TITLE" \
+              --body-file scripts/update_summary.txt
+            echo "PR created on branch $BRANCH"
+          fi

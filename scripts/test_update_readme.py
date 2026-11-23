@@ -218,57 +218,6 @@ class TestDescribeEvent(unittest.TestCase):
         self.assertIn("\u2014 activity", line)
 
 
-class TestParseEvents(unittest.TestCase):
-    def setUp(self):
-        self._clock = _MockedClock._patch()
-
-    def tearDown(self):
-        _MockedClock._unpatch(self._clock)
-
-    def event(self, etype, repo, created):
-        return {
-            "type": etype,
-            "repo": {"name": repo},
-            "created_at": created,
-            "payload": {},
-        }
-
-    def test_dedupes_first_wins(self):
-        events = [
-            self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
-            self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T09:00:00Z"),
-        ]
-        prs = [{"number": 1, "title": "fix", "merged_at": "2026-08-19T09:00:00Z", "user": "x", "body": "", "head": "h", "base": "main"}]
-        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs):
-            parsed = u.parse_events(events)
-        self.assertEqual(len(parsed), 1)
-        self.assertIn("agenthood", parsed)
-        self.assertIn("PR #1", parsed["agenthood"][0])
-
-    def test_skips_repos_without_merged_prs(self):
-        events = [
-            self.event("PushEvent", "fworks-tech/agenthood", "2026-08-19T08:00:00Z"),
-        ]
-        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=[]):
-            self.assertEqual(u.parse_events(events), {})
-
-    def test_skips_org_repo(self):
-        events = [
-            self.event("PushEvent", "fworks-tech/fworks-tech", "2026-08-19T08:00:00Z"),
-        ]
-        self.assertEqual(u.parse_events(events), {})
-
-    def test_respects_top_n(self):
-        events = [
-            self.event("PushEvent", f"fworks-tech/repo{i}", "2026-08-19T08:00:00Z")
-            for i in range(6)
-        ]
-        prs = [{"number": 1, "title": "fix", "merged_at": "2026-08-19T08:00:00Z", "user": "x", "body": "", "head": "h", "base": "main"}]
-        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs):
-            parsed = u.parse_events(events)
-        self.assertEqual(len(parsed), u.TOP_N)
-
-
 class TestFetchEvents(unittest.TestCase):
     def test_returns_none_on_api_failure(self):
         with mock.patch.object(u, "api_get", return_value=None):
@@ -502,30 +451,6 @@ class TestFetchPushCommits(unittest.TestCase):
         self.assertEqual(u.fetch_push_commits("r/o", "a", "b", None), [])
 
 
-class TestParseEventsIntegration(unittest.TestCase):
-    def test_parse_events_builds_pr_based_context_and_refs(self):
-        prs = [
-            {"number": 42, "title": "fix: wire captcha", "merged_at": "2026-08-19T08:00:00Z",
-             "user": "alice", "body": "Closes #10", "head": "fix", "base": "main"},
-            {"number": 43, "title": "feat: add toggle", "merged_at": "2026-08-19T07:00:00Z",
-             "user": "bob", "body": "", "head": "feat", "base": "main"},
-        ]
-        event = {
-            "type": "PullRequestEvent",
-            "repo": {"name": "fworks-tech/agenthood-site"},
-            "created_at": "2026-08-19T08:00:00Z",
-            "payload": {"action": "closed", "pull_request": {"number": 42}},
-        }
-        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
-                mock.patch.object(u, "fetch_pr_commits", return_value=[("a" * 40, "fix: wire captcha")]):
-            parsed = u.parse_events([event], "token")
-        bullet, ctx, refs = parsed["agenthood-site"]
-        self.assertIn("PR #42", ctx)
-        self.assertIn("PR #43", ctx)
-        pr_refs = [r for r in refs if r["kind"] == "pr"]
-        self.assertGreaterEqual(len(pr_refs), 2)
-
-
 class TestLinkedRefs(unittest.TestCase):
     def test_keyword_refs_map_to_issues(self):
         issues, prs = u.linked_refs("Fixes #5\nCloses #12")
@@ -580,403 +505,6 @@ class TestCollectRefs(unittest.TestCase):
         self.assertIn("/tree/chore/auto-update", branch[0]["url"])
 
 
-class TestChangesAndRelatedLines(unittest.TestCase):
-    def test_changes_line_lists_commits(self):
-        refs = [
-            {"kind": "commit", "sha": "c9c3b0a", "url": "u1", "subject": "fix: wire captcha"},
-            {"kind": "commit", "sha": "cc193f8", "url": "u2", "subject": "feat: add toggle"},
-        ]
-        line = u._changes_line(refs)
-        self.assertTrue(line.startswith("**Changes:** "))
-        self.assertIn("[`c9c3b0a`](u1) fix: wire captcha", line)
-        self.assertIn(" \u00B7 ", line)
-
-    def test_changes_line_many_commits_says_more(self):
-        refs = [
-            {"kind": "commit", "sha": f"{i:07d}", "url": f"u{i}", "subject": f"s{i}"}
-            for i in range(5)
-        ]
-        line = u._changes_line(refs)
-        self.assertIn("and 2 more commits", line)
-
-    def test_changes_line_empty_without_commits(self):
-        self.assertEqual(u._changes_line([{"kind": "issue", "number": "5", "url": "u", "title": "t"}]), "")
-
-    def test_related_line_links_issues_and_prs(self):
-        refs = [
-            {"kind": "issue", "number": "5", "url": "https://github.com/fworks-tech/agenthood/issues/5", "title": "OG broken"},
-            {"kind": "pr", "number": "42", "url": "https://github.com/fworks-tech/agenthood/pull/42", "title": "harden eval"},
-        ]
-        line = u._related_line(refs)
-        self.assertIn("[issue #5](https://github.com/fworks-tech/agenthood/issues/5) — OG broken", line)
-        self.assertIn("[PR #42](https://github.com/fworks-tech/agenthood/pull/42) — harden eval", line)
-
-    def test_related_line_empty_without_issues(self):
-        refs = [{"kind": "pr", "number": "42", "url": "u", "title": "t"}]
-        self.assertEqual(u._related_line(refs), "")
-
-
-class TestRenderPrBody(unittest.TestCase):
-    def test_with_activity_has_scribe_sections(self):
-        blocks = "- \U0001F680 **agenthood**\n  **Brief:** Real line.\n  Second line."
-        body = u.render_pr_body(["agenthood"], blocks, "Aug 19, 2026")
-        text = "\n".join(body)
-        self.assertIn("## What", text)
-        self.assertIn("## Why", text)
-        self.assertIn("## How to test", text)
-        self.assertIn("1 entry: agenthood", text)
-        self.assertIn("- \U0001F680 **agenthood**\n  **Brief:** Real line.\n  Second line.", text)
-        self.assertIn("Last updated bumped to Aug 19, 2026.", text)
-
-    def test_without_activity_is_explicit(self):
-        body = u.render_pr_body([], "", "Aug 19, 2026")
-        text = "\n".join(body)
-        self.assertIn("No qualifying public events", text)
-        self.assertNotIn("Recent activity", text)
-
-    def test_empty_repos_with_content_shows_no_summaries(self):
-        blocks = "- \U0001F500 **agenthood**\n  **Brief:** Some text."
-        body = u.render_pr_body([], blocks, "Aug 19, 2026")
-        text = "\n".join(body)
-        self.assertIn("No qualifying activity summaries", text)
-        self.assertNotIn("0 entries", text)
-        self.assertIn("## Recent activity", text)
-
-
-class TestPolishLines(unittest.TestCase):
-    def resp(self, entries):
-        content = json.dumps({"entries": entries})
-        return {"choices": [{"message": {"content": content}}]}
-
-    def entry(self, index=0, line="- a", brief=("On it", "Really on it.")):
-        return {"index": index, "line": line, "brief": list(brief)}
-
-    def test_no_key_keeps_input(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
-            lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(lines, ["- a"])
-        self.assertEqual(summaries, [None])
-
-    def test_valid_response_rewrites(self):
-        entries = [
-            self.entry(0, "- A", ("\u26A1 Shipped it PR #1.", "The builder is live.")),
-            self.entry(1, "- B", ("Second line.", "More detail `a1b2c3d`.")),
-        ]
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp(entries)
-        ):
-            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
-        self.assertEqual(lines, ["- A", "- B"])
-        self.assertEqual(
-            summaries,
-            [["\u26A1 Shipped it PR #1.", "The builder is live."], ["Second line.", "More detail `a1b2c3d`."]],
-        )
-
-    def test_accepts_three_line_brief(self):
-        entries = [self.entry(0, "- A", ("First PR #1.", "Second.", "Third."))]
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp(entries)
-        ):
-            lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(summaries, [["First PR #1.", "Second.", "Third."]])
-
-    def test_missing_dash_prefix_readded(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry(0, "A")])
-        ):
-            lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(lines, ["- A"])
-
-    def test_bad_entry_shape_degrades_only_that_entry(self):
-        bad = {"choices": [{"message": {"content": json.dumps({"entries": [{"index": 0, "line": "", "brief": ["a", "b"]}]})}}]}
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=bad
-        ):
-            lines, summaries = u.polish_lines([("- x", "ctx")])
-        self.assertEqual(lines, ["- x"])
-        self.assertEqual(summaries, [[]])
-
-    def test_fewer_entries_retries_missing(self):
-        # LLM returns 1 entry for 2 items — retry fills the missing one
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp([self.entry(0, "- A", ("On it PR #1", "Keep calm."))])
-        ):
-            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
-        self.assertEqual(lines, ["- A", "- b"])
-        self.assertEqual(summaries, [["On it PR #1", "Keep calm."], ["On it PR #1", "Keep calm."]])
-
-    def test_partial_bad_entry_retries_bad_one(self):
-        # Entry 1 has bad shape (no brief) — retry fills it
-        entries = [self.entry(0, "- A", ("Good line PR #1.", "Second good.")), {"index": 1, "line": "x"}]
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", return_value=self.resp(entries)
-        ):
-            lines, summaries = u.polish_lines([("- a", "c1"), ("- b", "c2")])
-        self.assertEqual(lines, ["- A", "- b"])
-        self.assertEqual(summaries, [["Good line PR #1.", "Second good."], ["Good line PR #1.", "Second good."]])
-
-    def test_http_error_falls_back(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", side_effect=RuntimeError("curl failed: boom")
-        ):
-            lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(lines, ["- a"])
-        self.assertEqual(summaries, [None])
-
-    def test_invalid_json_falls_back(self):
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}), mock.patch.object(
-            u, "llm_completions", side_effect=ValueError("bad json")
-        ):
-            lines, summaries = u.polish_lines([("- a", "ctx")])
-        self.assertEqual(lines, ["- a"])
-        self.assertEqual(summaries, [None])
-
-    def test_system_prompt_grounds_against_invention(self):
-        self.assertIn("never invent", u.SYSTEM_PROMPT)
-        self.assertIn("1 to 3", u.SYSTEM_PROMPT)
-        self.assertIn("NAME THE ARTIFACTS", u.SYSTEM_PROMPT)
-        self.assertIn("foundation", u.SYSTEM_PROMPT)
-        self.assertIn("could apply to any repo", u.SYSTEM_PROMPT)
-        self.assertIn("Confident but measured", u.SYSTEM_PROMPT)
-        self.assertIn("never hypey", u.SYSTEM_PROMPT)
-        self.assertIn("COVER THE PRS", u.SYSTEM_PROMPT)
-
-    def test_build_activity_lines_renders_brief(self):
-        block = u.build_activity_lines(
-            {"a": "- a", "b": "- b"},
-            [["Line one", "Line two."], None],
-        )
-        self.assertIn("- a\n  **Brief:** Line one\n  Line two.\n\n- b\n", block)
-
-    def test_build_activity_lines_appends_changes_and_related(self):
-        refs = [
-            [
-                {"kind": "commit", "sha": "c9c3b0a", "url": "u1", "subject": "fix: wire captcha"},
-                {"kind": "issue", "number": "5", "url": "u2", "title": "OG broken"},
-            ]
-        ]
-        block = u.build_activity_lines({"a": "- a"}, [None], refs)
-        self.assertIn("**Changes:** [`c9c3b0a`](u1) fix: wire captcha", block)
-        self.assertIn("**Related:** [issue #5](u2) — OG broken", block)
-
-
-class TestMainFailureGuard(unittest.TestCase):
-    def test_events_api_error_bumps_footer(self):
-        """When the events API fails, the footer is still bumped so a PR can be created."""
-        readme_content = (
-            "# Test\n\n"
-            "## Recent Activity\n\n"
-            "<!-- recent-activity:start -->\n"
-            "- old entry\n"
-            "<!-- recent-activity:end -->\n\n"
-            "---\n\n"
-            "*Last updated: Sep 1, 2026\n"
-        )
-        with tempfile.TemporaryDirectory() as d:
-            readme = os.path.join(d, "README.md")
-            summary = os.path.join(d, "update_summary.txt")
-            with open(readme, "w", encoding="utf-8") as f:
-                f.write(readme_content)
-            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
-                    mock.patch.object(u, "fetch_events", return_value=None), \
-                    mock.patch.object(u, "README_PATH", readme), \
-                    mock.patch.object(u, "SUMMARY_PATH", summary), \
-                    mock.patch.object(u, "set_output") as set_output:
-                u.main()
-            set_output.assert_called_once_with(1)
-            with open(readme, encoding="utf-8") as f:
-                result = f.read()
-        self.assertIn("- old entry", result)
-        self.assertNotIn("Sep 1, 2026", result)
-
-    def test_missing_token_skips_before_fetch(self):
-        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": ""}, clear=False), \
-                mock.patch.object(u, "fetch_events") as fetch, \
-                mock.patch.object(u, "set_output") as set_output:
-            u.main()
-        fetch.assert_not_called()
-        set_output.assert_called_once_with(0)
-
-
-class TestValidateBriefs(unittest.TestCase):
-    def test_empty_brief_fails(self):
-        items = [("- bullet", "context")]
-        self.assertEqual(u.validate_briefs(items, [[]]), [0])
-
-    def test_forbidden_word_fails(self):
-        items = [("- bullet", "context")]
-        briefs = [["This is a robust change."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [0])
-
-    def test_no_artifact_reference_fails(self):
-        items = [("- bullet", "context")]
-        briefs = [["A change landed.", "It does things.", "Very important."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [0])
-
-    def test_valid_brief_with_pr_number_passes(self):
-        items = [("- bullet", "context")]
-        briefs = [["PR #42 lands the feature.", "See the diff.", "Closes #7."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [])
-
-    def test_valid_brief_with_commit_sha_passes(self):
-        items = [("- bullet", "context")]
-        briefs = [["Commit `a1b2c3d` fixes it.", "One line change.", "Merged to main."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [])
-
-    def test_mixed_pass_and_fail(self):
-        items = [("- b1", "c1"), ("- b2", "c2"), ("- b3", "c3")]
-        briefs = [
-            ["PR #1 does X.", "See it.", "Good."],
-            [],
-            ["This is seamless.", "No artifacts here.", "Skip it."],
-        ]
-        self.assertEqual(u.validate_briefs(items, briefs), [1, 2])
-
-
-class TestPolishLinesRetry(unittest.TestCase):
-    def test_retry_on_failed_validation(self):
-        items = [("- bullet", "context with PR #99")]
-        empty_entry = {"index": 0, "line": "- bullet", "brief": []}
-        valid_entry = {
-            "index": 0,
-            "line": "- bullet",
-            "brief": ["PR #99 lands the change.", "See the diff.", "Closes #7."],
-        }
-        empty_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [empty_entry]})}}]})
-        valid_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [valid_entry]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", side_effect=[
-                    json.loads(empty_response),
-                    json.loads(valid_response),
-                ]):
-            lines, briefs = u.polish_lines(items)
-        self.assertEqual(briefs, [["PR #99 lands the change.", "See the diff.", "Closes #7."]])
-
-    def test_no_retry_when_all_pass(self):
-        items = [("- bullet", "context with PR #99")]
-        valid_entry = {
-            "index": 0,
-            "line": "- bullet",
-            "brief": ["PR #99 lands the change.", "See the diff.", "Closes #7."],
-        }
-        valid_response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [valid_entry]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", return_value=json.loads(valid_response)) as mock_llm:
-            lines, briefs = u.polish_lines(items)
-        mock_llm.assert_called_once()
-
-    def test_retry_degrades_to_empty_on_second_failure(self):
-        items = [("- bullet", "context")]
-        bad_entry = {"index": 0, "line": "- bullet", "brief": ["This is seamless filler."]}
-        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [bad_entry]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
-            lines, briefs = u.polish_lines(items)
-        # Both attempts fail validation — degrades to empty brief
-        self.assertEqual(briefs, [[]])
-
-    def test_partial_retry_mixed_results(self):
-        items = [("- b1", "c1"), ("- b2", "c2")]
-        # First call: both fail
-        empty_0 = {"index": 0, "line": "- b1", "brief": []}
-        empty_1 = {"index": 1, "line": "- b2", "brief": []}
-        first = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [empty_0, empty_1]})}}]})
-        # Second call (retry both): first succeeds, second still forbidden
-        good_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
-        bad_1 = {"index": 1, "line": "- b2", "brief": ["Essential change.", "Critical fix."]}
-        second = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [good_0, bad_1]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", side_effect=[json.loads(first), json.loads(second)]):
-            lines, briefs = u.polish_lines(items)
-        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
-        self.assertEqual(briefs[1], [])
-
-    def test_scrambled_entry_order(self):
-        items = [("- b1", "c1"), ("- b2", "c2")]
-        # LLM returns entries in reverse order
-        entry_1 = {"index": 1, "line": "- b2", "brief": ["PR #2 does Y.", "See it."]}
-        entry_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
-        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [entry_1, entry_0]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
-            lines, briefs = u.polish_lines(items)
-        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
-        self.assertEqual(briefs[1], ["PR #2 does Y.", "See it."])
-
-
-class TestValidateBriefsExtras(unittest.TestCase):
-    def test_pr_without_hash_passes(self):
-        items = [("- bullet", "context")]
-        briefs = [["PR 42 lands the feature.", "See the diff."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [])
-
-    def test_gh_prefix_passes(self):
-        items = [("- bullet", "context")]
-        briefs = [["GH-123 resolves it.", "Merged."]]
-        self.assertEqual(u.validate_briefs(items, briefs), [])
-
-
-class TestPolishLinesExcessEntries(unittest.TestCase):
-    def test_llm_returns_more_entries_than_items(self):
-        items = [("- b1", "c1")]
-        entry_0 = {"index": 0, "line": "- b1", "brief": ["PR #1 does X.", "See it."]}
-        extra = {"index": 1, "line": "- extra", "brief": ["extra."]}
-        response = json.dumps({"choices": [{"message": {"content": json.dumps({"entries": [entry_0, extra]})}}]})
-        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "test"}, clear=False), \
-                mock.patch.object(u, "llm_completions", return_value=json.loads(response)):
-            lines, briefs = u.polish_lines(items)
-        self.assertEqual(len(briefs), 1)
-        self.assertEqual(briefs[0], ["PR #1 does X.", "See it."])
-
-
-class TestMainFiltersEmptyBriefs(unittest.TestCase):
-    def test_all_none_briefs_bumps_footer(self):
-        """When the LLM returns None briefs for all entries, the entries
-        are kept with their bullet lines (no briefs) and the footer is
-        still bumped so the PR is created."""
-        readme_content = (
-            "# Test\n\n"
-            "## Recent Activity\n\n"
-            "<!-- recent-activity:start -->\n"
-            "- old entry\n"
-            "<!-- recent-activity:end -->\n\n"
-            "---\n\n"
-            "*Last updated: Sep 1, 2026\n"
-        )
-        fake_events = [
-            {
-                "type": "PushEvent",
-                "repo": {"name": "fworks-tech/test"},
-                "created_at": "2026-09-08T00:00:00Z",
-                "payload": {
-                    "ref": "refs/heads/main",
-                    "commits": [{"sha": "a" * 40, "message": "test: change"}],
-                },
-            }
-        ]
-        with tempfile.TemporaryDirectory() as d:
-            readme = os.path.join(d, "README.md")
-            summary = os.path.join(d, "update_summary.txt")
-            with open(readme, "w", encoding="utf-8") as f:
-                f.write(readme_content)
-            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
-                    mock.patch.object(u, "fetch_events", return_value=fake_events), \
-                    mock.patch.object(u, "parse_events", return_value={
-                        "test": ("- 🔀 **test**", "context",
-                                 [{"kind": "commit", "sha": "a1b2c3d",
-                                   "url": "u", "subject": "test"}])}), \
-                    mock.patch.object(u, "polish_lines", return_value=(["- 🔀 **test**"], [None])), \
-                    mock.patch.object(u, "README_PATH", readme), \
-                    mock.patch.object(u, "SUMMARY_PATH", summary), \
-                    mock.patch.object(u, "set_output") as set_output:
-                u.main()
-            set_output.assert_called_once_with(1)
-            with open(readme, encoding="utf-8") as f:
-                result = f.read()
-        self.assertIn("🔀 **test**", result)
-        self.assertNotIn("Sep 1, 2026", result)
-
-
 class TestFetchRecentMergedPrs(unittest.TestCase):
     def test_returns_only_merged_prs(self):
         api_response = [
@@ -1000,22 +528,584 @@ class TestFetchRecentMergedPrs(unittest.TestCase):
             self.assertEqual(u.fetch_recent_merged_prs("fworks-tech/agenthood", "token"), [])
 
 
-class TestDescribePrs(unittest.TestCase):
-    def test_single_pr(self):
-        prs = [{"number": 5, "title": "fix: bug", "merged_at": "2026-08-19T08:00:00Z",
-                "user": "x", "body": "", "head": "h", "base": "main"}]
-        line = u.describe_prs("agenthood", "fworks-tech/agenthood", prs)
-        self.assertIn("PR #5", line)
-        self.assertIn("fix: bug", line)
 
-    def test_multiple_prs(self):
+
+class TestSignalHelpers(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
+    def test_clean_pr_title_strips_prefix(self):
+        self.assertEqual(
+            u.clean_pr_title("feat(api): replay online turns"),
+            "Replay online turns",
+        )
+
+    def test_clean_pr_title_keeps_version(self):
+        self.assertEqual(u.clean_pr_title("chore(release): v4.5.0"), "v4.5.0")
+
+    def test_is_noise_pr_rejects_bot(self):
+        self.assertTrue(
+            u.is_noise_pr(
+                {"user": "dependabot[bot]", "title": "chore(deps): bump x"}
+            )
+        )
+
+    def test_is_noise_pr_keeps_feature(self):
+        self.assertFalse(
+            u.is_noise_pr({"user": "fworks-tech", "title": "feat(api): replay turns"})
+        )
+
+    def test_automation_bot_is_allowed_for_open_prs(self):
+        pr = {"user": "app/github-actions", "title": "chore(release): v4.5.0"}
+        self.assertTrue(u.is_noise_pr(pr))
+        self.assertFalse(u.is_noise_pr(pr, allow_automation=True))
+
+    def test_first_sentence_trims_at_word_boundary(self):
+        result = u.first_sentence("A long description " * 10, limit=40)
+        self.assertLessEqual(len(result), 41)
+        self.assertTrue(result.endswith("\u2026"))
+
+    def test_within_window(self):
+        self.assertTrue(u.within_window("2026-08-18T10:00:00Z"))
+        self.assertFalse(u.within_window("2026-07-18T10:00:00Z"))
+
+
+class TestCollectSignals(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
+    def test_builds_ordered_signals_with_ids(self):
         prs = [
-            {"number": i, "title": f"PR {i}", "merged_at": "2026-08-19T08:00:00Z",
-             "user": "x", "body": "", "head": "h", "base": "main"}
-            for i in range(3)
+            {
+                "number": 1,
+                "title": "feat(api): wire cache",
+                "body": "Adds a cache",
+                "merged_at": "2026-08-17T10:00:00Z",
+                "user": "fworks-tech",
+            }
         ]
-        line = u.describe_prs("agenthood", "fworks-tech/agenthood", prs)
-        self.assertIn("3 PRs merged into main", line)
+        open_prs = [
+            {
+                "number": 2,
+                "title": "fix(ui): move button",
+                "body": "",
+                "updated_at": "2026-08-18T09:00:00Z",
+                "user": "fworks-tech",
+                "draft": False,
+            }
+        ]
+        releases = [
+            {
+                "tag": "v1.2.0",
+                "name": "",
+                "body": "",
+                "published_at": "2026-08-19T08:00:00Z",
+            }
+        ]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
+                mock.patch.object(u, "fetch_open_prs", return_value=open_prs), \
+                mock.patch.object(u, "fetch_recent_releases", return_value=releases):
+            signals = u.collect_signals("fworks-tech/agenthood", "token")
+        self.assertEqual([s["kind"] for s in signals], ["release", "open_pr", "pr"])
+        self.assertEqual([s["id"] for s in signals], ["S1", "S2", "S3"])
+        self.assertEqual(signals[2]["title"], "Wire cache")
+        self.assertEqual(
+            signals[0]["url"],
+            "https://github.com/fworks-tech/agenthood/releases/tag/v1.2.0",
+        )
+
+    def test_skips_noise_and_old_prs(self):
+        prs = [
+            {
+                "number": 1,
+                "title": "chore(deps): bump",
+                "body": "",
+                "merged_at": "2026-08-18T09:00:00Z",
+                "user": "dependabot[bot]",
+            },
+            {
+                "number": 2,
+                "title": "feat: old",
+                "body": "",
+                "merged_at": "2026-07-01T09:00:00Z",
+                "user": "fworks-tech",
+            },
+            {
+                "number": 3,
+                "title": "feat: real",
+                "body": "",
+                "merged_at": "2026-08-18T09:00:00Z",
+                "user": "fworks-tech",
+            },
+        ]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=prs), \
+                mock.patch.object(u, "fetch_open_prs", return_value=[]), \
+                mock.patch.object(u, "fetch_recent_releases", return_value=[]):
+            signals = u.collect_signals("fworks-tech/agenthood", "token")
+        self.assertEqual(len(signals), 1)
+        self.assertEqual(signals[0]["title"], "Real")
+
+    def test_draft_open_pr_is_marked(self):
+        open_prs = [
+            {
+                "number": 7,
+                "title": "chore(release): v4.5.0",
+                "body": "",
+                "updated_at": "2026-08-19T09:00:00Z",
+                "user": "fworks-tech",
+                "draft": True,
+            }
+        ]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=[]), \
+                mock.patch.object(u, "fetch_open_prs", return_value=open_prs), \
+                mock.patch.object(u, "fetch_recent_releases", return_value=[]):
+            signals = u.collect_signals("fworks-tech/agenthood", "token")
+        self.assertEqual(signals[0]["title"], "v4.5.0 (draft)")
+
+    def test_draft_release_keeps_its_notes(self):
+        open_prs = [
+            {
+                "number": 1145,
+                "title": "chore(release): v4.5.0",
+                "body": "### Features\n- MCP cache per server",
+                "updated_at": "2026-08-19T09:00:00Z",
+                "user": "app/github-actions",
+                "draft": True,
+            }
+        ]
+        with mock.patch.object(u, "fetch_recent_merged_prs", return_value=[]), \
+                mock.patch.object(u, "fetch_open_prs", return_value=open_prs), \
+                mock.patch.object(u, "fetch_recent_releases", return_value=[]):
+            signals = u.collect_signals("fworks-tech/agenthood", "token")
+        self.assertEqual(signals[0]["title"], "v4.5.0 (draft)")
+        self.assertIn("MCP cache per server", signals[0]["context"])
+
+
+class TestBuildItems(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
+    def event(self, repo):
+        return {
+            "type": "PushEvent",
+            "repo": {"name": repo},
+            "created_at": "2026-08-19T09:00:00Z",
+            "payload": {},
+        }
+
+    def test_drops_repos_without_signals_and_passes_meta(self):
+        events = [
+            self.event("fworks-tech/a"),
+            self.event("fworks-tech/b"),
+            self.event("fworks-tech/fworks-tech"),
+            self.event("BaaRai/ARTEX"),
+        ]
+
+        def fake_signals(repo_full, token):
+            if repo_full.endswith("/a"):
+                return [
+                    {
+                        "id": "S1",
+                        "kind": "pr",
+                        "title": "A",
+                        "url": "u",
+                        "date": "2026-08-19T09:00:00Z",
+                        "context": "c",
+                        "weight": 2,
+                    }
+                ]
+            return []
+
+        with mock.patch.object(u, "collect_signals", side_effect=fake_signals), \
+                mock.patch.object(
+                    u,
+                    "fetch_repo_meta",
+                    return_value={"description": "A repo", "topics": ["x"]},
+                ):
+            items = u.build_items(events, "token")
+        self.assertEqual([item["repo"] for item in items], ["a"])
+        self.assertEqual(items[0]["description"], "A repo")
+        self.assertEqual(items[0]["topics"], ["x"])
+
+    def test_caps_top_n_and_orders_newest_first(self):
+        events = [self.event(f"fworks-tech/r{i}") for i in range(4)]
+
+        def fake_signals(repo_full, token):
+            index = int(repo_full[-1])
+            return [
+                {
+                    "id": "S1",
+                    "kind": "pr",
+                    "title": "T",
+                    "url": "u",
+                    "date": f"2026-08-{15 + index}T09:00:00Z",
+                    "context": "c",
+                    "weight": 2,
+                }
+            ]
+
+        with mock.patch.object(u, "collect_signals", side_effect=fake_signals), \
+                mock.patch.object(
+                    u, "fetch_repo_meta", return_value={"description": "", "topics": []}
+                ):
+            items = u.build_items(events, "token")
+        self.assertEqual(len(items), u.TOP_N)
+        self.assertEqual([item["repo"] for item in items], ["r3", "r2", "r1"])
+
+
+class TestValidateEntry(unittest.TestCase):
+    def item(self):
+        return {"repo": "a", "signals": [{"id": "S1"}], "description": "", "topics": []}
+
+    def entry(self, **kwargs):
+        data = {
+            "headline": "A calm headline",
+            "body": "Two calm sentences.",
+            "links": ["S1"],
+        }
+        data.update(kwargs)
+        return data
+
+    def test_valid_entry(self):
+        self.assertEqual(u.validate_entry(self.item(), self.entry()), [])
+
+    def test_missing_entry(self):
+        self.assertEqual(u.validate_entry(self.item(), None), ["missing entry"])
+
+    def test_rejects_pr_number(self):
+        reasons = u.validate_entry(self.item(), self.entry(headline="Merged #42"))
+        self.assertIn("PR/issue numbers are not allowed", reasons)
+
+    def test_rejects_commit_hash(self):
+        reasons = u.validate_entry(self.item(), self.entry(body="Fixed in a1b2c3d."))
+        self.assertIn("commit hashes are not allowed", reasons)
+
+    def test_rejects_marketing_word(self):
+        reasons = u.validate_entry(self.item(), self.entry(body="A robust change."))
+        self.assertIn("marketing filler: robust", reasons)
+
+    def test_rejects_exclamation(self):
+        reasons = u.validate_entry(self.item(), self.entry(headline="It works!"))
+        self.assertIn("exclamation marks are not allowed", reasons)
+
+    def test_rejects_we(self):
+        reasons = u.validate_entry(self.item(), self.entry(body="We changed it."))
+        self.assertIn("use first-person singular or neutral voice", reasons)
+
+    def test_rejects_long_body(self):
+        reasons = u.validate_entry(self.item(), self.entry(body="x " * 211))
+        self.assertIn("body over 420 characters", reasons)
+
+    def test_rejects_markdown(self):
+        reasons = u.validate_entry(self.item(), self.entry(body="See [docs](x)."))
+        self.assertIn("markdown is not allowed", reasons)
+
+
+class TestRenderActivity(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
+    def item(self):
+        return {
+            "repo": "wormage-demo",
+            "url": "https://github.com/fworks-tech/wormage-demo",
+            "description": (
+                "A turn-based artillery duel in the browser with destructible "
+                "terrain, dynamic wind, and teams of worms."
+            ),
+            "topics": [],
+            "latest": "2026-08-19T09:00:00Z",
+            "signals": [
+                {
+                    "id": "S1",
+                    "kind": "pr",
+                    "title": "Replay online turns",
+                    "url": "https://x/pull/1",
+                    "date": "2026-08-19T09:00:00Z",
+                    "context": "c",
+                    "weight": 2,
+                },
+                {
+                    "id": "S2",
+                    "kind": "release",
+                    "title": "v4.4.0",
+                    "url": "https://x/releases/v4.4.0",
+                    "date": "2026-08-19T08:00:00Z",
+                    "context": "c",
+                    "weight": 3,
+                },
+            ],
+        }
+
+    def test_renders_headline_body_and_links(self):
+        block = u.render_activity(
+            [self.item()],
+            [
+                {
+                    "headline": "Online duels catch up",
+                    "body": "Both sides see the same battlefield.",
+                    "links": ["S1", "S2"],
+                }
+            ],
+        )
+        self.assertIn(
+            "- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) "
+            "\u2014 Online duels catch up",
+            block,
+        )
+        self.assertIn("\n  Both sides see the same battlefield.", block)
+        self.assertIn(
+            "[Replay online turns](https://x/pull/1) \u00B7 "
+            "[v4.4.0](https://x/releases/v4.4.0)",
+            block,
+        )
+        self.assertIn("1h ago", block)
+
+    def test_fallback_uses_description_and_titles(self):
+        block = u.render_activity([self.item()], [None])
+        self.assertIn(
+            "A turn-based artillery duel in the browser with destructible "
+            "terrain, dynamic wind, and teams of worms.",
+            block,
+        )
+        self.assertIn("[Replay online turns](https://x/pull/1)", block)
+        self.assertNotIn("**Changes:**", block)
+        self.assertNotIn("/commit/", block)
+
+    def test_empty_items(self):
+        self.assertEqual(u.render_activity([], []), "")
+
+
+class TestWriteEntries(unittest.TestCase):
+    def item(self, repo="agenthood"):
+        return {
+            "repo": repo,
+            "description": "An AI engineering team.",
+            "topics": ["ai"],
+            "signals": [
+                {
+                    "id": "S1",
+                    "kind": "pr",
+                    "title": "Replay online turns",
+                    "url": "u",
+                    "date": "2026-08-19T09:00:00Z",
+                    "context": "merged pull request #1: feat: replay turns",
+                    "weight": 2,
+                }
+            ],
+            "latest": "2026-08-19T09:00:00Z",
+            "score": 2,
+            "url": "https://github.com/fworks-tech/" + repo,
+        }
+
+    def resp(self, entries):
+        return {"choices": [{"message": {"content": json.dumps({"entries": entries})}}]}
+
+    def entry(self, **kwargs):
+        data = {
+            "index": 0,
+            "headline": "A calm headline",
+            "body": "Two calm sentences.",
+            "links": ["S1"],
+        }
+        data.update(kwargs)
+        return data
+
+    def test_no_key_returns_nones(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": ""}, clear=False):
+            self.assertEqual(u.write_entries([self.item()]), [None])
+
+    def test_valid_response(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(u, "MODELS", ["deepseek-v4.1-flash", "qwen3.8-flash"]), \
+                mock.patch.object(
+                    u, "llm_completions", return_value=self.resp([self.entry()])
+                ) as llm:
+            result = u.write_entries([self.item()])
+        self.assertEqual(result[0]["headline"], "A calm headline")
+        self.assertEqual(result[0]["links"], ["S1"])
+        self.assertEqual(llm.call_args.args[0]["model"], "deepseek-v4.1-flash")
+
+    def test_unknown_link_is_dropped(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(
+                    u,
+                    "llm_completions",
+                    return_value=self.resp([self.entry(links=["S9"])]),
+                ):
+            result = u.write_entries([self.item()])
+        self.assertEqual(result[0]["links"], [])
+
+    def test_primary_model_unavailable_uses_fallback(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(u, "MODELS", ["deepseek-v4.1-flash", "qwen3.8-flash"]), \
+                mock.patch.object(
+                    u,
+                    "llm_completions",
+                    side_effect=[
+                        RuntimeError("Model is unavailable"),
+                        self.resp([self.entry()]),
+                    ],
+                ) as llm:
+            result = u.write_entries([self.item()])
+        self.assertEqual(result[0]["headline"], "A calm headline")
+        self.assertEqual(
+            [call.args[0]["model"] for call in llm.call_args_list],
+            ["deepseek-v4.1-flash", "qwen3.8-flash"],
+        )
+
+    def test_invalid_entry_is_retried(self):
+        bad = self.entry(headline="Merged #42")
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(
+                    u,
+                    "llm_completions",
+                    side_effect=[self.resp([bad]), self.resp([self.entry()])],
+                ) as llm:
+            result = u.write_entries([self.item()])
+        self.assertEqual(result[0]["headline"], "A calm headline")
+        self.assertEqual(llm.call_count, 2)
+
+    def test_failed_retry_returns_none(self):
+        bad = self.entry(headline="Merged #42")
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(
+                    u,
+                    "llm_completions",
+                    side_effect=[self.resp([bad]), self.resp([bad])],
+                ):
+            result = u.write_entries([self.item()])
+        self.assertEqual(result, [None])
+
+    def test_unavailable_models_return_none(self):
+        with mock.patch.dict(os.environ, {"OPENCODE_API_KEY": "k"}, clear=False), \
+                mock.patch.object(
+                    u,
+                    "llm_completions",
+                    side_effect=[RuntimeError("boom"), RuntimeError("boom")],
+                ):
+            result = u.write_entries([self.item()])
+        self.assertEqual(result, [None])
+
+
+class TestRenderPrBody(unittest.TestCase):
+    def test_with_activity_has_sections(self):
+        block = "- [**agenthood**](u) \u2014 Headline\n  Body."
+        body = u.render_pr_body(["agenthood"], block, "Aug 19, 2026")
+        text = "\n".join(body)
+        self.assertIn("## What", text)
+        self.assertIn("## Why", text)
+        self.assertIn("## How to test", text)
+        self.assertIn("1 entry: agenthood", text)
+        self.assertIn(block, text)
+        self.assertIn("Last updated bumped to Aug 19, 2026.", text)
+
+    def test_without_activity_is_explicit(self):
+        text = "\n".join(u.render_pr_body([], "", "Aug 19, 2026"))
+        self.assertIn("No substantive public activity", text)
+        self.assertNotIn("## Recent activity", text)
+
+
+class TestMain(unittest.TestCase):
+    def setUp(self):
+        self._clock = _MockedClock._patch()
+
+    def tearDown(self):
+        _MockedClock._unpatch(self._clock)
+
+    def readme(self, block="- old entry\n"):
+        return (
+            "# Test\n\n"
+            "## Recent Activity\n\n"
+            "<!-- recent-activity:start -->\n"
+            + block
+            + "<!-- recent-activity:end -->\n\n"
+            "---\n\n"
+            "*Last updated: Sep 1, 2026\n"
+        )
+
+    def run_main(self, content, new_rows, events=None, items=None):
+        with tempfile.TemporaryDirectory() as d:
+            readme = os.path.join(d, "README.md")
+            summary = os.path.join(d, "update_summary.txt")
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(content)
+            with open(summary, "w", encoding="utf-8") as f:
+                f.write("")
+            items = items if items is not None else [{"repo": "agenthood"}]
+            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                    mock.patch.object(u, "fetch_events", return_value=events), \
+                    mock.patch.object(u, "build_items", return_value=items) as build, \
+                    mock.patch.object(
+                        u, "write_entries", return_value=[None] * len(items)
+                    ), \
+                    mock.patch.object(u, "render_activity", return_value=new_rows), \
+                    mock.patch.object(u, "README_PATH", readme), \
+                    mock.patch.object(u, "SUMMARY_PATH", summary), \
+                    mock.patch.object(u, "set_output") as set_output:
+                u.main()
+            with open(readme, encoding="utf-8") as f:
+                result = f.read()
+            with open(summary, encoding="utf-8") as f:
+                summary_text = f.read()
+        return result, summary_text, set_output, build
+
+    def test_changed_block_writes_and_bumps_footer(self):
+        result, summary, set_output, _ = self.run_main(
+            self.readme(), "- new entry\n", events=[{}]
+        )
+        set_output.assert_called_once_with(1)
+        self.assertIn("- new entry", result)
+        self.assertIn("Last updated: Aug 19, 2026", result)
+        self.assertIn("agenthood", summary)
+
+    def test_unchanged_block_does_not_write(self):
+        result, summary, set_output, _ = self.run_main(
+            self.readme("- new entry\n"), "- new entry\n", events=[{}]
+        )
+        set_output.assert_called_once_with(0)
+        self.assertIn("Last updated: Sep 1, 2026", result)
+        self.assertEqual(summary, "")
+
+    def test_events_unavailable_keeps_section(self):
+        result, _, set_output, build = self.run_main(self.readme(), "", events=None)
+        set_output.assert_called_once_with(0)
+        build.assert_not_called()
+        self.assertIn("- old entry", result)
+
+    def test_no_signals_keeps_section(self):
+        result, _, set_output, _ = self.run_main(
+            self.readme(), "", events=[], items=[]
+        )
+        set_output.assert_called_once_with(0)
+        self.assertIn("- old entry", result)
+
+    def test_missing_markers_skips(self):
+        result, _, set_output, _ = self.run_main(
+            "# Test\n", "- new entry\n", events=[{}]
+        )
+        set_output.assert_called_once_with(0)
+        self.assertEqual(result, "# Test\n")
+
+    def test_missing_token_skips(self):
+        with mock.patch.dict(os.environ, {"GITHUB_TOKEN": ""}, clear=False), \
+                mock.patch.object(u, "fetch_events") as fetch, \
+                mock.patch.object(u, "set_output") as set_output:
+            u.main()
+        fetch.assert_not_called()
+        set_output.assert_called_once_with(0)
 
 
 if __name__ == "__main__":

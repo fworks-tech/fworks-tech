@@ -37,11 +37,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- 🔀 [**atlaslink**](https://github.com/fworks-tech/atlaslink) — 3 PRs merged into main · yesterday
-  **Changes:** [`fe9f702`](https://github.com/fworks-tech/atlaslink/commit/fe9f702379abe76cc2730a09bdd7aa5ecd9c2d9b) feat(dashboard): manage custom agents in · [`13749ae`](https://github.com/fworks-tech/atlaslink/commit/13749ae0f8cde150aa6886725dff6dc1617d8e96) feat(room): custom agents and workspace · [`1a32efa`](https://github.com/fworks-tech/atlaslink/commit/1a32efa8c83b7ad5afd2f1d7ea4c395e2353a657) test(room): use real built-in member in · and 2 more commits
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Walking, drawing and drowning are being aligned to one ground and water line. · 8h ago
+  A change in progress makes movement, painting and water death share the same surface, so worms no longer walk on air or survive a dip. Online turns now replay from the stored action history.
+  [Walk and draw the same terrain surface](https://github.com/fworks-tech/wormage-demo/pull/250) · [Replay online turns in Lambda](https://github.com/fworks-tech/wormage-demo/pull/248)
 
-- 🔀 [**agenthood**](https://github.com/fworks-tech/agenthood) — 3 PRs merged into main · 7h ago
-  **Changes:** [`335f448`](https://github.com/fworks-tech/agenthood/commit/335f448f6262a9b0fbf206b1b944ad3a5ea441a4) chore(release): v3.78.0 · [`6e20428`](https://github.com/fworks-tech/agenthood/commit/6e20428c1910cf0449a90d35749678ce8430a00a) fix(core): scope OpenCode catalog pricin · [`08cd646`](https://github.com/fworks-tech/agenthood/commit/08cd646a58d72b7cee0d838e5d667a82bbceb8e3) feat(llm): derive OpenCode pricing and r · and 2 more commits
+- [**agenthood**](https://github.com/fworks-tech/agenthood) — The next release adds MCP connections and a refreshed model list. · 8h ago
+  A draft release brings MCP support for servers a host declares, with tool lists remembered per server and a guard for malformed decision records. A separate routine refresh keeps the OpenCode model list aligned with live prices and context sizes.
+  [v4.5.0 (draft)](https://github.com/fworks-tech/agenthood/pull/1145) · [Sync OpenCode model catalog](https://github.com/fworks-tech/agenthood/pull/1179)
+
+- [**atlaslink**](https://github.com/fworks-tech/atlaslink) — The dashboard drops its cost badge and records blocked tool calls. · 2d ago
+  Cost tracking still lives on its own page, but the top bar no longer carries a badge or link to it. When a member is stopped from using a tool, that denial is now saved with the session and shown in the live view.
+  [Remove cost section from header navbar](https://github.com/fworks-tech/atlaslink/pull/414) · [Forward tool.denied](https://github.com/fworks-tech/atlaslink/pull/409)
 <!-- recent-activity:end -->
 
 ---
@@ -181,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 16, 2026
+*Last updated: Nov 23, 2026
