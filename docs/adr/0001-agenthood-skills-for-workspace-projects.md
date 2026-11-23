@@ -58,3 +58,5 @@ Becomes harder / new risks:
 - Prior ADRs: [ADR-008](https://github.com/fworks-tech/agenthood/blob/main/docs/adr/ADR-008-typescript-runtime-over-python.md), [ADR-009](https://github.com/fworks-tech/agenthood/blob/main/docs/adr/ADR-009-groq-as-default-llm-provider.md)
 - Endpoint: https://opencode.ai/docs/go/
 - Adopted usage: `fworks-tech/.github/workflows/update-readme.yml`, `scripts/update_readme.py`
+
+> **Update (2026-11-23):** the local copy of the CI review gate in `fworks-tech/fworks-tech` was removed. Its `opencode-go` provider failed with `Request is missing x-opencode-session`, the fallback provider was unreachable, and the check still passed, so the bot posted error comments instead of reviews. The Reviewer skill remains available for manual runs.
