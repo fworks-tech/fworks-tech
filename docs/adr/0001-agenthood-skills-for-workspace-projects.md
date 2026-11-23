@@ -21,7 +21,7 @@ Adopt Agenthood as the standard skill + runtime + CI-review layer for fworks-tec
 
 **Provider and credential choices (verified during adoption):**
 
-- LLM: OpenCode Zen (`https://opencode.ai/zen/v1/chat/completions`, model `deepseek-v4-flash`). API keys are per-consumer: an `OPENCODE_API_KEY` valid for Zen; see https://opencode.ai/auth.
+- LLM: OpenCode Zen (`https://opencode.ai/zen/v1/chat/completions`, model `deepseek-v4.1-flash`, with `qwen3.8-flash` as the README generator's fallback). API keys are per-consumer: an `OPENCODE_API_KEY` valid for Zen; see https://opencode.ai/auth.
 - Transport: the gateway sits behind Cloudflare and rejects `urllib`'s TLS fingerprint (HTTP 1010); the update script calls it via `curl` and the runtime handles the same via its SDK stack. Future HTTP clients must replicate that behavior or they 1010-block.
 - Fallbacks: `.agenthood/config.json` orders `opencode` (Zen) first, then `groq` (`llama-3.3-70b-versatile` per AGENTS.md), with runtime failover across providers.
 - Grounding (learned on fworks-tech): LLM-generated content must (a) state only facts present in the source events — never assert "zero commits"/"no changes" when the events API simply omitted commit details; (b) fetch missing push commits via the compare API so the model sees real work; (c) admit when data is absent instead of inventing it.
@@ -48,7 +48,7 @@ Becomes harder / new risks:
 - CI depends on the published `agenthood` npm package and on valid per-consumer `OPENCODE_API_KEY` secrets — a bad key silently degrades LLM features to fallbacks.
 - Cloudflare protection means the TLS behavior of any new HTTP client matters (1010 blocks).
 - Prompt injection via diffs is real; the decision gate's fail-closed rules (last-verdict-only, conflict rejection) are mandatory, not optional.
-- OpenCode Go costs ($5 first month, then $10/month) plus usage limits; peak-hour pricing applies to `deepseek-v4-flash`.
+- OpenCode Go costs ($5 first month, then $10/month) plus usage limits; peak-hour pricing applies to `deepseek-v4.1-flash`.
 
 ## References
 
