@@ -37,17 +37,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Walking, drawing and drowning are being aligned to one ground and water line. · 8h ago
-  A change in progress makes movement, painting and water death share the same surface, so worms no longer walk on air or survive a dip. Online turns now replay from the stored action history.
-  [Walk and draw the same terrain surface](https://github.com/fworks-tech/wormage-demo/pull/250) · [Replay online turns in Lambda](https://github.com/fworks-tech/wormage-demo/pull/248)
+- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — Live crypto prices now reach the app, with recent results remembered briefly · 3h ago
+  The hosted app had been showing placeholder prices because its slim environment lacked the usual exchange connector; it now pulls live quotes directly. An in-progress change remembers successful market results for a short while, so repeat views skip the data sources instead of asking again.
+  [Fetch live prices over httpx when ccxt is unavailable](https://github.com/fworks-tech/chaintelescope/pull/183) · [Cache successful snapshots and per-provider metrics](https://github.com/fworks-tech/chaintelescope/pull/189)
 
-- [**agenthood**](https://github.com/fworks-tech/agenthood) — The next release adds MCP connections and a refreshed model list. · 8h ago
-  A draft release brings MCP support for servers a host declares, with tool lists remembered per server and a guard for malformed decision records. A separate routine refresh keeps the OpenCode model list aligned with live prices and context sizes.
-  [v4.5.0 (draft)](https://github.com/fworks-tech/agenthood/pull/1145) · [Sync OpenCode model catalog](https://github.com/fworks-tech/agenthood/pull/1179)
+- [**agenthood**](https://github.com/fworks-tech/agenthood) — Upcoming release adds scoped MCP connections and quicker tool lookups · 6h ago
+  The upcoming release adds a way for agents to connect to MCP servers the host declares, with each member limited to its own scope. It also remembers each server's available tools for quicker repeat lookups, and protects the decision record from malformed entries.
+  [v4.5.0 (draft)](https://github.com/fworks-tech/agenthood/pull/1145)
 
-- [**atlaslink**](https://github.com/fworks-tech/atlaslink) — The dashboard drops its cost badge and records blocked tool calls. · 2d ago
-  Cost tracking still lives on its own page, but the top bar no longer carries a badge or link to it. When a member is stopped from using a tool, that denial is now saved with the session and shown in the live view.
-  [Remove cost section from header navbar](https://github.com/fworks-tech/atlaslink/pull/414) · [Forward tool.denied](https://github.com/fworks-tech/atlaslink/pull/409)
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Dead worms no longer fire, and reporting a bug now captures the match · 14h ago
+  A worm that drowns or takes a fatal fall while aiming now ends its turn instead of still firing. The pause menu can capture the current match view and send it with recent game history when you report a bug.
+  [End turn when active worm dies during aim](https://github.com/fworks-tech/wormage-demo/pull/257) · [Report bugs with a faithful tab capture](https://github.com/fworks-tech/wormage-demo/pull/252)
 <!-- recent-activity:end -->
 
 ---
@@ -187,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 23, 2026
+*Last updated: Nov 24, 2026
