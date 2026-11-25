@@ -124,7 +124,7 @@ class TestFeaturedProjectDates(unittest.TestCase):
         self.assertIn("Workspace. | 08/02/2026 |", result)
         self.assertEqual(changed, ["agenthood"])
 
-    def test_api_failure_raises_instead_of_returning_partial_dates(self):
+    def test_api_failure_keeps_existing_date_and_updates_rest(self):
         content = (
             "| [agenthood](https://github.com/fworks-tech/agenthood) | AI team. | 08/01/2026 |\n"
             "| [atlaslink](https://github.com/fworks-tech/atlaslink) | Workspace. | 08/02/2026 |\n"
@@ -134,8 +134,10 @@ class TestFeaturedProjectDates(unittest.TestCase):
             "fetch_latest_commit_date",
             side_effect=["2026-08-19T09:00:00Z", None],
         ):
-            with self.assertRaisesRegex(RuntimeError, "atlaslink"):
-                u.update_project_dates(content, "token")
+            result, changed = u.update_project_dates(content, "token")
+        self.assertIn("AI team. | 08/19/2026 |", result)
+        self.assertIn("Workspace. | 08/02/2026 |", result)
+        self.assertEqual(changed, ["agenthood"])
 
     def test_missing_project_rows_raises(self):
         with self.assertRaisesRegex(RuntimeError, "Featured Projects"):
