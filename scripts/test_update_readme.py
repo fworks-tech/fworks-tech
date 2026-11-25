@@ -1079,11 +1079,31 @@ class TestMain(unittest.TestCase):
         self.assertIn("Last updated: Sep 1, 2026", result)
         self.assertEqual(summary, "")
 
-    def test_events_unavailable_keeps_section(self):
-        result, _, set_output, build = self.run_main(self.readme(), "", events=None)
-        set_output.assert_called_once_with(0)
+    def test_events_unavailable_fails_without_modifying_readme(self):
+        content = self.readme()
+        with tempfile.TemporaryDirectory() as d:
+            readme = os.path.join(d, "README.md")
+            summary = os.path.join(d, "update_summary.txt")
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(content)
+            with open(summary, "w", encoding="utf-8") as f:
+                f.write("")
+            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                    mock.patch.object(u, "fetch_events", return_value=None), \
+                    mock.patch.object(u, "build_items") as build, \
+                    mock.patch.object(u, "README_PATH", readme), \
+                    mock.patch.object(u, "SUMMARY_PATH", summary), \
+                    mock.patch.object(u, "set_output") as set_output:
+                with self.assertRaisesRegex(RuntimeError, "Events API unavailable"):
+                    u.main()
+            with open(readme, encoding="utf-8") as f:
+                result = f.read()
+            with open(summary, encoding="utf-8") as f:
+                summary_text = f.read()
+        self.assertEqual(result, content)
+        self.assertEqual(summary_text, "")
         build.assert_not_called()
-        self.assertIn("- old entry", result)
+        set_output.assert_not_called()
 
     def test_no_signals_keeps_section(self):
         result, _, set_output, _ = self.run_main(

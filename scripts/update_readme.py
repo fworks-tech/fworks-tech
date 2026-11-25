@@ -1193,16 +1193,11 @@ def main():
         set_output(0)
         return
 
-    try:
-        events = fetch_events(token)
-    except Exception as e:
-        print(f"Failed to fetch events: {e}")
-        events = None
+    events = fetch_events(token)
     if events is None:
-        print("Events unavailable — keeping the current section.")
-        items = []
-    else:
-        items = build_items(events, token)
+        print("Events unavailable — leaving README unchanged.")
+        raise RuntimeError("GitHub Events API unavailable")
+    items = build_items(events, token)
 
     entries = write_entries(items)
     new_rows = render_activity(items, entries)

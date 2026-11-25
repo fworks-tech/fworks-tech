@@ -19,7 +19,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+          persist-credentials: false
 
       - name: Run unit tests
         run: python3 scripts/test_update_readme.py
@@ -41,33 +44,17 @@ jobs:
 
       - name: Publish README update
         if: steps.update.outputs.changed == '1'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          BRANCH="chore/auto-update-readme"
-          TITLE="chore(readme): auto-update recent activity"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$BRANCH"
-          git add README.md
-          if git diff --cached --quiet; then
-            echo "No README changes to commit; skipping PR."
-            exit 0
-          fi
-          git commit -m "$TITLE [skip ci]" -m "Refreshed from the GitHub API and OpenCode by the update-readme workflow."
-          git push --force origin "$BRANCH"
-          EXISTING=$(gh pr list --repo fworks-tech/fworks-tech --state open --head "$BRANCH" --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTING" ]; then
-            gh pr edit "$EXISTING" --title "$TITLE" --body-file scripts/update_summary.txt
-            echo "PR #$EXISTING updated."
-          else
-            gh pr create \
-              --repo fworks-tech/fworks-tech \
-              --base main \
-              --head "$BRANCH" \
-              --assignee fworks-tech \
-              --label documentation \
-              --title "$TITLE" \
-              --body-file scripts/update_summary.txt
-            echo "PR created on branch $BRANCH"
-          fi
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+        with:
+          base: main
+          branch: chore/auto-update-readme
+          delete-branch: true
+          add-paths: README.md
+          commit-message: |
+            chore(readme): auto-update recent activity [skip ci]
+
+            Refreshed from the GitHub API and OpenCode by the update-readme workflow.
+          title: "chore(readme): auto-update recent activity"
+          body-path: scripts/update_summary.txt
+          labels: documentation
+          assignees: fworks-tech

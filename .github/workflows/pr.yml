@@ -1,18 +1,24 @@
 name: PR Standards
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, edited, reopened, ready_for_review]
     branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Validate PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          title="${{ github.event.pull_request.title }}"
-          if ! echo "$title" | grep -qE '^(feat|fix|docs|test|refactor|ci|chore)(\(.+\))?: .+'; then
+          if ! echo "$PR_TITLE" | grep -qE '^(feat|fix|docs|test|refactor|ci|chore)(\(.+\))?: .+'; then
             echo "PR title must follow Conventional Commits: type(scope): subject"
             exit 1
           fi
@@ -20,8 +26,10 @@ jobs:
   python-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: "3.12"
       - name: Check Python syntax
@@ -32,7 +40,9 @@ jobs:
   readme-table:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
       - name: Verify README has required sections
         run: |
           for section in "Featured Projects" "Tech Stack" "Contact"; do
