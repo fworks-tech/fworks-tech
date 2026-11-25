@@ -163,19 +163,23 @@ def update_project_dates(content, token):
         if not iso_ts:
             missing.append(repo)
             continue
-        updates.append((match.span("date"), format_short_date(iso_ts), repo))
+        updates.append((match, format_short_date(iso_ts), repo))
 
     if missing:
-        raise RuntimeError(
-            "Could not fetch Featured Projects update dates: " + ", ".join(missing)
+        # A featured repo can go private, be renamed, or be deleted, in
+        # which case GITHUB_TOKEN (scoped to this repo) gets a 404. Keep
+        # the existing date and let the other rows still refresh.
+        print(
+            "Warning: could not fetch Featured Projects update dates for: "
+            + ", ".join(missing)
+            + " — keeping existing dates."
         )
 
     changed = [
-        repo
-        for match, (_, date, repo) in zip(matches, updates)
-        if match.group("date") != date
+        repo for match, date, repo in updates if match.group("date") != date
     ]
-    for (start, end), date, _ in reversed(updates):
+    for (match, date, _) in reversed(updates):
+        start, end = match.span("date")
         content = content[:start] + date + content[end:]
     return content, changed
 
