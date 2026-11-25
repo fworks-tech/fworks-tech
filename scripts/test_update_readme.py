@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for the README activity bullet formatters."""
+"""Unit tests for README Recent Activity generation."""
 
 import json
 import os
