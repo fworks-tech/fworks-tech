@@ -20,17 +20,17 @@
 
 ## Featured Projects
 
-| Repository | Description |
-|---|---|
-| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio — Once UI design system, MDX blog, dynamic OG images, WCAG 2.1 AA, Vitest + Playwright E2E, Storybook 10, Lighthouse CI. Live at [flabs.tech](https://flabs.tech) |
-| [agenthood](https://github.com/fworks-tech/agenthood) | A full AI engineering team that earns every merge. 20 specialized agents across the whole software lifecycle — portable SKILL.md files, an autonomous TypeScript runtime, a browser Studio, and a tamper-evident audit trail for every decision. Published on [npm](https://www.npmjs.com/package/agenthood) |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Agenthood's official platform — docs, Academy, and the browser-based Studio where the AI engineering team runs autonomously with every decision auditable. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) |
-| [atlaslink](https://github.com/fworks-tech/atlaslink) | *(under development)* Experimental shared workspace where people and AI agents work through tasks together. Atlaslink is built on @[Agenthood](https://github.com/fworks-tech/agenthood). Live at [atlas.flabs.tech](https://atlas.flabs.tech) |
-| [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence command center — Streamlit dashboard for watchlists, alerts, news aggregation, trending reports, risk/volatility charts, and a context-grounded AI assistant. Mid-migration to a Hapi.js/TypeScript API with a React + Vite client. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) |
-| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(under development)* Turn-based 3v3 artillery duel in the browser — React 18 + strict TypeScript UI wrapped around a renderer-independent simulation: destructible pixel terrain, wind-bent ballistics, and an AI that forward-simulates the real physics. Live at [wormage.flabs.tech](https://wormage.flabs.tech) |
-| [deeptales](https://github.com/fworks-tech/deeptales) | *(under development)* Game-generator framework that stamps complete, runnable Godot 4.x mobile horror games from a one-line pitch — branching stories, consequence-driven gameplay. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) |
-| [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(portfolio only)* NFT marketplace frontend — React 19 + TypeScript with TanStack Router/Query, Socket.IO realtime, and Tailwind v4 + shadcn/ui. Runs entirely on MSW mocks (REST + WebSocket), with Vitest unit/contract tests and Playwright a11y + visual regression. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) |
-| [trucksafe](https://github.com/fworks-tech/trucksafe) | *(portfolio only)* Weather-aware truck routing — helps truck drivers choose safer, smarter routes based on weather, load weight, travel time, and checkpoint risk. Django API with a framework-independent weather risk engine, deterministic business rules, and a planned React/map frontend. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) |
+| Repository | Description | Last Update |
+|---|---|---|
+| [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio and engineering playground — Mantine UI, MDX blog, dynamic OG images, AI assistant, browser quiz, Vitest + Playwright, Storybook 10, axe-core WCAG 2.1 AA checks and Lighthouse CI. Live at [flabs.tech](https://flabs.tech) | 11/15/2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Open-source AI engineering team — 20 portable SKILL.md members, an autonomous TypeScript runtime/CLI, MCP tools and tamper-evident decision provenance, with a companion browser Studio. Published on [npm](https://www.npmjs.com/package/agenthood) | 11/24/2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/24/2026 |
+| [atlaslink](https://github.com/fworks-tech/atlaslink) | *(experimental)* Agenthood-powered shared workspace for live human–AI task sessions, with a visual agent DAG, SSE/WebSocket updates, human approval gates and durable SQLite/Postgres storage. Live at [atlas.flabs.tech](https://atlas.flabs.tech) | 11/24/2026 |
+| [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence dashboard — live price trends, watchlists, threshold alerts, RSS news, risk panels and a dashboard-grounded AI assistant in the Streamlit app; a Hapi.js/TypeScript API and React 19 + Vite client are replacing it screen by screen. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) | 11/25/2026 |
+| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/25/2026 |
+| [deeptales](https://github.com/fworks-tech/deeptales) | *(under development)* Godot 4.x horror game generator and authoring Studio — three genre blueprints, five visual styles, branching stories, consequence-driven gameplay and story/art/audio tooling. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) | 11/06/2026 |
+| [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(portfolio demo)* NFT marketplace frontend — React 19 + TypeScript, TanStack Router/Query, Tailwind v4 + shadcn/ui and Socket.IO events over browser-only MSW REST/WebSocket mocks, with Vitest and Playwright coverage. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) | 11/04/2026 |
+| [trucksafe](https://github.com/fworks-tech/trucksafe) | *(portfolio demo)* Weather-aware truck route planner — Django API and React/MapLibre UI comparing three routes with deterministic weather/load risk rules, checkpoint ETAs, risk segments and a 0–48h forecast heatmap. Demo weather is simulated. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) | 10/14/2026 |
 
 ---
 
@@ -38,7 +38,7 @@
 
 <!-- recent-activity:start -->
 - [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — Live crypto prices now reach the app, with recent results remembered briefly
-  The hosted app had been showing placeholder prices because its slim environment lacked the usual exchange connector; it now pulls live quotes directly. An in-progress change remembers successful market results for a short while, so repeat views skip the data sources instead of asking again.
+  The hosted app had been showing placeholder prices because its slim environment lacked the usual exchange connector; it now pulls live quotes directly. Successful market results are also remembered briefly, so repeat views skip the data sources instead of asking again.
   [Fetch live prices over httpx when ccxt is unavailable](https://github.com/fworks-tech/chaintelescope/pull/183) · [Cache successful snapshots and per-provider metrics](https://github.com/fworks-tech/chaintelescope/pull/189)
 
 - [**agenthood**](https://github.com/fworks-tech/agenthood) — Upcoming release adds scoped MCP connections and quicker tool lookups
@@ -187,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 24, 2026
+*Last updated: Nov 25, 2026

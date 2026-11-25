@@ -51,3 +51,7 @@ jobs:
               exit 1
             fi
           done
+          if ! grep -qE '^\| Repository \| Description \| Last Update \|$' README.md; then
+            echo "Featured Projects table must include a Last Update column"
+            exit 1
+          fi
