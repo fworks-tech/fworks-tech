@@ -23,8 +23,8 @@
 | Repository | Description | Last Update |
 |---|---|---|
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio and engineering playground — Mantine UI, MDX blog, dynamic OG images, AI assistant, browser quiz, Vitest + Playwright, Storybook 10, axe-core WCAG 2.1 AA checks and Lighthouse CI. Live at [flabs.tech](https://flabs.tech) | 11/15/2026 |
-| [agenthood](https://github.com/fworks-tech/agenthood) | Open-source AI engineering team — 20 portable SKILL.md members, an autonomous TypeScript runtime/CLI, MCP tools and tamper-evident decision provenance, with a companion browser Studio. Published on [npm](https://www.npmjs.com/package/agenthood) | 11/24/2026 |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/24/2026 |
+| [agenthood](https://github.com/fworks-tech/agenthood) | Open-source AI engineering team — 20 portable SKILL.md members, an autonomous TypeScript runtime/CLI, MCP tools and tamper-evident decision provenance, with a companion browser Studio. Published on [npm](https://www.npmjs.com/package/agenthood) | 11/25/2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/25/2026 |
 | [atlaslink](https://github.com/fworks-tech/atlaslink) | *(experimental)* Agenthood-powered shared workspace for live human–AI task sessions, with a visual agent DAG, SSE/WebSocket updates, human approval gates and durable SQLite/Postgres storage. Live at [atlas.flabs.tech](https://atlas.flabs.tech) | 11/24/2026 |
 | [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence dashboard — live price trends, watchlists, threshold alerts, RSS news, risk panels and a dashboard-grounded AI assistant in the Streamlit app; a Hapi.js/TypeScript API and React 19 + Vite client are replacing it screen by screen. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) | 11/25/2026 |
 | [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/25/2026 |
@@ -37,17 +37,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — Live crypto prices now reach the app, with recent results remembered briefly
-  The hosted app had been showing placeholder prices because its slim environment lacked the usual exchange connector; it now pulls live quotes directly. Successful market results are also remembered briefly, so repeat views skip the data sources instead of asking again.
-  [Fetch live prices over httpx when ccxt is unavailable](https://github.com/fworks-tech/chaintelescope/pull/183) · [Cache successful snapshots and per-provider metrics](https://github.com/fworks-tech/chaintelescope/pull/189)
+- [**agenthood**](https://github.com/fworks-tech/agenthood) — Release 4.5.0 tightens how the AI team handles secrets and outside servers
+  Secrets containing a dollar sign now stay exactly as written, and requests no longer follow redirects, so headers you set remain with the host you chose. Each team member can also connect to servers you declare, scoped to that member.
+  [v4.5.0](https://github.com/fworks-tech/agenthood/releases/tag/v4.5.0) · [Apply 4.5 audit findings](https://github.com/fworks-tech/agenthood/pull/1181)
 
-- [**agenthood**](https://github.com/fworks-tech/agenthood) — Upcoming release adds scoped MCP connections and quicker tool lookups
-  The upcoming release adds a way for agents to connect to MCP servers the host declares, with each member limited to its own scope. It also remembers each server's available tools for quicker repeat lookups, and protects the decision record from malformed entries.
-  [v4.5.0 (draft)](https://github.com/fworks-tech/agenthood/pull/1145)
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio permissions and code execution close their audit gaps
+  Tool access is now checked for every caller, code runs in a memory-limited worker, and human checks refuse entry rather than let it through when they cannot be verified. A separate pass made the marketing pages, docs and Studio comfortable on phones.
+  [Resolve repo-wide audit findings](https://github.com/fworks-tech/agenthood-site/pull/347) · [Address mobile responsiveness audit findings](https://github.com/fworks-tech/agenthood-site/pull/337)
 
-- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Dead worms no longer fire, and reporting a bug now captures the match
-  A worm that drowns or takes a fatal fall while aiming now ends its turn instead of still firing. The pause menu can capture the current match view and send it with recent game history when you report a bug.
-  [End turn when active worm dies during aim](https://github.com/fworks-tech/wormage-demo/pull/257) · [Report bugs with a faithful tab capture](https://github.com/fworks-tech/wormage-demo/pull/252)
+- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — News dates stop going blank as the new dashboard client takes shape
+  A shared set of data shapes now spans the Python service and the React client, so news items arrive with the date the client reads and the News page stops showing empty dates. Scan results and upload progress are prepared for the console still to come.
+  [Add remaining web api contracts](https://github.com/fworks-tech/chaintelescope/pull/212) · [Align Python news timestamps with shared contract](https://github.com/fworks-tech/chaintelescope/pull/208)
 <!-- recent-activity:end -->
 
 ---
