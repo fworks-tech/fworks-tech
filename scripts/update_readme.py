@@ -435,8 +435,7 @@ def render_activity(items, entries):
     blocks = []
     for item, entry in zip(items, entries):
         entry = entry or fallback_entry(item)
-        age = f" \u00B7 {relative_time(item['latest'])}" if item.get("latest") else ""
-        block = f"- [**{item['repo']}**]({item['url']}) \u2014 {entry['headline']}{age}"
+        block = f"- [**{item['repo']}**]({item['url']}) \u2014 {entry['headline']}"
         if entry.get("body"):
             block += f"\n  {entry['body']}"
         links = _links_line(item, entry)

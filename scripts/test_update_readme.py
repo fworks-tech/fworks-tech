@@ -426,7 +426,7 @@ class TestRenderActivity(unittest.TestCase):
             ],
         }
 
-    def test_renders_headline_body_and_links(self):
+    def test_renders_headline_body_and_links_without_relative_age(self):
         block = u.render_activity(
             [self.item()],
             [
@@ -448,7 +448,7 @@ class TestRenderActivity(unittest.TestCase):
             "[v4.4.0](https://x/releases/v4.4.0)",
             block,
         )
-        self.assertIn("1h ago", block)
+        self.assertNotRegex(block, r"\b(?:\d+h|\d+d) ago\b|\byesterday\b")
 
     def test_fallback_uses_description_and_titles(self):
         block = u.render_activity([self.item()], [None])
