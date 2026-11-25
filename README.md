@@ -37,15 +37,15 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — Live crypto prices now reach the app, with recent results remembered briefly · 3h ago
+- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — Live crypto prices now reach the app, with recent results remembered briefly
   The hosted app had been showing placeholder prices because its slim environment lacked the usual exchange connector; it now pulls live quotes directly. An in-progress change remembers successful market results for a short while, so repeat views skip the data sources instead of asking again.
   [Fetch live prices over httpx when ccxt is unavailable](https://github.com/fworks-tech/chaintelescope/pull/183) · [Cache successful snapshots and per-provider metrics](https://github.com/fworks-tech/chaintelescope/pull/189)
 
-- [**agenthood**](https://github.com/fworks-tech/agenthood) — Upcoming release adds scoped MCP connections and quicker tool lookups · 6h ago
+- [**agenthood**](https://github.com/fworks-tech/agenthood) — Upcoming release adds scoped MCP connections and quicker tool lookups
   The upcoming release adds a way for agents to connect to MCP servers the host declares, with each member limited to its own scope. It also remembers each server's available tools for quicker repeat lookups, and protects the decision record from malformed entries.
   [v4.5.0 (draft)](https://github.com/fworks-tech/agenthood/pull/1145)
 
-- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Dead worms no longer fire, and reporting a bug now captures the match · 14h ago
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Dead worms no longer fire, and reporting a bug now captures the match
   A worm that drowns or takes a fatal fall while aiming now ends its turn instead of still firing. The pause menu can capture the current match view and send it with recent game history when you report a bug.
   [End turn when active worm dies during aim](https://github.com/fworks-tech/wormage-demo/pull/257) · [Report bugs with a faithful tab capture](https://github.com/fworks-tech/wormage-demo/pull/252)
 <!-- recent-activity:end -->
