@@ -1,7 +1,8 @@
 # AGENTS.md — Profile Repository
 
 Agent-agnostic guidance for `fworks-tech/fworks-tech`. The main deliverable is
-`README.md`; automation updates only its marked Recent Activity section.
+`README.md`; automation refreshes Featured Projects dates and the marked Recent
+Activity section.
 
 ## Commands
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for README Recent Activity generation."""
+"""Unit tests for README profile generation."""
 
 import json
 import os
@@ -80,6 +80,76 @@ class TestFetchEvents(unittest.TestCase):
         with mock.patch.object(u, "api_get", side_effect=[None, []]):
             self.assertIsNone(u.fetch_events("token"))
             self.assertEqual(u.fetch_events("token"), [])
+
+
+class TestFeaturedProjectDates(unittest.TestCase):
+    def test_formats_iso_date_as_mm_dd_yyyy(self):
+        self.assertEqual(u.format_short_date("2026-08-09T23:00:00Z"), "08/09/2026")
+
+    def test_fetches_latest_default_branch_commit_date(self):
+        response = [{"commit": {"committer": {"date": "2026-08-19T09:00:00Z"}}}]
+        with mock.patch.object(u, "api_get", return_value=response) as api:
+            result = u.fetch_latest_commit_date("fworks-tech/agenthood", "token")
+        self.assertEqual(result, "2026-08-19T09:00:00Z")
+        api.assert_called_once_with(
+            "https://api.github.com/repos/fworks-tech/agenthood/commits?per_page=1",
+            "token",
+        )
+
+    def test_missing_commit_data_returns_none(self):
+        for response in (None, {}, []):
+            with self.subTest(response=response), mock.patch.object(
+                u, "api_get", return_value=response
+            ):
+                self.assertIsNone(
+                    u.fetch_latest_commit_date("fworks-tech/agenthood", "token")
+                )
+
+    def test_updates_only_date_cells_and_reports_changed_repos(self):
+        content = (
+            "| Repository | Description | Last Update |\n"
+            "|---|---|---|\n"
+            "| [agenthood](https://github.com/fworks-tech/agenthood) | AI team. | 08/01/2026 |\n"
+            "| [atlaslink](https://github.com/fworks-tech/atlaslink) | Workspace. | 08/02/2026 |\n"
+        )
+        dates = {
+            "fworks-tech/agenthood": "2026-08-19T09:00:00Z",
+            "fworks-tech/atlaslink": "2026-08-02T09:00:00Z",
+        }
+        with mock.patch.object(
+            u, "fetch_latest_commit_date", side_effect=lambda repo, token: dates[repo]
+        ):
+            result, changed = u.update_project_dates(content, "token")
+        self.assertIn("AI team. | 08/19/2026 |", result)
+        self.assertIn("Workspace. | 08/02/2026 |", result)
+        self.assertEqual(changed, ["agenthood"])
+
+    def test_api_failure_raises_instead_of_returning_partial_dates(self):
+        content = (
+            "| [agenthood](https://github.com/fworks-tech/agenthood) | AI team. | 08/01/2026 |\n"
+            "| [atlaslink](https://github.com/fworks-tech/atlaslink) | Workspace. | 08/02/2026 |\n"
+        )
+        with mock.patch.object(
+            u,
+            "fetch_latest_commit_date",
+            side_effect=["2026-08-19T09:00:00Z", None],
+        ):
+            with self.assertRaisesRegex(RuntimeError, "atlaslink"):
+                u.update_project_dates(content, "token")
+
+    def test_missing_project_rows_raises(self):
+        with self.assertRaisesRegex(RuntimeError, "Featured Projects"):
+            u.update_project_dates("# Test\n", "token")
+
+
+class TestReadmeFeaturedProjects(unittest.TestCase):
+    def test_all_featured_rows_have_last_update_dates(self):
+        with open(u.README_PATH, encoding="utf-8") as f:
+            rows = u.PROJECT_ROW_RE.findall(f.read())
+        self.assertEqual(len(rows), 9)
+        for repo, date in rows:
+            with self.subTest(repo=repo):
+                self.assertRegex(date, r"^\d{2}/\d{2}/\d{4}$")
 
 
 class TestFetchRecentMergedPrs(unittest.TestCase):
@@ -594,6 +664,14 @@ class TestRenderPrBody(unittest.TestCase):
         self.assertIn("No substantive public activity", text)
         self.assertNotIn("## Recent activity", text)
 
+    def test_date_only_change_describes_project_refresh(self):
+        text = "\n".join(
+            u.render_pr_body([], "", "Aug 19, 2026", ["agenthood", "atlaslink"])
+        )
+        self.assertIn("Featured Projects", text)
+        self.assertIn("agenthood, atlaslink", text)
+        self.assertNotIn("## Recent activity", text)
+
 
 class TestMain(unittest.TestCase):
     def setUp(self):
@@ -605,6 +683,10 @@ class TestMain(unittest.TestCase):
     def readme(self, block="- old entry\n"):
         return (
             "# Test\n\n"
+            "## Featured Projects\n\n"
+            "| Repository | Description | Last Update |\n"
+            "|---|---|---|\n"
+            "| [agenthood](https://github.com/fworks-tech/agenthood) | AI team. | 08/01/2026 |\n\n"
             "## Recent Activity\n\n"
             "<!-- recent-activity:start -->\n"
             + block
@@ -613,7 +695,10 @@ class TestMain(unittest.TestCase):
             "*Last updated: Sep 1, 2026\n"
         )
 
-    def run_main(self, content, new_rows, events=None, items=None):
+    def run_main(
+        self, content, new_rows, events=None, items=None, project_changes=None,
+        project_content=None,
+    ):
         with tempfile.TemporaryDirectory() as d:
             readme = os.path.join(d, "README.md")
             summary = os.path.join(d, "update_summary.txt")
@@ -622,6 +707,7 @@ class TestMain(unittest.TestCase):
             with open(summary, "w", encoding="utf-8") as f:
                 f.write("")
             items = items if items is not None else [{"repo": "agenthood"}]
+            project_changes = project_changes or []
             with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
                     mock.patch.object(u, "fetch_events", return_value=events), \
                     mock.patch.object(u, "build_items", return_value=items) as build, \
@@ -629,6 +715,14 @@ class TestMain(unittest.TestCase):
                         u, "write_entries", return_value=[None] * len(items)
                     ), \
                     mock.patch.object(u, "render_activity", return_value=new_rows), \
+                    mock.patch.object(
+                        u,
+                        "update_project_dates",
+                        return_value=(
+                            project_content if project_content is not None else content,
+                            project_changes,
+                        ),
+                    ), \
                     mock.patch.object(u, "README_PATH", readme), \
                     mock.patch.object(u, "SUMMARY_PATH", summary), \
                     mock.patch.object(u, "set_output") as set_output:
@@ -655,6 +749,52 @@ class TestMain(unittest.TestCase):
         set_output.assert_called_once_with(0)
         self.assertIn("Last updated: Sep 1, 2026", result)
         self.assertEqual(summary, "")
+
+    def test_date_only_change_writes_and_bumps_footer(self):
+        content = self.readme("- new entry\n")
+        updated = content.replace("08/01/2026", "08/19/2026")
+        result, summary, set_output, _ = self.run_main(
+            content,
+            "- new entry\n",
+            events=[{}],
+            project_changes=["agenthood"],
+            project_content=updated,
+        )
+        set_output.assert_called_once_with(1)
+        self.assertIn("08/19/2026", result)
+        self.assertIn("Last updated: Aug 19, 2026", result)
+        self.assertIn("Featured Projects", summary)
+        self.assertIn("agenthood", summary)
+        self.assertNotIn("## Recent activity", summary)
+
+    def test_project_date_api_failure_leaves_readme_unchanged(self):
+        content = self.readme()
+        with tempfile.TemporaryDirectory() as d:
+            readme = os.path.join(d, "README.md")
+            summary = os.path.join(d, "update_summary.txt")
+            with open(readme, "w", encoding="utf-8") as f:
+                f.write(content)
+            with open(summary, "w", encoding="utf-8") as f:
+                f.write("")
+            with mock.patch.dict(os.environ, {"GITHUB_TOKEN": "tok"}, clear=False), \
+                    mock.patch.object(u, "fetch_events", return_value=[{}]), \
+                    mock.patch.object(u, "build_items", return_value=[]), \
+                    mock.patch.object(u, "write_entries", return_value=[]), \
+                    mock.patch.object(u, "render_activity", return_value=""), \
+                    mock.patch.object(
+                        u, "update_project_dates", side_effect=RuntimeError("API down")
+                    ), \
+                    mock.patch.object(u, "README_PATH", readme), \
+                    mock.patch.object(u, "SUMMARY_PATH", summary), \
+                    mock.patch.object(u, "set_output"):
+                with self.assertRaisesRegex(RuntimeError, "API down"):
+                    u.main()
+            with open(readme, encoding="utf-8") as f:
+                result = f.read()
+            with open(summary, encoding="utf-8") as f:
+                summary_text = f.read()
+        self.assertEqual(result, content)
+        self.assertEqual(summary_text, "")
 
     def test_events_unavailable_fails_without_modifying_readme(self):
         content = self.readme()

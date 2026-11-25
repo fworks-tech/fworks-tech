@@ -51,10 +51,10 @@ jobs:
           delete-branch: true
           add-paths: README.md
           commit-message: |
-            chore(readme): auto-update recent activity [skip ci]
+            chore(readme): auto-update profile [skip ci]
 
-            Refreshed from the GitHub API and OpenCode by the update-readme workflow.
-          title: "chore(readme): auto-update recent activity"
+            Refreshed Featured Projects dates and Recent Activity from the GitHub API and OpenCode.
+          title: "chore(readme): auto-update profile"
           body-path: scripts/update_summary.txt
           labels: documentation
           assignees: fworks-tech
