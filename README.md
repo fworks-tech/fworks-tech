@@ -6,7 +6,7 @@
 [![Agenthood stars](https://img.shields.io/github/stars/fworks-tech/agenthood?style=flat-square&logo=typescript)](https://github.com/fworks-tech/agenthood)
 [![npm](https://img.shields.io/npm/v/agenthood?style=flat-square&logo=npm)](https://www.npmjs.com/package/agenthood)
 
-10+ years across frontend, backend, testing, devops and AI engineering — shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
+10+ years across frontend, backend, testing, DevOps, and AI engineering, shipping products for companies in the US, Europe, and Brazil. I balance solid architecture with real-world delivery.
 
 ---
 
