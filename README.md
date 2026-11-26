@@ -27,7 +27,7 @@
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/25/2026 |
 | [atlaslink](https://github.com/fworks-tech/atlaslink) | *(experimental)* Agenthood-powered shared workspace for live human–AI task sessions, with a visual agent DAG, SSE/WebSocket updates, human approval gates and durable SQLite/Postgres storage. Live at [atlas.flabs.tech](https://atlas.flabs.tech) | 11/24/2026 |
 | [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence dashboard — live price trends, watchlists, threshold alerts, RSS news, risk panels and a dashboard-grounded AI assistant in the Streamlit app; a Hapi.js/TypeScript API and React 19 + Vite client are replacing it screen by screen. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) | 11/25/2026 |
-| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/25/2026 |
+| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/26/2026 |
 | [deeptales](https://github.com/fworks-tech/deeptales) | *(under development)* Godot 4.x horror game generator and authoring Studio — three genre blueprints, five visual styles, branching stories, consequence-driven gameplay and story/art/audio tooling. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) | 11/06/2026 |
 | [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(portfolio demo)* NFT marketplace frontend — React 19 + TypeScript, TanStack Router/Query, Tailwind v4 + shadcn/ui and Socket.IO events over browser-only MSW REST/WebSocket mocks, with Vitest and Playwright coverage. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) | 11/04/2026 |
 | [trucksafe](https://github.com/fworks-tech/trucksafe) | *(portfolio demo)* Weather-aware truck route planner — Django API and React/MapLibre UI comparing three routes with deterministic weather/load risk rules, checkpoint ETAs, risk segments and a 0–48h forecast heatmap. Demo weather is simulated. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) | 10/14/2026 |
@@ -37,17 +37,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**agenthood**](https://github.com/fworks-tech/agenthood) — Release 4.5.0 tightens how the AI team handles secrets and outside servers
-  Secrets containing a dollar sign now stay exactly as written, and requests no longer follow redirects, so headers you set remain with the host you chose. Each team member can also connect to servers you declare, scoped to that member.
-  [v4.5.0](https://github.com/fworks-tech/agenthood/releases/tag/v4.5.0) · [Apply 4.5 audit findings](https://github.com/fworks-tech/agenthood/pull/1181)
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — A safety pass lands across Studio chat, news and docs
+  Chat sessions now run inside a memory-limited process, tool permissions are checked for every caller, and human verification fails closed when it is required. An automated draft of recent release news sits open for review before anything appears on the news page.
+  [Resolve repo-wide audit findings](https://github.com/fworks-tech/agenthood-site/pull/347) · [News digest: 2026-11-26](https://github.com/fworks-tech/agenthood-site/pull/350)
 
-- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio permissions and code execution close their audit gaps
-  Tool access is now checked for every caller, code runs in a memory-limited worker, and human checks refuse entry rather than let it through when they cannot be verified. A separate pass made the marketing pages, docs and Studio comfortable on phones.
-  [Resolve repo-wide audit findings](https://github.com/fworks-tech/agenthood-site/pull/347) · [Address mobile responsiveness audit findings](https://github.com/fworks-tech/agenthood-site/pull/337)
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Phone players in landscape get a tighter control row and more arena
+  Held sideways, phones now show the controls in a compact row instead of squeezing the play area, with taps kept comfortably sized. A change in progress saves each online match action as it happens, so a retried move is recognised rather than played twice.
+  [Compact the iPhone landscape HUD](https://github.com/fworks-tech/wormage-demo/pull/271) · [Persist online actions as dynamodb items](https://github.com/fworks-tech/wormage-demo/pull/270)
 
-- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — News dates stop going blank as the new dashboard client takes shape
-  A shared set of data shapes now spans the Python service and the React client, so news items arrive with the date the client reads and the News page stops showing empty dates. Scan results and upload progress are prepared for the console still to come.
-  [Add remaining web api contracts](https://github.com/fworks-tech/chaintelescope/pull/212) · [Align Python news timestamps with shared contract](https://github.com/fworks-tech/chaintelescope/pull/208)
+- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — One shared data shape now spans the dashboard's old and new screens
+  News dates that used to appear blank now fill in, and the rebuilt interface reads the same field names the existing service sends. Scan history and upload progress are the next screens being wired up, with the pieces in place but not yet visible.
+  [Align Python news timestamps with shared contract](https://github.com/fworks-tech/chaintelescope/pull/208) · [Add scans and upload progress store](https://github.com/fworks-tech/chaintelescope/pull/215)
 <!-- recent-activity:end -->
 
 ---
@@ -187,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 25, 2026
+*Last updated: Nov 26, 2026
