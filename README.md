@@ -24,10 +24,10 @@
 |---|---|---|
 | [flabs.tech](https://github.com/fworks-tech/flabs.tech) | Next.js 16 portfolio and engineering playground — Mantine UI, MDX blog, dynamic OG images, AI assistant, browser quiz, Vitest + Playwright, Storybook 10, axe-core WCAG 2.1 AA checks and Lighthouse CI. Live at [flabs.tech](https://flabs.tech) | 11/15/2026 |
 | [agenthood](https://github.com/fworks-tech/agenthood) | Open-source AI engineering team — 20 portable SKILL.md members, an autonomous TypeScript runtime/CLI, MCP tools and tamper-evident decision provenance, with a companion browser Studio. Published on [npm](https://www.npmjs.com/package/agenthood) | 11/25/2026 |
-| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/25/2026 |
+| [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/27/2026 |
 | [atlaslink](https://github.com/fworks-tech/atlaslink) | *(experimental)* Agenthood-powered shared workspace for live human–AI task sessions, with a visual agent DAG, SSE/WebSocket updates, human approval gates and durable SQLite/Postgres storage. Live at [atlas.flabs.tech](https://atlas.flabs.tech) | 11/24/2026 |
 | [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence dashboard — live price trends, watchlists, threshold alerts, RSS news, risk panels and a dashboard-grounded AI assistant in the Streamlit app; a Hapi.js/TypeScript API and React 19 + Vite client are replacing it screen by screen. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) | 11/25/2026 |
-| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/26/2026 |
+| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/27/2026 |
 | [deeptales](https://github.com/fworks-tech/deeptales) | *(under development)* Godot 4.x horror game generator and authoring Studio — three genre blueprints, five visual styles, branching stories, consequence-driven gameplay and story/art/audio tooling. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) | 11/06/2026 |
 | [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(portfolio demo)* NFT marketplace frontend — React 19 + TypeScript, TanStack Router/Query, Tailwind v4 + shadcn/ui and Socket.IO events over browser-only MSW REST/WebSocket mocks, with Vitest and Playwright coverage. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) | 11/04/2026 |
 | [trucksafe](https://github.com/fworks-tech/trucksafe) | *(portfolio demo)* Weather-aware truck route planner — Django API and React/MapLibre UI comparing three routes with deterministic weather/load risk rules, checkpoint ETAs, risk segments and a 0–48h forecast heatmap. Demo weather is simulated. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) | 10/14/2026 |
@@ -37,13 +37,13 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — A safety pass lands across Studio chat, news and docs
-  Chat sessions now run inside a memory-limited process, tool permissions are checked for every caller, and human verification fails closed when it is required. An automated draft of recent release news sits open for review before anything appears on the news page.
-  [Resolve repo-wide audit findings](https://github.com/fworks-tech/agenthood-site/pull/347) · [News digest: 2026-11-26](https://github.com/fworks-tech/agenthood-site/pull/350)
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — CPU teams now test each shot from where the worm actually stands
+  CPU teams check a planned shot from the real firing position, so they stop firing into their own terrain, and a blocked turn keeps its clock instead of stalling. Online matches also save cleanly again, so an unlimited weapon no longer breaks a turn partway through.
+  [Validate CPU shots from the firing pose](https://github.com/fworks-tech/wormage-demo/pull/326) · [Persist online snapshot without non-finite ammo](https://github.com/fworks-tech/wormage-demo/pull/321)
 
-- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Phone players in landscape get a tighter control row and more arena
-  Held sideways, phones now show the controls in a compact row instead of squeezing the play area, with taps kept comfortably sized. A change in progress saves each online match action as it happens, so a retried move is recognised rather than played twice.
-  [Compact the iPhone landscape HUD](https://github.com/fworks-tech/wormage-demo/pull/271) · [Persist online actions as dynamodb items](https://github.com/fworks-tech/wormage-demo/pull/270)
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio chats now say what the agent is doing, and Stop truly halts it
+  Chats show labels like thinking, fetching a site or running code instead of a bare cursor. Pressing Stop marks any in-flight work as stopped rather than leaving it looking alive, and documentation search now runs read-only with a cap on how often it can be called.
+  [Show thinking and exploring status labels during chats](https://github.com/fworks-tech/agenthood-site/pull/373) · [Mark running tool calls as error on Stop](https://github.com/fworks-tech/agenthood-site/pull/374)
 
 - [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — One shared data shape now spans the dashboard's old and new screens
   News dates that used to appear blank now fill in, and the rebuilt interface reads the same field names the existing service sends. Scan history and upload progress are the next screens being wired up, with the pieces in place but not yet visible.
@@ -187,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 26, 2026
+*Last updated: Nov 27, 2026
