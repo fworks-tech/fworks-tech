@@ -44,6 +44,10 @@
 - [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio chats now say what the agent is doing, and Stop truly halts it
   Chats show labels like thinking, fetching a site or running code instead of a bare cursor. Pressing Stop marks any in-flight work as stopped rather than leaving it looking alive, and documentation search now runs read-only with a cap on how often it can be called.
   [Show thinking and exploring status labels during chats](https://github.com/fworks-tech/agenthood-site/pull/373) · [Mark running tool calls as error on Stop](https://github.com/fworks-tech/agenthood-site/pull/374)
+
+- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — One shared data shape now spans the dashboard's old and new screens
+  News dates that used to appear blank now fill in, and the rebuilt interface reads the same field names the existing service sends. Scan history and upload progress are the next screens being wired up, with the pieces in place but not yet visible.
+  [Align Python news timestamps with shared contract](https://github.com/fworks-tech/chaintelescope/pull/208) · [Add scans and upload progress store](https://github.com/fworks-tech/chaintelescope/pull/215)
 <!-- recent-activity:end -->
 
 ---
