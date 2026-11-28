@@ -27,7 +27,7 @@
 | [agenthood-site](https://github.com/fworks-tech/agenthood-site) | Official Agenthood platform — documentation, Academy and a live browser Studio for chatting with 20 AI members and orchestrating multi-agent workspaces. Live at [agenthood.flabs.tech](https://agenthood.flabs.tech) | 11/27/2026 |
 | [atlaslink](https://github.com/fworks-tech/atlaslink) | *(experimental)* Agenthood-powered shared workspace for live human–AI task sessions, with a visual agent DAG, SSE/WebSocket updates, human approval gates and durable SQLite/Postgres storage. Live at [atlas.flabs.tech](https://atlas.flabs.tech) | 11/24/2026 |
 | [chaintelescope](https://github.com/fworks-tech/chaintelescope) | *(under refactor)* Crypto intelligence dashboard — live price trends, watchlists, threshold alerts, RSS news, risk panels and a dashboard-grounded AI assistant in the Streamlit app; a Hapi.js/TypeScript API and React 19 + Vite client are replacing it screen by screen. Live at [chaintelescope.flabs.tech/](https://chaintelescope.flabs.tech/) | 11/25/2026 |
-| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/27/2026 |
+| [wormage-demo](https://github.com/fworks-tech/wormage-demo) | *(playable demo)* Turn-based browser artillery with 2–4 teams, three worms per team by default, destructible pixel terrain, wind-aware ballistics and AI opponents that forward-simulate the same physics. Built with React 18, strict TypeScript and PixiJS. Live at [wormage.flabs.tech](https://wormage.flabs.tech) | 11/28/2026 |
 | [deeptales](https://github.com/fworks-tech/deeptales) | *(under development)* Godot 4.x horror game generator and authoring Studio — three genre blueprints, five visual styles, branching stories, consequence-driven gameplay and story/art/audio tooling. Live at [deeptales.flabs.tech](https://deeptales.flabs.tech) | 11/06/2026 |
 | [kurio-marketplace](https://github.com/fworks-tech/kurio-marketplace) | *(portfolio demo)* NFT marketplace frontend — React 19 + TypeScript, TanStack Router/Query, Tailwind v4 + shadcn/ui and Socket.IO events over browser-only MSW REST/WebSocket mocks, with Vitest and Playwright coverage. Live at [kurio-marketplace-theta.vercel.app](https://kurio-marketplace-theta.vercel.app) | 11/04/2026 |
 | [trucksafe](https://github.com/fworks-tech/trucksafe) | *(portfolio demo)* Weather-aware truck route planner — Django API and React/MapLibre UI comparing three routes with deterministic weather/load risk rules, checkpoint ETAs, risk segments and a 0–48h forecast heatmap. Demo weather is simulated. Live at [trucksafe.flabs.tech](https://trucksafe.flabs.tech/) | 10/14/2026 |
@@ -37,17 +37,17 @@
 ## Recent Activity
 
 <!-- recent-activity:start -->
-- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — CPU teams now test each shot from where the worm actually stands
-  CPU teams check a planned shot from the real firing position, so they stop firing into their own terrain, and a blocked turn keeps its clock instead of stalling. Online matches also save cleanly again, so an unlimited weapon no longer breaks a turn partway through.
-  [Validate CPU shots from the firing pose](https://github.com/fworks-tech/wormage-demo/pull/326) · [Persist online snapshot without non-finite ammo](https://github.com/fworks-tech/wormage-demo/pull/321)
+- [**deadhours-demo**](https://github.com/fworks-tech/deadhours-demo) — Release prep gives the demo saves that survive crashes and steadier long missions.
+  Saving survives a crash now, with backups and slot checks, and story choices are re-approved when they actually apply. Long missions hold up better since blood pools and enemy sight stop piling up without limit, while story content moves into data.
+  [Make the demo release-ready](https://github.com/fworks-tech/deadhours-demo/pull/20) · [Static decals with cap, lighter enemy perception, single zombie draw](https://github.com/fworks-tech/deadhours-demo/pull/26)
 
-- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio chats now say what the agent is doing, and Stop truly halts it
-  Chats show labels like thinking, fetching a site or running code instead of a bare cursor. Pressing Stop marks any in-flight work as stopped rather than leaving it looking alive, and documentation search now runs read-only with a cap on how often it can be called.
+- [**wormage-demo**](https://github.com/fworks-tech/wormage-demo) — Team health readouts now match the fight, and mob damage shows up.
+  The enemy panel had been showing the player's team during opponent turns; it now opposes whichever team is acting. Damage from mobs registers on the bars and in the log, so health no longer drops with nothing to explain it.
+  [Oppose the displayed team in the enemy HUD panel](https://github.com/fworks-tech/wormage-demo/pull/345) · [Keep team HP totals consistent and surface mob hits](https://github.com/fworks-tech/wormage-demo/pull/343)
+
+- [**agenthood-site**](https://github.com/fworks-tech/agenthood-site) — Studio chats now say what they're doing instead of showing bare typing dots.
+  Chats label themselves as thinking, fetching a host, or running code, and workspaces show when a tool is in progress. Pressing stop marks whatever was running as stopped rather than leaving it looking alive.
   [Show thinking and exploring status labels during chats](https://github.com/fworks-tech/agenthood-site/pull/373) · [Mark running tool calls as error on Stop](https://github.com/fworks-tech/agenthood-site/pull/374)
-
-- [**chaintelescope**](https://github.com/fworks-tech/chaintelescope) — One shared data shape now spans the dashboard's old and new screens
-  News dates that used to appear blank now fill in, and the rebuilt interface reads the same field names the existing service sends. Scan history and upload progress are the next screens being wired up, with the pieces in place but not yet visible.
-  [Align Python news timestamps with shared contract](https://github.com/fworks-tech/chaintelescope/pull/208) · [Add scans and upload progress store](https://github.com/fworks-tech/chaintelescope/pull/215)
 <!-- recent-activity:end -->
 
 ---
@@ -187,4 +187,4 @@
 
 ---
 
-*Last updated: Nov 27, 2026
+*Last updated: Nov 28, 2026
